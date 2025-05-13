@@ -29,6 +29,7 @@
         <activity android:name=".CriarActivity"/>
         <activity android:name=".MenuPetsActivity"/>
         <activity android:name=".MostrarPetActivity"/>
+        <activity android:name=".Mostrar"/>
         <activity android:name=".CriarPetsActivity"/>
     </application>
 

@@ -18,38 +18,15 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="-38dp" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/rolar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/appbar_scrolling_view_behavior"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"
-        android:scrollbars="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/voltar"
         tools:ignore="MissingConstraints">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:ignore="ChildInNonViewGroup,MissingConstraints">
-
-            <ImageView
-                android:id="@+id/frente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/frenteindentidade" />
-
-            <ImageView
-                android:id="@+id/verso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/versoindentidade" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.viewpager2.widget.ViewPager2>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
