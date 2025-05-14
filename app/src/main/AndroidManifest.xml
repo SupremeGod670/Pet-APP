@@ -31,9 +31,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".CriarActivity"/>
         <activity android:name=".MenuPetsActivity"/>
-        <activity android:name=".MostrarPetActivity"/>
-        <activity android:name=".Mostrar"/>
         <activity android:name=".CriarPetsActivity"/>
+        <activity android:name=".MostrarPetActivity"/>
     </application>
 
 </manifest>

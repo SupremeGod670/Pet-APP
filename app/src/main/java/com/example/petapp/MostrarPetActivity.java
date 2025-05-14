@@ -1,22 +1,23 @@
 package com.example.petapp;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.app.Activity.ScreenCaptureCallback;
 
 public class MostrarPetActivity extends AppCompatActivity {
 
     private TextView voltar;
+    private static final int NUM_PAGES = 2;
     private ViewPager2 viewPager;
+    private FragmentStateAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +34,27 @@ public class MostrarPetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        pagerAdapter = new FragmentStateAdapter(this) {
+            @Override
+            public int getItemCount() {
+                return NUM_PAGES;
+            }
+
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                switch (position) {
+                    case 0:
+                        return new Fragment1();
+                    case 1:
+                        return new Fragment2();
+                    default:
+                        return null;
+                }
+            }
+        };
+        viewPager.setAdapter(pagerAdapter);
 
     }
 }
