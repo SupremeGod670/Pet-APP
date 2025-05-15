@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,15 +21,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.petapp.adapter.CriarPetsModel;
 import com.example.petapp.adapter.PetAdapter;
+import com.example.petapp.ui.sair.FragmentSair;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class MenuPetsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DatePicker.OnCreateContextMenuListener {
+public class MenuPetsActivity extends AppCompatActivity {
 
     private SearchView pesquisar;
     private ListView listpet1, listpet2;
@@ -36,6 +41,7 @@ public class MenuPetsActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +60,34 @@ public class MenuPetsActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Menu Pets");
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(MenuPetsActivity.this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(MenuPetsActivity.this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                if (item.getItemId() == R.id.nav_logout){
+                    Intent intent = new Intent(MenuPetsActivity.this, FragmentSair.class);
+                    startActivity(intent);
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+                return true;
+            }
+        });
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isOpen()){
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }else {
+                    finishAffinity();
+                }
+            }
+        });
 
         criar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +99,10 @@ public class MenuPetsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_logout){
-            Intent intent = new Intent(MenuPetsActivity.this, LoginActivity.class);
-            startActivity(intent);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)){
+            return true;
         }
-
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }
