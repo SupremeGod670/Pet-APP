@@ -1,11 +1,11 @@
-package com.example.petapp.database.dao;
+package com.example.petapp.database.databaseUser.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.petapp.database.DBHelperUser;
-import com.example.petapp.database.model.RegistroUserModel;
+import com.example.petapp.database.databaseUser.DBHelper;
+import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 
 public class RegistroUserDAO extends AbstrataDAO {
 
@@ -16,17 +16,19 @@ public class RegistroUserDAO extends AbstrataDAO {
     };
 
     public RegistroUserDAO(Context context) {
-        dbHelperUser = new DBHelperUser(context);
+        dbHelper = new DBHelper(context);
     }
 
     public boolean select(String email, String senha) {
-        Cursor cursor = dbUser.query(
+        Open();
+        Cursor cursor = db.query(
                 RegistroUserModel.TABELA_USUARIO,
                 colunas,
                 RegistroUserModel.COLUNA_EMAIL + " = ? AND " +
                         RegistroUserModel.COLUNA_SENHA + " = ? ",
                 new String[]{email, senha}, null, null, null);
         cursor.moveToFirst();
+        Close();
         return cursor.getCount() > 0;
     }
 
@@ -37,7 +39,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         values.put(RegistroUserModel.COLUNA_EMAIL, usuario.getEmail());
         values.put(RegistroUserModel.COLUNA_SENHA, usuario.getSenha());
 
-        dbUser.insert(RegistroUserModel.TABELA_USUARIO, null, values);
+        db.insert(RegistroUserModel.TABELA_USUARIO, null, values);
         Close();
     }
 
@@ -48,7 +50,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         values.put(RegistroUserModel.COLUNA_EMAIL, usuario.getEmail());
         values.put(RegistroUserModel.COLUNA_SENHA, usuario.getSenha());
 
-        dbUser.update(RegistroUserModel.TABELA_USUARIO, values,
+        db.update(RegistroUserModel.TABELA_USUARIO, values,
                 RegistroUserModel.COLUNA_ID + " = ? ",
                 new String[]{usuario.getId().toString()});
         Close();
@@ -58,7 +60,7 @@ public class RegistroUserDAO extends AbstrataDAO {
     public void delete(RegistroUserModel usuario) {
 
         Open();
-        dbUser.delete(RegistroUserModel.TABELA_USUARIO,
+        db.delete(RegistroUserModel.TABELA_USUARIO,
                 RegistroUserModel.COLUNA_ID + " = ? ",
                 new String[]{usuario.getId().toString()});
         Close();

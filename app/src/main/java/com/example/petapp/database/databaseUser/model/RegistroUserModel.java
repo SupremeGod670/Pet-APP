@@ -1,4 +1,4 @@
-package com.example.petapp.database.model;
+package com.example.petapp.database.databaseUser.model;
 
 public class RegistroUserModel {
 
@@ -13,7 +13,7 @@ public class RegistroUserModel {
 
     public static final String CREATE_TABLE = "create table " + TABELA_USUARIO +
             " (" + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUNA_EMAIL + " TEXT NOT NULL, "
+            + COLUNA_EMAIL + " TEXT NOT NULL UNIQUE, "
             + COLUNA_SENHA + " TEXT NOT NULL)";
 
     private Long id;

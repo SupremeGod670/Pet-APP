@@ -16,8 +16,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.petapp.database.dao.RegistroUserDAO;
-import com.example.petapp.database.model.RegistroUserModel;
+import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
+import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,10 +52,6 @@ public class CriarActivity extends AppCompatActivity {
         letra_maiscula = findViewById(R.id.letra_maiscula);
         letra_minuscula = findViewById(R.id.letra_minuscula);
 
-        registroUserDAO = new RegistroUserDAO(CriarActivity.this);
-
-        RegistroUserModel user = new RegistroUserModel();
-
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +81,8 @@ public class CriarActivity extends AppCompatActivity {
                     caracter_especial.setTextColor(Color.GREEN);
                     letra_maiscula.setTextColor(Color.GREEN);
                     letra_minuscula.setTextColor(Color.GREEN);
+
+                    registroUserDAO = new RegistroUserDAO(CriarActivity.this);
 
                 } else {
                     minimo.setTextColor(password.length() > 6 ? Color.GREEN : Color.RED);
@@ -122,8 +120,11 @@ public class CriarActivity extends AppCompatActivity {
                     mensagemErrorApresentar("Senha inválida. Verifique os requisitos.");
                     return;
                 } else {
-                    user.setEmail("" + emailStr);
-                    user.setSenha("" + password);
+                    registroUserDAO = new RegistroUserDAO(CriarActivity.this);
+
+                    RegistroUserModel user = new RegistroUserModel();
+                    user.setEmail(emailStr);
+                    user.setSenha(password);
 
                     registroUserDAO.insert(user);
 

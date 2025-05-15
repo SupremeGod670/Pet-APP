@@ -1,6 +1,4 @@
-package com.example.petapp.database.model;
-
-import android.widget.ImageView;
+package com.example.petapp.database.databasePet.model;
 
 public class RegistroPetModel {
 

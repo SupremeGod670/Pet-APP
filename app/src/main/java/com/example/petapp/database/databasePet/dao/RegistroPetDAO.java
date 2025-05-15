@@ -1,14 +1,13 @@
-package com.example.petapp.database.dao;
+package com.example.petapp.database.databasePet.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.petapp.database.DBHelperPet;
-import com.example.petapp.database.DBHelperUser;
-import com.example.petapp.database.model.RegistroPetModel;
+import com.example.petapp.database.databasePet.DBHelper;
+import com.example.petapp.database.databasePet.model.RegistroPetModel;
 
-public class RegistroPetDAO extends AbstrataDAO{
+public class RegistroPetDAO extends AbstrataDAO {
 
     private String[] colunas = new String[]{
             RegistroPetModel.COLUNA_ID,
@@ -33,11 +32,11 @@ public class RegistroPetDAO extends AbstrataDAO{
     };
 
     public RegistroPetDAO(Context context) {
-        dbHelperPet = new DBHelperPet(context);
+        dbHelper = new DBHelper(context);
     }
 
     public boolean select(String nomepet, String nascimento, String especie, String sexo, String pai, String mae, String raca, String naturalidade, String cor, String endereco, String bairro, String cidade, String telefoneresd, String email, String cep, String estado, String telefonecel, String descricao){
-        Cursor cursor = dbPet.query(
+        Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
                 RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
@@ -85,7 +84,7 @@ public class RegistroPetDAO extends AbstrataDAO{
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
 
-        dbPet.insert(RegistroPetModel.TABELA_PET, null, values);
+        db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
     }
 
@@ -111,13 +110,13 @@ public class RegistroPetDAO extends AbstrataDAO{
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
 
-        dbPet.update(RegistroPetModel.TABELA_PET, values, RegistroPetModel.COLUNA_ID + " = ?", new String[]{pet.getId().toString()});
+        db.update(RegistroPetModel.TABELA_PET, values, RegistroPetModel.COLUNA_ID + " = ?", new String[]{pet.getId().toString()});
         Close();
     }
 
     public void delete(Long id){
         Open();
-        dbPet.delete(RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_ID + " = ?", new String[]{id.toString()});
+        db.delete(RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_ID + " = ?", new String[]{id.toString()});
         Close();
     }
 

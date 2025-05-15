@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.petapp.database.model.RegistroUserModel;
+import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText senha;
     private Button acessar;
     private TextView criar;
+    private RegistroUserDAO registroUserDAO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,12 +29,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login);
 
         pets = findViewById(R.id.pets);
-        email = findViewById(R.id.email);
-        senha = findViewById(R.id.senha);
+        this.email = findViewById(R.id.email);
+        this.senha = findViewById(R.id.senha);
         acessar = findViewById(R.id.acessar);
         criar = findViewById(R.id.criar);
 
-        RegistroUserModel user = new RegistroUserModel();
+        registroUserDAO = new RegistroUserDAO(LoginActivity.this);
 
         criar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,17 +47,18 @@ public class LoginActivity extends AppCompatActivity {
         acessar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (email.getText().toString().isEmpty()) {
-                    //Colocar mensagem de erro
+                String emailDigitado = email.getText().toString();
+                String senhaDigitada = senha.getText().toString();
+
+                if (emailDigitado.isEmpty()) {
                     mensagemErrorApresentar("Campo email obrigatório");
                     return;
                 }
 
-                if (senha.getText().toString().isEmpty()) {
-                    //Colocar mensagem de erro
+                if (senhaDigitada.isEmpty()) {
                     mensagemErrorApresentar("Campo senha obrigatório");
                     return;
-                } else if (email.getText().toString() == user.getEmail() && senha.getText().toString() == user.getSenha()) {
+                } else if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
                     Intent it = new Intent(LoginActivity.this, MenuPetsActivity.class);
                     startActivity(it);
                 } else {
@@ -64,11 +66,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void mensagemErrorApresentar(String mensagem) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setMessage(mensagem);
         builder.setTitle("Informação");
