@@ -35,6 +35,7 @@ public class CriarActivity extends AppCompatActivity {
     private TextView letra_minuscula;
 
     private RegistroUserDAO registroUserDAO;
+    private RegistroUserModel registroUserModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
