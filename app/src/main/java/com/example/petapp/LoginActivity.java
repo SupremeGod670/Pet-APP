@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                     mensagemErrorApresentar("Campo senha obrigatório");
                     return;
                 } else if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
-                    Intent it = new Intent(LoginActivity.this, MenuPetsActivity.class);
+                    Intent it = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(it);
                 } else {
                     mensagemErrorApresentar("Email ou senha incorretos");

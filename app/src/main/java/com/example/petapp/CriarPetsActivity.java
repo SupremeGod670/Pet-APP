@@ -55,7 +55,7 @@ public class CriarPetsActivity extends AppCompatActivity {
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CriarPetsActivity.this, MenuPetsActivity.class);
+                Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });
@@ -63,7 +63,7 @@ public class CriarPetsActivity extends AppCompatActivity {
         salvarpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CriarPetsActivity.this, MenuPetsActivity.class);
+                Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });

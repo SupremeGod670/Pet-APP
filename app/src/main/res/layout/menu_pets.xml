@@ -1,115 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     style="@style/BACKGROUND"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MenuPetsActivity"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        style="@style/BACKGROUND"
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+        
+        <ImageButton
+            android:id="@+id/open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/menu"
+            android:background="@android:color/transparent"
+            android:padding="5dp"/>
+        
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/indetificapets"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu" />
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/the_seasons_regular"
+        android:text="@string/indentifica_o_pet"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/BACKGROUND"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <SearchView
+        android:id="@+id/pesquisar"
+        style="@style/SEARCHCOLOR"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_edit_text"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indetificapets"
+        tools:ignore="MissingConstraints" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:navigationIcon="@drawable/menu"
-                android:theme="?attr/actionBarTheme"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/criar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pesquisar"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/indetificapets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/the_seasons_regular"
-                android:text="@string/indentifica_o_pet"
-                android:textAlignment="center"
-                android:textColor="@color/grey"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+        <ListView
+            android:id="@+id/listpet1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            tools:ignore="MissingConstraints" />
 
-            <SearchView
-                android:id="@+id/pesquisar"
-                style="@style/SEARCHCOLOR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="12dp"
-                android:background="@drawable/bg_edit_text"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/indetificapets"
-                tools:ignore="MissingConstraints" />
+        <ListView
+            android:id="@+id/listpet2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            tools:ignore="MissingConstraints" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/criar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pesquisar"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints">
+    </LinearLayout>
 
-                <ListView
-                    android:id="@+id/listpet1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/criar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/criar"
+        android:backgroundTint="#A6A6A6"
+        android:gravity="bottom"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.957"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
-                <ListView
-                    android:id="@+id/listpet2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_weight="1"
-                    tools:ignore="MissingConstraints" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/criar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/criar"
-                android:backgroundTint="#A6A6A6"
-                android:gravity="bottom"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.957"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

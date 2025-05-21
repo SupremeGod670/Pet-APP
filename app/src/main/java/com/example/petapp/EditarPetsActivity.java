@@ -50,7 +50,7 @@ public class EditarPetsActivity extends AppCompatActivity {
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditarPetsActivity.this, MenuPetsActivity.class);
+                Intent intent = new Intent(EditarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +58,7 @@ public class EditarPetsActivity extends AppCompatActivity {
         alterarpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditarPetsActivity.this, MenuPetsActivity.class);
+                Intent intent = new Intent(EditarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });

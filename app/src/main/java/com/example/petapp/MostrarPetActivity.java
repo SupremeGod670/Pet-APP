@@ -30,7 +30,7 @@ public class MostrarPetActivity extends AppCompatActivity {
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MostrarPetActivity.this, MenuPetsActivity.class);
+                Intent intent = new Intent(MostrarPetActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });
