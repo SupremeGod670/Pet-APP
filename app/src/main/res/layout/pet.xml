@@ -24,8 +24,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="2dp"
-            android:background="@drawable/petperfil"
-            android:backgroundTint="@color/black" />
+            android:background="@drawable/petpaw" />
 
         <LinearLayout
             android:id="@+id/pet1"

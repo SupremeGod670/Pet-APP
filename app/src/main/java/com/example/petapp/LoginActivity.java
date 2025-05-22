@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent it = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(it);
                 } else {
-                    mensagemErrorApresentar("Email ou senha incorretos");
+                    mensagemErrorApresentar("Email ou Senha incorretos");
                 }
             }
         });

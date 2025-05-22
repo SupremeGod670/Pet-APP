@@ -26,16 +26,11 @@ public class CriarActivity extends AppCompatActivity {
 
     private TextView voltar;
     private ImageView pets;
-    private EditText email;
-    private EditText senha;
+    private EditText email, senha, nome;
     private Button criar;
-    private TextView minimo;
-    private TextView caracter_especial;
-    private TextView letra_maiscula;
-    private TextView letra_minuscula;
+    private TextView minimo, caracter_especial, letra_maiscula, letra_minuscula;
 
     private RegistroUserDAO registroUserDAO;
-    private RegistroUserModel registroUserModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +40,7 @@ public class CriarActivity extends AppCompatActivity {
         voltar = findViewById(R.id.voltar);
 
         pets = findViewById(R.id.pets);
+        nome = findViewById(R.id.nome);
         email = findViewById(R.id.email);
         senha = findViewById(R.id.senha);
         criar = findViewById(R.id.criar);
