@@ -13,7 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
+import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 import com.google.android.material.navigation.NavigationView;
+
+import com.example.petapp.LoginActivity;
 
 public class MenuActivity extends AppCompatActivity {
 
