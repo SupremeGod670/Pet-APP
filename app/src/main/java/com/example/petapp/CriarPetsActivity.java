@@ -86,6 +86,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 String nome = editnome.getText().toString();
                 String nascimento = editnascimento.getText().toString();
                 String especie = editespecie.getSelectedItem().toString();
+                String raca = editraca.getSelectedItem().toString();
                 String sexo = editsexo.getSelectedItem().toString();
                 String cidade = editcidade.getSelectedItem().toString();
                 String estado = editestado.getSelectedItem().toString();
@@ -105,6 +106,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 registroPetModel.setNomepet(nome);
                 registroPetModel.setNascimento(Double.valueOf(nascimento));
                 registroPetModel.setEspecie(especie);
+                registroPetModel.setRaca(raca);
                 registroPetModel.setSexo(sexo);
                 registroPetModel.setCidade(cidade);
                 registroPetModel.setEstado(estado);
