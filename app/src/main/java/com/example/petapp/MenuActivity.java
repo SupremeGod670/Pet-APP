@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class MenuActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    Button sair;
     ImageButton open;
     TextView criar;
 
@@ -35,6 +37,7 @@ public class MenuActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        sair = findViewById(R.id.sair);
         open = findViewById(R.id.open);
 
         open.setOnClickListener(new View.OnClickListener() {
@@ -51,15 +54,21 @@ public class MenuActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.nav_logout){
-                    Toast.makeText(MenuActivity.this, "Logout Clicado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
-                    startActivity(intent);
                 }
 
                 drawerLayout.close();
 
                 return false;
+            }
+        });
+
+        sair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 

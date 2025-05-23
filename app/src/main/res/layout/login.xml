@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/pets"
-        android:layout_width="311dp"
-        android:layout_height="325dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:src="@drawable/imagem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

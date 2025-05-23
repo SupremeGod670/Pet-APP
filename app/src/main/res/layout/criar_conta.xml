@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/pets"
-        android:layout_width="311dp"
-        android:layout_height="325dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:src="@drawable/imagem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +31,11 @@
     <EditText
         android:id="@+id/email"
         style="@style/HINTCOLOR"
-        android:layout_width="306dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/bg_edit_text"
         android:backgroundTint="#a6a6a6"
         android:hint="@string/email"
@@ -49,10 +49,10 @@
     <EditText
         android:id="@+id/senha"
         style="@style/HINTCOLOR"
-        android:layout_width="306dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="216dp"
         android:background="@drawable/bg_edit_text"
         android:backgroundTint="#a6a6a6"
@@ -60,82 +60,70 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.076"
+        app:layout_constraintVertical_bias="0.067"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/conter"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/conter"
-        android:textAlignment="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/senha"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
 
-    <TextView
-        android:id="@+id/minimo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/minimo"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.19"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conter"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/conter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/conter"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/caracter_especial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/caracter_especial"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.268"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minimo"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/minimo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/minimo"
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/letra_maiscula"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/letra_maiscula"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caracter_especial"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/caracter_especial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:text="@string/caracter_especial"
+            android:textAlignment="center"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/letra_minuscula"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:text="@string/letra_minuscula"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.263"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letra_maiscula"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/letra_maiscula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:text="@string/letra_maiscula"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/letra_minuscula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:text="@string/letra_minuscula"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/criar"
@@ -152,7 +140,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letra_minuscula"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
