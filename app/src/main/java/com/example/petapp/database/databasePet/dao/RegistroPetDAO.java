@@ -35,21 +35,22 @@ public class RegistroPetDAO extends AbstrataDAO {
         dbHelper = new DBHelper(context);
     }
 
-    public boolean selectNome(String nomepet){
+    public boolean selectNome(){
         Open();
+        String nome = "";
         Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
-                RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
-                        RegistroPetModel.COLUNA_RACA + " = ? ",
-                new String[]{nomepet}, null, null, null);
+                RegistroPetModel.COLUNA_NOMEPET + " = ? ",
+                new String[]{nome}, null, null, null);
         cursor.moveToFirst();
         Close();
         return cursor.getCount() > 0;
     }
 
-    public boolean selectRaca(String raca){
+    public boolean selectRaca(){
         Open();
+        String raca = "";
         Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
@@ -89,7 +90,7 @@ public class RegistroPetDAO extends AbstrataDAO {
             return cursor.getCount() > 0;
     }
 
-    public long insert(RegistroPetModel pet){
+    public void insert(RegistroPetModel pet){
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
@@ -113,7 +114,6 @@ public class RegistroPetDAO extends AbstrataDAO {
 
         db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
-        return 0;
     }
 
     public void update(RegistroPetModel pet){

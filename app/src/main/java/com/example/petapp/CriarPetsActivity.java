@@ -26,8 +26,8 @@ public class CriarPetsActivity extends AppCompatActivity {
 
     private TextView voltar;
     public ImageView perfilpet;
-    private Spinner editespecie, editsexo, editcidade, editraca, editestado;
-    private EditText editnome, editbairro, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco;
+    public Spinner editespecie, editsexo, editcidade, editraca, editestado;
+    public EditText editnome, editbairro, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco;
     private Button salvarpet;
     public Button bcarregarimagem;
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
@@ -312,16 +312,13 @@ public class CriarPetsActivity extends AppCompatActivity {
                 pet.setDescricao(descricao);
                 pet.setEndereco(endereco);
 
-                long result = registroPetDAO.insert(pet);
+                registroPetDAO.insert(pet);
 
-                if (result != -1) {
-                    Toast.makeText(CriarPetsActivity.this, "Pet registrado com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
-                    startActivity(intent);
-                    finish(); // Finish current activity after successful registration
-                } else {
-                    Toast.makeText(CriarPetsActivity.this, "Erro ao registrar o pet.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(CriarPetsActivity.this, "Pet registrado com sucesso!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
     }

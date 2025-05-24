@@ -8,6 +8,7 @@
     import android.widget.Button;
     import android.widget.ImageButton;
     import android.widget.ListView;
+    import android.widget.Spinner;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -36,7 +37,8 @@
         NavigationView navigationView;
         Button sair;
         ImageButton open;
-        TextView criar;
+        TextView criar, nomePet;
+        Spinner editraca;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,11 +89,8 @@
 
             RegistroPetDAO dao = new RegistroPetDAO(this);
 
-            String nomepet = "";
-            String raca = "";
-
             ArrayList<CriarPetsModel> getPets = new ArrayList<>();
-            getPets.add(new CriarPetsModel("", "" + dao.selectNome(nomepet), "" + dao.selectRaca(raca)));
+            getPets.add(new CriarPetsModel("", "" + dao.selectNome(), "" + dao.selectRaca()));
 
             PetAdapter adapter = new PetAdapter(this, getPets);
             listpet1.setAdapter(adapter);
