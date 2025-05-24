@@ -1,84 +1,108 @@
-package com.example.petapp;
+    package com.example.petapp;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+    import android.app.Activity;
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.MenuItem;
+    import android.view.View;
+    import android.widget.Button;
+    import android.widget.ImageButton;
+    import android.widget.ListView;
+    import android.widget.TextView;
+    import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+    import androidx.annotation.NonNull;
+    import androidx.annotation.Nullable;
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
-import com.example.petapp.database.databaseUser.model.RegistroUserModel;
-import com.google.android.material.navigation.NavigationView;
+    import com.example.petapp.adapter.CriarPetsModel;
+    import com.example.petapp.adapter.PetAdapter;
+    import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
+    import com.example.petapp.database.databasePet.model.RegistroPetModel;
+    import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
+    import com.example.petapp.database.databaseUser.model.RegistroUserModel;
+    import com.google.android.material.navigation.NavigationView;
 
-import com.example.petapp.LoginActivity;
+    import com.example.petapp.LoginActivity;
+    import com.example.petapp.CriarPetsActivity;
 
-public class MenuActivity extends AppCompatActivity {
+    import java.util.ArrayList;
 
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Button sair;
-    ImageButton open;
-    TextView criar;
+    public class MenuActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        private ListView listpet1, listpet2;
+        DrawerLayout drawerLayout;
+        NavigationView navigationView;
+        Button sair;
+        ImageButton open;
+        TextView criar;
 
-        criar = findViewById(R.id.criar);
+        @Override
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_menu);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        sair = findViewById(R.id.sair);
-        open = findViewById(R.id.open);
+            criar = findViewById(R.id.criar);
 
-        open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.open();
-            }
-        });
+            drawerLayout = findViewById(R.id.drawer_layout);
+            navigationView = findViewById(R.id.nav_view);
+            sair = findViewById(R.id.sair);
+            open = findViewById(R.id.open);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            listpet1 = findViewById(R.id.listpet1);
+            listpet2 = findViewById(R.id.listpet2);
 
-                int itemId = item.getItemId();
-
-                if(itemId == R.id.nav_logout){
-                    Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
-
+            open.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.open();
                 }
+            });
 
-                drawerLayout.close();
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                return false;
-            }
-        });
+                    int itemId = item.getItemId();
 
-        sair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+                    if(itemId == R.id.nav_logout){
+                        Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
 
-        criar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, CriarPetsActivity.class);
-                startActivity(intent);
-            }
-        });
+                    }
 
+                    drawerLayout.close();
+
+                    return false;
+                }
+            });
+
+            sair.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            RegistroPetDAO dao = new RegistroPetDAO(this);
+
+            String nomepet = "";
+            String raca = "";
+
+            ArrayList<CriarPetsModel> getPets = new ArrayList<>();
+            getPets.add(new CriarPetsModel("", "" + dao.selectNome(nomepet), "" + dao.selectRaca(raca)));
+
+            PetAdapter adapter = new PetAdapter(this, getPets);
+            listpet1.setAdapter(adapter);
+
+            criar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MenuActivity.this, CriarPetsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
     }
-}

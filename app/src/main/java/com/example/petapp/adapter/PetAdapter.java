@@ -49,8 +49,8 @@ public class PetAdapter extends BaseAdapter {
         TextView nome = view.findViewById(R.id.nome);
         nome.setText(pets.getNome());
 
-        TextView especie = view.findViewById(R.id.especie);
-        especie.setText(pets.getEspecie());
+        TextView raca = view.findViewById(R.id.raca);
+        raca.setText(pets.getRaca());
 
         return view;
     }

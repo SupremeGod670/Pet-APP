@@ -26,7 +26,7 @@ public class CriarActivity extends AppCompatActivity {
 
     private TextView voltar;
     private ImageView pets;
-    private EditText email, senha, nome;
+    private EditText email, senha;
     private Button criar;
     private TextView minimo, caracter_especial, letra_maiscula, letra_minuscula;
 
@@ -40,7 +40,6 @@ public class CriarActivity extends AppCompatActivity {
         voltar = findViewById(R.id.voltar);
 
         pets = findViewById(R.id.pets);
-        nome = findViewById(R.id.nome);
         email = findViewById(R.id.email);
         senha = findViewById(R.id.senha);
         criar = findViewById(R.id.criar);
@@ -78,8 +77,6 @@ public class CriarActivity extends AppCompatActivity {
                     caracter_especial.setTextColor(Color.GREEN);
                     letra_maiscula.setTextColor(Color.GREEN);
                     letra_minuscula.setTextColor(Color.GREEN);
-
-                    registroUserDAO = new RegistroUserDAO(CriarActivity.this);
 
                 } else {
                     minimo.setTextColor(password.length() > 6 ? Color.GREEN : Color.RED);

@@ -35,7 +35,33 @@ public class RegistroPetDAO extends AbstrataDAO {
         dbHelper = new DBHelper(context);
     }
 
+    public boolean selectNome(String nomepet){
+        Open();
+        Cursor cursor = db.query(
+                RegistroPetModel.TABELA_PET,
+                colunas,
+                RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
+                        RegistroPetModel.COLUNA_RACA + " = ? ",
+                new String[]{nomepet}, null, null, null);
+        cursor.moveToFirst();
+        Close();
+        return cursor.getCount() > 0;
+    }
+
+    public boolean selectRaca(String raca){
+        Open();
+        Cursor cursor = db.query(
+                RegistroPetModel.TABELA_PET,
+                colunas,
+                RegistroPetModel.COLUNA_RACA + " = ? ",
+                new String[]{raca}, null, null, null);
+        cursor.moveToFirst();
+        Close();
+        return cursor.getCount() > 0;
+    }
+
     public boolean select(String nomepet, String nascimento, String especie, String sexo, String pai, String mae, String raca, String naturalidade, String cor, String endereco, String bairro, String cidade, String telefoneresd, String email, String cep, String estado, String telefonecel, String descricao){
+        Open();
         Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
@@ -59,10 +85,11 @@ public class RegistroPetDAO extends AbstrataDAO {
                         RegistroPetModel.COLUNA_DESCRICAO + " = ? ",
                 new String[]{nomepet, nascimento, especie, sexo, pai, mae, raca, naturalidade, cor, endereco, bairro, cidade, telefoneresd, email, cep, estado, telefonecel, descricao}, null, null, null);
             cursor.moveToFirst();
+            Close();
             return cursor.getCount() > 0;
     }
 
-    public void insert(RegistroPetModel pet){
+    public long insert(RegistroPetModel pet){
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
@@ -86,6 +113,7 @@ public class RegistroPetDAO extends AbstrataDAO {
 
         db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
+        return 0;
     }
 
     public void update(RegistroPetModel pet){

@@ -1,21 +1,17 @@
 package com.example.petapp.adapter;
 
-import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.petapp.R;
 
 public class CriarPetsModel extends AppCompatActivity {
 
     private String perfilpet;
     private String nome;
-    private String especie;
+    private String raca;
 
-    public CriarPetsModel(String perfilpet, String nome, String especie) {
+    public CriarPetsModel(String perfilpet, String nome, String raca) {
         this.perfilpet = perfilpet;
         this.nome = nome;
-        this.especie = especie;
+        this.raca = raca;
     }
 
     public String getPerfil(){
@@ -26,8 +22,8 @@ public class CriarPetsModel extends AppCompatActivity {
         return nome;
     }
 
-    public String getEspecie(){
-        return especie;
+    public String getRaca(){
+        return raca;
     }
 
 }

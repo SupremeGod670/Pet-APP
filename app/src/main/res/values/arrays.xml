@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="selecione_um_item" />
+    <string-array name="to" />
+    <string-array name="se" />
+    <string-array name="sp" />
+    <string-array name="sc" />
+    <string-array name="rr" />
+    <string-array name="ro" />
+    <string-array name="rs" />
+    <string-array name="rn" />
+    <string-array name="rj" />
+    <string-array name="pi" />
+    <string-array name="pe" />
+    <string-array name="pr" />
+    <string-array name="pb" />
+    <string-array name="pa" />
+    <string-array name="mg" />
+    <string-array name="ms" />
+    <string-array name="mt" />
+    <string-array name="ma" />
+    <string-array name="go" />
+    <string-array name="es" />
+    <string-array name="df" />
+    <string-array name="ce" />
+    <string-array name="ba" />
+</resources>
