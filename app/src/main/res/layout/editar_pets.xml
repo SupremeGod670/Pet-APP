@@ -36,10 +36,20 @@
 
             <ImageView
                 android:id="@+id/perfilpet"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:src="@drawable/petpaw" />
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp" />
+
+            <Button
+                android:id="@+id/bcarregarimagem"
+                style="@style/BUTTON"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/carregar_imagem" />
 
             <TextView
                 style="@style/TEXTLINEAR"
@@ -62,7 +72,7 @@
 
             <EditText
                 android:id="@+id/editnome"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -83,7 +93,7 @@
 
             <EditText
                 android:id="@+id/editnascimento"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -102,9 +112,29 @@
                 android:text="@string/especie"
                 android:textSize="18sp" />
 
-            <ExpandableListView
+            <Spinner
                 android:id="@+id/editespecie"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:drawable/editbox_background"
+                android:entries="@array/especie" />
+
+            <TextView
+                android:id="@+id/raca"
+                style="@style/TEXTLINEAR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/racac"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/editraca"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -121,14 +151,15 @@
                 android:text="@string/sexo"
                 android:textSize="18sp" />
 
-            <ExpandableListView
+            <Spinner
                 android:id="@+id/editsexo"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:background="@android:drawable/editbox_background" />
+                android:background="@android:drawable/editbox_background"
+                android:entries="@array/sexo" />
 
             <TextView
                 android:id="@+id/pai"
@@ -142,7 +173,7 @@
 
             <EditText
                 android:id="@+id/editpai"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -163,7 +194,7 @@
 
             <EditText
                 android:id="@+id/editmae"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -171,25 +202,6 @@
                 android:background="@android:drawable/editbox_background"
                 android:hint="@string/mae_nome_da_mae_do_pet"
                 android:inputType="textCapWords" />
-
-            <TextView
-                android:id="@+id/raca"
-                style="@style/TEXTLINEAR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/racac"
-                android:textSize="18sp" />
-
-            <ExpandableListView
-                android:id="@+id/editraca"
-                style="@style/SEARCHCOLOR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:drawable/editbox_background" />
 
             <TextView
                 android:id="@+id/naturalidade"
@@ -203,7 +215,7 @@
 
             <EditText
                 android:id="@+id/editnaturalidade"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -224,7 +236,7 @@
 
             <EditText
                 android:id="@+id/editcor"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -243,6 +255,66 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/cep"
+                style="@style/TEXTLINEAR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/cep"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editcep"
+                style="@style/HINTCOLOR"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:drawable/editbox_background"
+                android:hint="@string/cep_00000_000"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/estado"
+                style="@style/TEXTLINEAR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/estado"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/editestado"
+                style="@style/HINTCOLOR"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:drawable/editbox_background"
+                android:entries="@array/estado"/>
+
+            <TextView
+                android:id="@+id/cidade"
+                style="@style/TEXTLINEAR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/cidade"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/editcidade"
+                style="@style/HINTCOLOR"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:drawable/editbox_background" />
+
+            <TextView
                 android:id="@+id/endereco"
                 style="@style/TEXTLINEAR"
                 android:layout_width="wrap_content"
@@ -254,7 +326,7 @@
 
             <EditText
                 android:id="@+id/editendereco"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -275,7 +347,7 @@
 
             <EditText
                 android:id="@+id/editbairro"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -283,25 +355,6 @@
                 android:background="@android:drawable/editbox_background"
                 android:hint="@string/bairro_tal"
                 android:inputType="textCapWords" />
-
-            <TextView
-                android:id="@+id/cidade"
-                style="@style/TEXTLINEAR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/cidade"
-                android:textSize="18sp" />
-
-            <ExpandableListView
-                android:id="@+id/editcidade"
-                style="@style/SEARCHCOLOR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:drawable/editbox_background" />
 
             <TextView
                 android:id="@+id/tel"
@@ -315,7 +368,7 @@
 
             <EditText
                 android:id="@+id/edittel"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -336,7 +389,7 @@
 
             <EditText
                 android:id="@+id/editemail"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -344,46 +397,6 @@
                 android:background="@android:drawable/editbox_background"
                 android:hint="@string/email_nome_exemplo_gmail_com"
                 android:inputType="text" />
-
-            <TextView
-                android:id="@+id/cep"
-                style="@style/TEXTLINEAR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/cep"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editcep"
-                style="@style/SEARCHCOLOR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:drawable/editbox_background"
-                android:hint="@string/cep_00000_000"
-                android:inputType="number" />
-
-            <TextView
-                android:id="@+id/estado"
-                style="@style/TEXTLINEAR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/estado"
-                android:textSize="18sp" />
-
-            <ExpandableListView
-                android:id="@+id/editestado"
-                style="@style/SEARCHCOLOR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@android:drawable/editbox_background" />
 
             <TextView
                 android:id="@+id/cel"
@@ -397,7 +410,7 @@
 
             <EditText
                 android:id="@+id/editcel"
-                style="@style/SEARCHCOLOR"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
@@ -418,6 +431,7 @@
 
             <EditText
                 android:id="@+id/editdescricao"
+                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="30dp"
@@ -426,7 +440,7 @@
                 android:inputType="textCapWords" />
 
             <Button
-                android:id="@+id/alterarpet"
+                android:id="@+id/salvarpet"
                 style="@style/BUTTON"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -434,7 +448,7 @@
                 android:layout_marginTop="18dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="12dp"
-                android:text="@string/alterar_pet"
+                android:text="@string/salvar_pet"
                 android:textSize="18sp" />
 
         </LinearLayout>

@@ -14,11 +14,12 @@
     </style>
 
     <style name="HINTCOLOR">
+        <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColorHint">@color/black</item>
     </style>
 
     <style name="BUTTON">
-        <item name="android:backgroundTint">#2196F3</item>
+        <item name="android:backgroundTint">@color/my_dark_primary</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
