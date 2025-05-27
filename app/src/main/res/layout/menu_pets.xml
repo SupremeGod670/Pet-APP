@@ -91,7 +91,7 @@
 
     </ScrollView>
 
-    <TextView
+    <ImageButton
         android:id="@+id/criar"
         android:layout_width="60dp"
         android:layout_height="60dp"

@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         this.email = findViewById(R.id.email);
         this.senha = findViewById(R.id.senha);
         acessar = findViewById(R.id.acessar);
-        criar = findViewById(R.id.criar);
+        criar = findViewById(R.id.crie_conta);
 
         registroUserDAO = new RegistroUserDAO(LoginActivity.this);
 

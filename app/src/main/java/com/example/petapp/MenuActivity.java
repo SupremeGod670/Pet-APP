@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +31,7 @@ public class MenuActivity extends AppCompatActivity {
     NavigationView navigationView;
     Button sair;
     ImageButton open;
-    TextView criar, nomePet;
-    Spinner editraca;
+    private ImageButton criar;
     LinearLayout pet;
 
     @Override
@@ -111,7 +109,7 @@ public class MenuActivity extends AppCompatActivity {
 
         criar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, CriarPetsActivity.class);
                 startActivity(intent);
             }

@@ -42,7 +42,7 @@ public class CriarActivity extends AppCompatActivity {
         pets = findViewById(R.id.pets);
         email = findViewById(R.id.email);
         senha = findViewById(R.id.senha);
-        criar = findViewById(R.id.criar);
+        criar = findViewById(R.id.criar_conta);
         minimo = findViewById(R.id.minimo);
         caracter_especial = findViewById(R.id.caracter_especial);
         letra_maiscula = findViewById(R.id.letra_maiscula);

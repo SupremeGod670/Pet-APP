@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -16,7 +17,7 @@ public class EditarPetsActivity extends AppCompatActivity {
 
     private TextView voltar;
     private ImageView perfilpet;
-    private ExpandableListView editespecie, editsexo, editcidade, editraca, editestado;
+    private Spinner editespecie, editsexo, editcidade, editraca, editestado;
     private EditText editnome, editbairro, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco;
     private Button alterarpet;
 

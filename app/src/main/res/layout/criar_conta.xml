@@ -124,7 +124,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/criar"
+        android:id="@+id/criar_conta"
         style="@style/BUTTON"
         android:layout_width="304dp"
         android:layout_height="64dp"
