@@ -19,7 +19,34 @@ public class RegistroUserDAO extends AbstrataDAO {
         dbHelper = new DBHelper(context);
     }
 
+    public boolean selectEmail(String email){
+
+        Open();
+        Cursor cursor = db.query(
+                RegistroUserModel.TABELA_USUARIO,
+                colunas,
+                RegistroUserModel.COLUNA_EMAIL + " = ? ",
+                new String[]{email}, null, null, null);
+        cursor.moveToFirst();
+        Close();
+        return cursor.getCount() > 0;
+    }
+
+    public boolean selectSenha(String senha){
+
+        Open();
+        Cursor cursor = db.query(
+                RegistroUserModel.TABELA_USUARIO,
+                colunas,
+                RegistroUserModel.COLUNA_SENHA + " = ? ",
+                new String[]{senha}, null, null, null);
+        cursor.moveToFirst();
+        Close();
+        return cursor.getCount() > 0;
+    }
+
     public boolean select(String email, String senha){
+
         Open();
         Cursor cursor = db.query(
                 RegistroUserModel.TABELA_USUARIO,

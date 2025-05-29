@@ -58,11 +58,17 @@ public class LoginActivity extends AppCompatActivity {
                 if (senhaDigitada.isEmpty()) {
                     mensagemErrorApresentar("Campo senha obrigatório");
                     return;
-                } else if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
+                }
+
+                if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
                     Intent it = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(it);
-                } else {
-                    mensagemErrorApresentar("Email ou Senha incorretos");
+                } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaDigitada)) {
+                    mensagemErrorApresentar("Email e senha incorretos");
+                } else if (!registroUserDAO.selectEmail(emailDigitado)){
+                    mensagemErrorApresentar("Email incorreto");
+                } else if (!registroUserDAO.selectSenha(senhaDigitada)){
+                    mensagemErrorApresentar("Senha incorreta");
                 }
             }
         });
