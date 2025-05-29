@@ -91,6 +91,7 @@ public class RegistroPetDAO extends AbstrataDAO {
     }
 
     public void insert(RegistroPetModel pet){
+
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());

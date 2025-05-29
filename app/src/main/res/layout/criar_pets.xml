@@ -273,7 +273,8 @@
                 android:layout_marginEnd="30dp"
                 android:background="@android:drawable/editbox_background"
                 android:hint="@string/cep_00000_000"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="9" />
 
             <TextView
                 android:id="@+id/estado"
@@ -293,7 +294,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:background="@android:drawable/editbox_background"
-                android:entries="@array/estado"/>
+                android:entries="@array/estado" />
 
             <TextView
                 android:id="@+id/cidade"

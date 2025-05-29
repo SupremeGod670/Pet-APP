@@ -29,23 +29,24 @@ public class RegistroPetModel {
     public static final String CREATE_TABLE = "create table " + TABELA_PET +
             " (" + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUNA_NOMEPET + " TEXT NOT NULL, "
-            + COLUNA_NASCIMENTO + " DOUBLE NOT NULL, "
+            + COLUNA_NASCIMENTO + " REAL, "
             + COLUNA_ESPECIE + " TEXT NOT NULL, "
-            + COLUNA_SEXO + " TEXT NOT NULL, "
-            + COLUNA_PAI + " TEXT NOT NULL, "
-            + COLUNA_MAE + " TEXT NOT NULL, "
             + COLUNA_RACA + " TEXT NOT NULL, "
-            + COLUNA_NATURALIDADE + " TEXT NOT NULL, "
-            + COLUNA_COR + " TEXT NOT NULL, "
-            + COLUNA_ENDERECO + " TEXT NOT NULL, "
-            + COLUNA_BAIRRO + " TEXT NOT NULL, "
-            + COLUNA_CIDADE + " TEXT NOT NULL, "
-            + COLUNA_TELEFONERESD + " DOUBLE NOT NULL, "
-            + COLUNA_EMAIL + " TEXT NOT NULL, "
-            + COLUNA_CEP + " DOUBLE NOT NULL, "
+            + COLUNA_SEXO + " TEXT, "
+            + COLUNA_PAI + " TEXT, "
+            + COLUNA_MAE + " TEXT, "
+            + COLUNA_NATURALIDADE + " TEXT, "
+            + COLUNA_COR + " TEXT, "
+            + COLUNA_CEP + " TEXT, "
             + COLUNA_ESTADO + " TEXT NOT NULL, "
-            + COLUNA_TELEFONECEL + " DOUBLE NOT NULL, "
-            + COLUNA_DESCRICAO + " TEXT NOT NULL)";
+            + COLUNA_CIDADE + " TEXT NOT NULL, "
+            + COLUNA_ENDERECO + " TEXT, "
+            + COLUNA_BAIRRO + " TEXT, "
+            + COLUNA_TELEFONERESD + " REAL, "
+            + COLUNA_EMAIL + " TEXT, "
+            + COLUNA_TELEFONECEL + " REAL, "
+            + COLUNA_DESCRICAO + " TEXT"
+            + ")";
 
     private Long id;
     private String nomepet;

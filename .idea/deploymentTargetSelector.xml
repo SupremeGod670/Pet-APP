@@ -4,14 +4,11 @@
     <selectionStates>
       <SelectionState runConfigName="Indentificação Pet">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-14T22:20:09.227567600Z">
+        <DropdownSelection timestamp="2025-05-27T23:06:40.709779500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="FirebaseDirectAccess" identifier="reservation=projects/myapp-1a7d1087/deviceSessions/session-19whdztfjc825" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Gabriel\.android\avd\Resizable_Experimental_API_36.avd" />
             </handle>
-            <template>
-              <DeviceId pluginId="FirebaseDirectAccess" type="TEMPLATE" identifier="model_id=shiba/34" />
-            </template>
           </Target>
         </DropdownSelection>
         <DialogSelection />
