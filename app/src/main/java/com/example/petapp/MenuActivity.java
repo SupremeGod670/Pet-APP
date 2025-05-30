@@ -1,5 +1,6 @@
 package com.example.petapp;
 
+import android.app.ComponentCaller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -119,7 +120,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, CriarPetsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 20);
             }
         });
 
@@ -178,4 +179,11 @@ public class MenuActivity extends AppCompatActivity {
         loadAllPetDataAndDistribute();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data, @NonNull ComponentCaller caller) {
+        super.onActivityResult(requestCode, resultCode, data, caller);
+        if (requestCode == 20) {
+            loadAllPetDataAndDistribute();
+        }
+    }
 }

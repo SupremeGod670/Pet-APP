@@ -315,8 +315,6 @@ public class CriarPetsActivity extends AppCompatActivity {
                 registroPetDAO.insert(pet);
 
                 Toast.makeText(CriarPetsActivity.this, "Pet registrado com sucesso!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
-                startActivity(intent);
                 finish();
 
             }
