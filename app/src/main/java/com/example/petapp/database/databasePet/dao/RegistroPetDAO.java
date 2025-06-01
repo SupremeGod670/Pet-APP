@@ -38,6 +38,22 @@ public class RegistroPetDAO extends AbstrataDAO {
         dbHelper = new DBHelper(context);
     }
 
+    public boolean selectNotNull(String nome, String especie, String raca, String estado, String cidade) {
+        Open();
+        Cursor cursor = db.query(
+                RegistroPetModel.TABELA_PET,
+                colunas,
+                RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
+                        RegistroPetModel.COLUNA_ESPECIE + " = ? AND " +
+                        RegistroPetModel.COLUNA_RACA + " = ? AND " +
+                        RegistroPetModel.COLUNA_ESTADO + " = ? AND " +
+                        RegistroPetModel.COLUNA_CIDADE + " = ? ",
+                new String[]{nome, especie, raca, estado, cidade}, null, null, null);
+        cursor.moveToFirst();
+        Close();
+        return cursor.getCount() > 0;
+    }
+
     public boolean select(String nomepet, String nascimento, String especie, String sexo, String pai, String mae, String raca, String naturalidade, String cor, String endereco, String bairro, String cidade, String telefoneresd, String email, String cep, String estado, String telefonecel, String descricao) {
         Open();
         Cursor cursor = db.query(

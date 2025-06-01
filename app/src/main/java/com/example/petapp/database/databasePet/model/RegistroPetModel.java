@@ -28,7 +28,7 @@ public class RegistroPetModel {
 
     public static final String CREATE_TABLE = "create table " + TABELA_PET +
             " (" + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUNA_NOMEPET + " TEXT NOT NULL, "
+            + COLUNA_NOMEPET + " TEXT NOT NULL UNIQUE, "
             + COLUNA_NASCIMENTO + " REAL, "
             + COLUNA_ESPECIE + " TEXT NOT NULL, "
             + COLUNA_RACA + " TEXT NOT NULL, "
@@ -37,7 +37,7 @@ public class RegistroPetModel {
             + COLUNA_MAE + " TEXT, "
             + COLUNA_NATURALIDADE + " TEXT, "
             + COLUNA_COR + " TEXT, "
-            + COLUNA_CEP + " TEXT, "
+            + COLUNA_CEP + " REAL, "
             + COLUNA_ESTADO + " TEXT NOT NULL, "
             + COLUNA_CIDADE + " TEXT NOT NULL, "
             + COLUNA_ENDERECO + " TEXT, "
