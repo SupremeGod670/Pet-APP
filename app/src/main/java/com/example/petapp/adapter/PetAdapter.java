@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class PetAdapter extends BaseAdapter {
 
-    private ArrayList<CriarPetsModel> getPets;
+    private ArrayList<PetModel> getPets;
     private Activity activity;
 
-    public PetAdapter(Activity activity, ArrayList<CriarPetsModel> getPets) {
+    public PetAdapter(Activity activity, ArrayList<PetModel> getPets) {
         this.activity = activity;
         this.getPets = getPets;
     }
@@ -43,7 +43,7 @@ public class PetAdapter extends BaseAdapter {
             view = activity.getLayoutInflater().inflate(R.layout.pet, viewGroup, false);
         }
 
-        CriarPetsModel pets = getPets.get(position);
+        PetModel pets = getPets.get(position);
         ImageView perfil = view.findViewById(R.id.perfil);
 
         TextView nome = view.findViewById(R.id.nome);

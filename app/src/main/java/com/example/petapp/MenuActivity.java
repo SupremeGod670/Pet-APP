@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.petapp.adapter.CriarPetsModel;
+import com.example.petapp.adapter.PetModel;
 import com.example.petapp.adapter.PetAdapter;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
@@ -90,7 +90,7 @@ public class MenuActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                CriarPetsModel clickedPet = (CriarPetsModel) adapterView.getItemAtPosition(position);
+                PetModel clickedPet = (PetModel) adapterView.getItemAtPosition(position);
                 Intent intent = new Intent(MenuActivity.this, MostrarPetActivity.class);
 
                 intent.putExtra("PET_ID", clickedPet.getId());
@@ -117,11 +117,11 @@ public class MenuActivity extends AppCompatActivity {
         Log.d("MenuActivity", "Total pets loaded from DB: " + petsFromDB.size());
 
         // Use a single list for all pets to be displayed in the GridView
-        ArrayList<CriarPetsModel> allPetsForGridView = new ArrayList<>();
+        ArrayList<PetModel> allPetsForGridView = new ArrayList<>();
 
         if (petsFromDB != null && !petsFromDB.isEmpty()) {
             for (RegistroPetModel pet : petsFromDB) { // Iterate through all pets
-                CriarPetsModel displayPet = new CriarPetsModel(
+                PetModel displayPet = new PetModel(
                         "", // Placeholder for image URL/resource ID
                         pet.getNomepet(),
                         pet.getRaca(),

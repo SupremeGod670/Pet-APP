@@ -2,14 +2,14 @@ package com.example.petapp.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CriarPetsModel extends AppCompatActivity {
+public class PetModel extends AppCompatActivity {
 
     private String perfilpet;
     private String nome;
     private String raca;
     private Long id;
 
-    public CriarPetsModel(String perfilpet, String nome, String raca, Long id) {
+    public PetModel(String perfilpet, String nome, String raca, Long id) {
         this.perfilpet = perfilpet;
         this.nome = nome;
         this.raca = raca;
