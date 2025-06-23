@@ -107,7 +107,6 @@
 
             <Spinner
                 android:id="@+id/editespecie"
-                style="@style/HINTCOLOR"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
