@@ -1,4 +1,4 @@
-package com.example.petapp;
+package com.example.petapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.petapp.R;
 import com.example.petapp.adapter.PetModel;
 import com.example.petapp.adapter.PetAdapter;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;

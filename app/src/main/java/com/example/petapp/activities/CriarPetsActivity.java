@@ -1,4 +1,4 @@
-package com.example.petapp;
+package com.example.petapp.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.petapp.R;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
 

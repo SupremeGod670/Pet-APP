@@ -1,4 +1,4 @@
-package com.example.petapp;
+package com.example.petapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.petapp.LoginActivity;
 import com.example.petapp.R;
 
 public class SplashActivity extends AppCompatActivity {

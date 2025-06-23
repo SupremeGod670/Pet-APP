@@ -1,4 +1,4 @@
-package com.example.petapp;
+package com.example.petapp.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.petapp.R;
 import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
 import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 
