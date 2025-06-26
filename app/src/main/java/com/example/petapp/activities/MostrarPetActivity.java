@@ -36,6 +36,7 @@ public class MostrarPetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MostrarPetActivity.this, MenuActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

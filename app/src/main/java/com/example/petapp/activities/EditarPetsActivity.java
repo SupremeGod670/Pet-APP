@@ -54,6 +54,7 @@ public class EditarPetsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -62,6 +63,7 @@ public class EditarPetsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditarPetsActivity.this, MenuActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

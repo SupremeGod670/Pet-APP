@@ -21,9 +21,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.petapp.R;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CriarPetsActivity extends AppCompatActivity {
 
@@ -34,12 +43,17 @@ public class CriarPetsActivity extends AppCompatActivity {
     private Button salvarpet;
     public Button bcarregarimagem;
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
+    private RequestQueue requestQueue;
+    private boolean cepPreencheuLocalizacao = false;
+    private boolean isUpdatingSpinnersProgrammatically = false; // Flag para evitar loops nos listeners dos spinners
     private RegistroPetDAO registroPetDAO;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.criar_pets);
+
+        requestQueue = Volley.newRequestQueue(this);
 
         perfilpet = findViewById(R.id.perfilpet);
 
@@ -116,7 +130,26 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-        formatFields();
+        editcep.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String cep = s.toString().replaceAll("[^0-9]", ""); // Remove não numéricos
+                if (cep.length() == 8) { // Verifica se o CEP tem 8 dígitos
+                    buscarCep(cep);
+                } else {
+                    // Limpa os campos se o CEP não estiver completo ou for inválido
+                    limparCamposEndereco();
+                }
+            }
+        });
 
         editestado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -217,6 +250,8 @@ public class CriarPetsActivity extends AppCompatActivity {
                 editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
             }
         });
+
+        formatFields();
 
         salvarpet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,6 +409,107 @@ public class CriarPetsActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Permissão para acessar o armazenamento negada.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void buscarCep(String cep) {
+        String url = "https://viacep.com.br/ws/" + cep + "/json/";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.has("erro")) {
+                                Toast.makeText(CriarPetsActivity.this, "CEP não encontrado", Toast.LENGTH_SHORT).show();
+                                limparCamposEndereco();
+                                return;
+                            }
+
+                            String logradouro = response.getString("logradouro");
+                            String bairro = response.getString("bairro");
+                            String cidade = response.getString("localidade");
+                            String estado = response.getString("uf");
+
+                            editendereco.setText(logradouro);
+                            editbairro.setText(bairro);
+
+                            // Selecionar o estado no Spinner
+                            selecionarItemSpinner(editestado, estado);
+
+                            // Para o Spinner de cidade, a lógica pode ser mais complexa
+                            // se você carrega as cidades dinamicamente baseado no estado.
+                            // A API já retorna a cidade correta. Você pode:
+                            // 1. Tentar selecionar a cidade diretamente se ela já existir no adapter.
+                            // 2. Ou, se você preenche o spinner de cidades baseado no estado,
+                            //    após selecionar o estado, o adapter de cidades será atualizado,
+                            //    e então você pode tentar selecionar a cidade.
+                            // Por simplicidade, este exemplo tentará selecionar a cidade.
+                            // Se o seu spinner de cidades é populado dinamicamente APÓS a seleção do estado,
+                            // você precisará ajustar esta parte.
+
+                            // Forçar a atualização do adapter de cidades se necessário
+                            // (Isso depende de como seu editestado.setOnItemSelectedListener está configurado)
+                            if (editestado.getSelectedItemPosition() > 0) {
+                                // Disparar o listener do estado para carregar as cidades corretas se necessário
+                                // Ou carregar o adapter de cidades diretamente aqui
+                                // Exemplo: (Supondo que você tenha um método para carregar cidades por estado)
+                                // carregarCidadesPorEstado(estado);
+                            }
+                            selecionarItemSpinner(editcidade, cidade);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(CriarPetsActivity.this, "Erro ao processar dados do CEP", Toast.LENGTH_SHORT).show();
+                            limparCamposEndereco();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("CEP_API_ERROR", "Erro: " + error.toString());
+                        if (error.networkResponse != null) {
+                            Log.e("CEP_API_ERROR", "Status Code: " + error.networkResponse.statusCode);
+                        }
+                        Toast.makeText(CriarPetsActivity.this, "Erro ao buscar CEP. Verifique sua conexão.", Toast.LENGTH_LONG).show();
+                        limparCamposEndereco();
+                    }
+                });
+
+        // Adiciona a requisição à fila
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void selecionarItemSpinner(Spinner spinner, String valor) {
+        if (valor == null || valor.isEmpty()) return;
+
+        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinner.getAdapter();
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+                if (adapter.getItem(i).toString().equalsIgnoreCase(valor)) {
+                    spinner.setSelection(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void limparCamposEndereco() {
+        editendereco.setText("");
+        editbairro.setText("");
+        // Você pode resetar os spinners de estado e cidade para o item "Selecione"
+        if (editestado.getAdapter() != null && editestado.getAdapter().getCount() > 0) {
+            editestado.setSelection(0); // Supondo que o primeiro item é "Selecione"
+        }
+        if (editcidade.getAdapter() != null && editcidade.getAdapter().getCount() > 0) {
+            // O spinner de cidade pode precisar ser limpo ou resetado para "Selecione"
+            // Se ele depende do estado, e o estado foi resetado, ele também deveria ser.
+            ArrayAdapter<CharSequence> adapterCidadePadrao = ArrayAdapter.createFromResource(this, R.array.selecione_um_item, android.R.layout.simple_spinner_item);
+            editcidade.setAdapter(adapterCidadePadrao);
+            editcidade.setSelection(0);
         }
     }
 

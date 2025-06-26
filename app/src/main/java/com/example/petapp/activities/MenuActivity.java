@@ -84,6 +84,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -99,6 +100,7 @@ public class MenuActivity extends AppCompatActivity {
                 intent.putExtra("PET_RACE", clickedPet.getRaca());
 
                 startActivity(intent);
+                finish();
             }
         });
 

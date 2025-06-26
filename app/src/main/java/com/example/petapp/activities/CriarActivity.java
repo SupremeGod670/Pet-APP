@@ -54,6 +54,7 @@ public class CriarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent it = new Intent(CriarActivity.this, LoginActivity.class);
                 startActivity(it);
+                finish();
             }
         });
 
@@ -125,6 +126,7 @@ public class CriarActivity extends AppCompatActivity {
 
                     Intent it = new Intent(CriarActivity.this, LoginActivity.class);
                     startActivity(it);
+                    finish();
                 }
             }
         });

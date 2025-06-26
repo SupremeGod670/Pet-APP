@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent it = new Intent(LoginActivity.this, CriarActivity.class);
                 startActivity(it);
+                finish();
             }
         });
 
@@ -64,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
                     Intent it = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(it);
+                    finish();
                 } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaDigitada)) {
                     mensagemErrorApresentar("Email e senha incorretos");
                 } else if (!registroUserDAO.selectEmail(emailDigitado)){
