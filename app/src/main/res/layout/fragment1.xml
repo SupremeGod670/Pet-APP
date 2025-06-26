@@ -10,11 +10,9 @@
         android:id="@+id/frente"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
         android:layout_marginStart="20dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="20dp"
-        android:src="@drawable/frenteindentidade"
-        android:visibility="visible" />
+        android:src="@drawable/frenteindentidade" />
 
 </LinearLayout>
