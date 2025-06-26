@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,7 +63,6 @@ public class CriarPetsActivity extends AppCompatActivity {
         editendereco = findViewById(R.id.editendereco);
         editcor = findViewById(R.id.editcor);
 
-        bcarregarimagem = findViewById(R.id.bcarregarimagem);
         salvarpet = findViewById(R.id.salvarpet);
 
         voltar = findViewById(R.id.voltar);
@@ -114,6 +115,8 @@ public class CriarPetsActivity extends AppCompatActivity {
                 editraca.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
             }
         });
+
+        formatFields();
 
         editestado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -371,6 +374,163 @@ public class CriarPetsActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Permissão para acessar o armazenamento negada.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void formatFields() {
+        editcep.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            private String old = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                old = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                String str = s.toString().replaceAll("[^\\d]", "");
+                String mascara = "#####-###";
+
+                String novaString = "";
+                if (str.length() > old.replaceAll("[^\\d]", "").length()) { // Digitado
+                    int i = 0;
+                    for (char m : mascara.toCharArray()) {
+                        if (m != '#' && str.length() > old.replaceAll("[^\\d]", "").length()) {
+                            novaString += m;
+                            continue;
+                        }
+                        try {
+                            novaString += str.charAt(i);
+                        } catch (Exception e) {
+                            break;
+                        }
+                        i++;
+                    }
+                } else { // Apagado
+                    novaString = str;
+                }
+
+                isUpdating = true;
+                editcep.setText(novaString);
+                editcep.setSelection(novaString.length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        editnascimento.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            private String old = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                old = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    isUpdating = false;
+                    return;
+                }
+
+                String str = s.toString().replaceAll("[^\\d]", "");
+                String mascara = "##/##/####";
+
+                String novaString = "";
+                if (str.length() > old.replaceAll("[^\\d]", "").length()) { // Digitado
+                    int i = 0;
+                    for (char m : mascara.toCharArray()) {
+                        if (m != '#' && str.length() > old.replaceAll("[^\\d]", "").length()) {
+                            novaString += m;
+                            continue;
+                        }
+                        try {
+                            novaString += str.charAt(i);
+                        } catch (Exception e) {
+                            break;
+                        }
+                        i++;
+                    }
+                } else { // Apagado
+                    novaString = str;
+                }
+
+                isUpdating = true;
+                editnascimento.setText(novaString);
+                editnascimento.setSelection(novaString.length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Adicionar TextWatchers para os campos de telefone (edittel e editcel)
+        // Exemplo para edittel (telefone fixo)
+        addPhoneNumberMask(edittel, "(##) ####-####");
+        // Exemplo para editcel (telefone celular)
+        addPhoneNumberMask(editcel, "(##) #####-####");
+    }
+
+    private void addPhoneNumberMask(final EditText editText, final String mask) {
+        editText.addTextChangedListener(new MaskedWatcher(mask, editText));
+    }
+
+    private static class MaskedWatcher implements TextWatcher {
+        private final String mask;
+        private final EditText editText;
+        private boolean isUpdating;
+        private String old = "";
+
+        MaskedWatcher(String mask, EditText editText) {
+            this.mask = mask;
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            old = s.toString();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (isUpdating) {
+                isUpdating = false;
+                return;
+            }
+
+            String str = s.toString().replaceAll("[^\\d]", "");
+            String formatted = "";
+            int i = 0;
+            for (char m : mask.toCharArray()) {
+                if (m != '#') {
+                    formatted += m;
+                    continue;
+                }
+                try {
+                    formatted += str.charAt(i);
+                } catch (Exception e) {
+                    break;
+                }
+                i++;
+            }
+
+            isUpdating = true;
+            editText.setText(formatted);
+            editText.setSelection(formatted.length());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
         }
     }
 }
