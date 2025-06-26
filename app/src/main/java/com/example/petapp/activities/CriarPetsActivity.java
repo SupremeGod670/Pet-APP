@@ -44,8 +44,6 @@ public class CriarPetsActivity extends AppCompatActivity {
     public Button bcarregarimagem;
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
     private RequestQueue requestQueue;
-    private boolean cepPreencheuLocalizacao = false;
-    private boolean isUpdatingSpinnersProgrammatically = false; // Flag para evitar loops nos listeners dos spinners
     private RegistroPetDAO registroPetDAO;
 
     @Override
