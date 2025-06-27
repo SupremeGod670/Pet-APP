@@ -9,7 +9,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.petapp.R;
-import com.example.petapp.adapter.PetModel;
 import com.example.petapp.adapter.PetAdapter;
+import com.example.petapp.adapter.PetModel;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +41,6 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton criar;
     LinearLayout pet;
     private RegistroPetDAO registroPetDAO;
-    // private static final int MAX_PETS_IN_LIST1 = 1; // No longer needed for two separate lists
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
