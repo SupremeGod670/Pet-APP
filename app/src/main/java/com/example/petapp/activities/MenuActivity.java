@@ -3,22 +3,28 @@ package com.example.petapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.example.petapp.R;
 import com.example.petapp.adapter.PetAdapter;
 import com.example.petapp.adapter.PetModel;
@@ -41,6 +47,9 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton criar;
     LinearLayout pet;
     private RegistroPetDAO registroPetDAO;
+    private SearchView pesquisar;
+    private ImageView filtro;
+    private ArrayList<PetModel> allPetsForGridView = new ArrayList<>(); // Lista para armazenar todos os pets
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +62,35 @@ public class MenuActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         sair = findViewById(R.id.sair);
         open = findViewById(R.id.open);
+
+        pesquisar = findViewById(R.id.pesquisar);
+        filtro = findViewById(R.id.filtro);
+
+        // Configurar o SearchView
+        pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Ação quando o usuário submete a pesquisa (pressiona enter)
+                filterPetsByName(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Ação enquanto o usuário digita
+                filterPetsByName(newText);
+                return true;
+            }
+        });
+
+        // Listener para fechar o SearchView e recarregar todos os pets
+        pesquisar.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                loadAllPetDataAndDistribute(); // Recarrega todos os pets
+                return false;
+            }
+        });
 
         gridView = findViewById(R.id.gridview); // Initialize GridView
 
@@ -123,7 +161,7 @@ public class MenuActivity extends AppCompatActivity {
         Log.d("MenuActivity", "Total pets loaded from DB: " + petsFromDB.size());
 
         // Use a single list for all pets to be displayed in the GridView
-        ArrayList<PetModel> allPetsForGridView = new ArrayList<>();
+        allPetsForGridView.clear(); // Limpa a lista antes de adicionar novos itens
 
         if (petsFromDB != null && !petsFromDB.isEmpty()) {
             for (RegistroPetModel pet : petsFromDB) { // Iterate through all pets
@@ -145,6 +183,24 @@ public class MenuActivity extends AppCompatActivity {
         gridView.setAdapter(new PetAdapter(this, allPetsForGridView));
 
         // No need to hide/show separate lists anymore
+    }
+
+    // Função para filtrar pets por nome
+    private void filterPetsByName(String name) {
+        ArrayList<PetModel> filteredPets = new ArrayList<>();
+        if (name == null || name.trim().isEmpty()) {
+            // Se a pesquisa estiver vazia, mostrar todos os pets
+            filteredPets.addAll(allPetsForGridView);
+        } else {
+            String filterPattern = name.toLowerCase().trim();
+            for (PetModel pet : allPetsForGridView) {
+                if (pet.getNome().toLowerCase().contains(filterPattern)) {
+                    filteredPets.add(pet);
+                }
+            }
+        }
+        // Atualiza o GridView com os pets filtrados
+        gridView.setAdapter(new PetAdapter(this, filteredPets));
     }
 
     @Override
