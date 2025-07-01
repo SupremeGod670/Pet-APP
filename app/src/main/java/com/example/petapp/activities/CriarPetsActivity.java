@@ -41,7 +41,6 @@ public class CriarPetsActivity extends AppCompatActivity {
     public Spinner editespecie, editsexo, editcidade, editraca, editestado;
     public EditText editnome, editbairro, editcep, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco, editcor;
     private Button salvarpet;
-    public Button bcarregarimagem;
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
     private RequestQueue requestQueue;
     private RegistroPetDAO registroPetDAO;
