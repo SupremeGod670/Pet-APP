@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.petapp.R;
 import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
+import com.example.petapp.utils.HashUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,15 +63,17 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (registroUserDAO.select(emailDigitado, senhaDigitada)) {
+                String senhaHash = HashUtils.sha256(senhaDigitada);
+
+                if (registroUserDAO.select(emailDigitado, senhaHash)) {
                     Intent it = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(it);
                     finish();
-                } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaDigitada)) {
+                } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaHash)) {
                     mensagemErrorApresentar("Email e senha incorretos");
                 } else if (!registroUserDAO.selectEmail(emailDigitado)){
                     mensagemErrorApresentar("Email incorreto");
-                } else if (!registroUserDAO.selectSenha(senhaDigitada)){
+                } else if (!registroUserDAO.selectSenha(senhaHash)){
                     mensagemErrorApresentar("Senha incorreta");
                 }
             }

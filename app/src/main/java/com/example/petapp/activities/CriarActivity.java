@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.petapp.R;
 import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
 import com.example.petapp.database.databaseUser.model.RegistroUserModel;
+import com.example.petapp.utils.HashUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,6 +96,8 @@ public class CriarActivity extends AppCompatActivity {
                 String emailStr = email.getText().toString();
                 String password = senha.getText().toString();
 
+                registroUserDAO = new RegistroUserDAO(CriarActivity.this);
+
                 if (email.getText().toString().isEmpty()) {
                     //Colocar mensagem de erro
                     mensagemErrorApresentar("Campo email obrigatório");
@@ -103,6 +106,11 @@ public class CriarActivity extends AppCompatActivity {
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()) {
                     mensagemErrorApresentar("Email inválido");
+                    return;
+                }
+
+                if (registroUserDAO.selectEmail(emailStr)) {
+                    mensagemErrorApresentar("Este email já está cadastrado.");
                     return;
                 }
 
@@ -116,11 +124,11 @@ public class CriarActivity extends AppCompatActivity {
                     mensagemErrorApresentar("Senha inválida. Verifique os requisitos.");
                     return;
                 } else {
-                    registroUserDAO = new RegistroUserDAO(CriarActivity.this);
+                    String hashedPassword = HashUtils.sha256(password);
 
                     RegistroUserModel user = new RegistroUserModel();
                     user.setEmail(emailStr);
-                    user.setSenha(password);
+                    user.setSenha(hashedPassword);
 
                     registroUserDAO.insert(user);
 
