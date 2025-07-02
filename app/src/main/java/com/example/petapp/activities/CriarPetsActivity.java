@@ -65,11 +65,9 @@ public class CriarPetsActivity extends AppCompatActivity {
         editespecie = findViewById(R.id.editespecie);
         editraca = findViewById(R.id.editraca);
         editsexo = findViewById(R.id.editsexo);
-        editestado = findViewById(R.id.editestado); // Ensure you have an adapter for this, e.g., from R.array.estados_siglas
+        editestado = findViewById(R.id.editestado);
         editcidade = findViewById(R.id.editcidade);
 
-        // Initialize editestado spinner (Example: using a string array resource)
-        // Make sure R.array.estados_siglas includes a "Selecione" or similar initial item
         ArrayAdapter<CharSequence> estadoAdapter = ArrayAdapter.createFromResource(this,
                 R.array.estado, android.R.layout.simple_spinner_item);
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -156,8 +154,8 @@ public class CriarPetsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String cep = s.toString().replaceAll("[^0-9]", ""); // Remove não numéricos
-                if (cep.length() == 8) { // Verifica se o CEP tem 8 dígitos
+                String cep = s.toString().replaceAll("[^0-9]", "");
+                if (cep.length() == 8) {
                     buscarCep(cep);
                 } else {
                     limparCamposEndereco();
@@ -170,7 +168,7 @@ public class CriarPetsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (position > 0) {
                     String ufSelecionado = adapterView.getItemAtPosition(position).toString();
-                    if (!ufSelecionado.equals("Selecione um Estado")) { // Check against your placeholder
+                    if (!ufSelecionado.equals("Selecione um Estado")) {
                         buscarCidadesPorEstado(ufSelecionado);
                     } else {
                         ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
@@ -221,7 +219,6 @@ public class CriarPetsActivity extends AppCompatActivity {
                 String descricao = editdescricao.getText().toString().trim();
                 String endereco = editendereco.getText().toString().trim();
 
-                // Log retrieved values for debugging
                 Log.d("CriarPetsActivity", "Nome: " + nome);
                 Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr);
                 Log.d("CriarPetsActivity", "Especie: " + especie);
@@ -251,7 +248,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 Double nascimento = null;
 
                 String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
-                if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) { // Basic check for DDMMYYYY after stripping
+                if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) {
                     try {
                         nascimento = Double.valueOf(nascimentoDigitsOnly);
                     } catch (NumberFormatException e) {
@@ -356,10 +353,9 @@ public class CriarPetsActivity extends AppCompatActivity {
         }
     }
 
-    // buscarCep remains largely the same, but we store the city for later selection
     private void buscarCep(String cep) {
         String url = "https://viacep.com.br/ws/" + cep + "/json/";
-        cidadeSelecionadaPorCep = null; // Reset before new lookup
+        cidadeSelecionadaPorCep = null;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -380,20 +376,11 @@ public class CriarPetsActivity extends AppCompatActivity {
                             editendereco.setText(logradouro);
                             editbairro.setText(bairro);
 
-                            selecionarItemSpinner(editestado, estadoUF); // This will trigger editestado's listener
+                            selecionarItemSpinner(editestado, estadoUF);
 
-                            // Store the city name from CEP. It will be selected
-                            // in buscarCidadesPorEstado's onResponse after cities are loaded.
                             cidadeSelecionadaPorCep = cidade;
 
-                            // If editestado's listener automatically loads cities,
-                            // and then we want to select the city from CEP:
-                            // We need to ensure buscarCidadesPorEstado completes and populates editcidade
-                            // BEFORE trying to select `cidade`. This is handled by setting
-                            // `cidadeSelecionadaPorCep` and checking it in `buscarCidadesPorEstado`.
-
-
-                        } catch (Exception e) { // Catch generic Exception for safety
+                        } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(CriarPetsActivity.this, "Erro ao processar dados do CEP", Toast.LENGTH_SHORT).show();
                             limparCamposEndereco();
@@ -413,7 +400,6 @@ public class CriarPetsActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    // NEW method to fetch cities by State (UF) from IBGE API
     private void buscarCidadesPorEstado(String uf) {
         if (uf == null || uf.isEmpty() || uf.equals("Selecione um Estado")) {
             ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
@@ -427,7 +413,6 @@ public class CriarPetsActivity extends AppCompatActivity {
         Log.d("IBGE_API", "Fetching cities for UF: " + uf + " from URL: " + urlCidades);
 
 
-        // Show a loading message or disable city spinner
         List<String> cidadesDefault = new ArrayList<>();
         cidadesDefault.add("Carregando cidades...");
         ArrayAdapter<String> loadingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidadesDefault);
@@ -441,7 +426,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<String> cidades = new ArrayList<>();
-                        cidades.add("Selecione uma Cidade"); // Add default item
+                        cidades.add("Selecione uma Cidade");
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject municipio = response.getJSONObject(i);
@@ -453,10 +438,9 @@ public class CriarPetsActivity extends AppCompatActivity {
                             editcidade.setAdapter(adapterCidades);
                             editcidade.setEnabled(true);
 
-                            // If a city was previously identified by CEP lookup, try to select it now
                             if (cidadeSelecionadaPorCep != null) {
                                 selecionarItemSpinner(editcidade, cidadeSelecionadaPorCep);
-                                cidadeSelecionadaPorCep = null; // Reset after attempting selection
+                                cidadeSelecionadaPorCep = null;
                             }
 
                         } catch (JSONException e) {
@@ -485,7 +469,7 @@ public class CriarPetsActivity extends AppCompatActivity {
         ArrayAdapter<String> errorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidadesDefault);
         errorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editcidade.setAdapter(errorAdapter);
-        editcidade.setEnabled(false); // Or true, depending on desired behavior
+        editcidade.setEnabled(false);
     }
 
 
@@ -493,9 +477,8 @@ public class CriarPetsActivity extends AppCompatActivity {
         if (valor == null || valor.isEmpty() || spinner.getAdapter() == null) {
             return;
         }
-        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter(); // No need to cast to CharSequence here
+        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
-            // Using equalsIgnoreCase for robust matching
             if (adapter.getItem(i).toString().equalsIgnoreCase(valor)) {
                 spinner.setSelection(i);
                 break;
@@ -508,10 +491,8 @@ public class CriarPetsActivity extends AppCompatActivity {
         editendereco.setText("");
         editbairro.setText("");
         if (editestado.getAdapter() != null && editestado.getAdapter().getCount() > 0) {
-            editestado.setSelection(0); // Resets state, which should trigger city reset via its listener
+            editestado.setSelection(0);
         }
-        // The editestado listener should handle resetting the city spinner.
-        // If not, explicitly reset it:
         ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
                 android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
         adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -519,11 +500,10 @@ public class CriarPetsActivity extends AppCompatActivity {
     }
 
     private void formatFields() {
-        // Your existing TextWatcher for CEP (editcep)
         editcep.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             private String old = "";
-            private final String MASK_CEP = "#####-###"; // Define mask for CEP
+            private final String MASK_CEP = "#####-###";
 
 
             @Override
@@ -538,13 +518,13 @@ public class CriarPetsActivity extends AppCompatActivity {
                     return;
                 }
 
-                String str = s.toString().replaceAll("[^\\d]", ""); // Remove non-digits
+                String str = s.toString().replaceAll("[^\\d]", "");
                 String mascara = MASK_CEP;
 
                 String novaString = "";
-                int i = 0; // index for str
+                int i = 0;
                 for (char m : mascara.toCharArray()) {
-                    if (i >= str.length()) break; // No more digits to fill the mask
+                    if (i >= str.length()) break;
 
                     if (m != '#') {
                         novaString += m;
@@ -562,24 +542,22 @@ public class CriarPetsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 String cepDigits = s.toString().replaceAll("[^0-9]", "");
                 if (cepDigits.length() == 8) {
-                    buscarCep(cepDigits); // Call buscarCep with cleaned digits
-                } else if (s.length() < MASK_CEP.length() && s.length() < old.length()) { // if deleting and not yet full
+                    buscarCep(cepDigits);
+                } else if (s.length() < MASK_CEP.length() && s.length() < old.length()) {
                     limparCamposEndereco();
                 }
             }
         });
 
-
-        // Your existing TextWatcher for Nascimento (editnascimento)
         editnascimento.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-            //private String old = ""; // old is not used in this version, can be removed
+            private String old = "";
             private final String MASK_NASCIMENTO = "##/##/####";
 
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //old = s.toString();
+                old = s.toString();
             }
 
             @Override
@@ -592,10 +570,10 @@ public class CriarPetsActivity extends AppCompatActivity {
                 String str = s.toString().replaceAll("[^\\d]", "");
                 String mascara = MASK_NASCIMENTO;
                 String novaString = "";
-                int i = 0; // index for str
+                int i = 0;
 
                 for (char m : mascara.toCharArray()) {
-                    if (i >= str.length()) break; // No more digits to fill the mask
+                    if (i >= str.length()) break;
 
                     if (m != '#') {
                         novaString += m;
@@ -616,19 +594,19 @@ public class CriarPetsActivity extends AppCompatActivity {
 
 
         addPhoneNumberMask(edittel, "(##) ####-####");
-        addPhoneNumberMask(editcel, "(##) #####-####"); // Common mask for 9-digit mobile
+        addPhoneNumberMask(editcel, "(##) #####-####");
     }
 
     private void addPhoneNumberMask(final EditText editText, final String mask) {
         editText.addTextChangedListener(new MaskedWatcher(mask, editText));
     }
 
-    // MaskedWatcher class (no changes needed from your original if it works for phones)
+
     private static class MaskedWatcher implements TextWatcher {
         private final String mask;
         private final EditText editText;
         private boolean isUpdating;
-        private String old = ""; // Keep old to handle deletions correctly
+        private String old = "";
 
         MaskedWatcher(String mask, EditText editText) {
             this.mask = mask;
@@ -647,18 +625,10 @@ public class CriarPetsActivity extends AppCompatActivity {
                 return;
             }
 
-            String str = s.toString().replaceAll("[^\\d]", ""); // Remove non-digits
+            String str = s.toString().replaceAll("[^\\d]", "");
             String formatted = "";
-            int i = 0; // index for str (digits)
-            int maskCharIndex = 0; // index for mask characters
-
-            // Logic to handle deletion: if current string is shorter than old, just set it (less processing)
-            if (str.length() < old.replaceAll("[^\\d]", "").length()) {
-                // Rebuild formatted string based on current digits and mask
-                // This part can be tricky to get perfect for deletions without cursor jumping
-                // For simplicity, we can let the adding logic handle it, but it might not be ideal for backspace
-                // A more robust deletion handling would involve checking cursor position and what was deleted.
-            }
+            int i = 0;
+            int maskCharIndex = 0;
 
 
             for (maskCharIndex = 0; maskCharIndex < mask.length() && i < str.length(); maskCharIndex++) {
@@ -670,10 +640,14 @@ public class CriarPetsActivity extends AppCompatActivity {
                     i++;
                 }
             }
+
+            isUpdating = true;
+            editText.setText(formatted);
+            editText.setSelection(formatted.length());
         }
 
+        @Override
         public void afterTextChanged(Editable s) {
-
         }
     }
 }
