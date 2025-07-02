@@ -25,14 +25,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.petapp.R;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CriarPetsActivity extends AppCompatActivity {
 
@@ -44,6 +49,9 @@ public class CriarPetsActivity extends AppCompatActivity {
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
     private RequestQueue requestQueue;
     private RegistroPetDAO registroPetDAO;
+    
+    private String cidadeSelecionadaPorCep = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +65,16 @@ public class CriarPetsActivity extends AppCompatActivity {
         editespecie = findViewById(R.id.editespecie);
         editraca = findViewById(R.id.editraca);
         editsexo = findViewById(R.id.editsexo);
-        editestado = findViewById(R.id.editestado);
+        editestado = findViewById(R.id.editestado); // Ensure you have an adapter for this, e.g., from R.array.estados_siglas
         editcidade = findViewById(R.id.editcidade);
+
+        // Initialize editestado spinner (Example: using a string array resource)
+        // Make sure R.array.estados_siglas includes a "Selecione" or similar initial item
+        ArrayAdapter<CharSequence> estadoAdapter = ArrayAdapter.createFromResource(this,
+                R.array.estado, android.R.layout.simple_spinner_item);
+        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editestado.setAdapter(estadoAdapter);
+
 
         editnome = findViewById(R.id.editnome);
         editbairro = findViewById(R.id.editbairro);
@@ -118,6 +134,8 @@ public class CriarPetsActivity extends AppCompatActivity {
                             editraca.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
                             break;
                     }
+                } else {
+                    editraca.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
                 }
             }
 
@@ -142,111 +160,44 @@ public class CriarPetsActivity extends AppCompatActivity {
                 if (cep.length() == 8) { // Verifica se o CEP tem 8 dígitos
                     buscarCep(cep);
                 } else {
-                    // Limpa os campos se o CEP não estiver completo ou for inválido
                     limparCamposEndereco();
                 }
             }
         });
 
+        // NEW Listener for editestado to fetch cities
         editestado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int position = adapterView.getSelectedItemPosition();
-                if (position > 0) {
-                    String selectedItem = adapterView.getSelectedItem().toString();
-                    switch (selectedItem) {
-                        case "AC":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ac, android.R.layout.simple_spinner_item));
-                            break;
-                        case "AL":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_al, android.R.layout.simple_spinner_item));
-                            break;
-                        case "AP":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ap, android.R.layout.simple_spinner_item));
-                            break;
-                        case "AM":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_am, android.R.layout.simple_spinner_item));
-                            break;
-                        case "BA":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ba, android.R.layout.simple_spinner_item));
-                            break;
-                        case "CE":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ce, android.R.layout.simple_spinner_item));
-                            break;
-                        case "DF":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_df, android.R.layout.simple_spinner_item));
-                            break;
-                        case "ES":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_es, android.R.layout.simple_spinner_item));
-                            break;
-                        case "GO":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_go, android.R.layout.simple_spinner_item));
-                            break;
-                        case "MA":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ma, android.R.layout.simple_spinner_item));
-                            break;
-                        case "MT":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_mt, android.R.layout.simple_spinner_item));
-                            break;
-                        case "MS":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ms, android.R.layout.simple_spinner_item));
-                            break;
-                        case "MG":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_mg, android.R.layout.simple_spinner_item));
-                            break;
-                        case "PA":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_pa, android.R.layout.simple_spinner_item));
-                            break;
-                        case "PB":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_pb, android.R.layout.simple_spinner_item));
-                            break;
-                        case "PR":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_pr, android.R.layout.simple_spinner_item));
-                            break;
-                        case "PE":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_pe, android.R.layout.simple_spinner_item));
-                            break;
-                        case "PI":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_pi, android.R.layout.simple_spinner_item));
-                            break;
-                        case "RJ":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_rj, android.R.layout.simple_spinner_item));
-                            break;
-                        case "RN":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_rn, android.R.layout.simple_spinner_item));
-                            break;
-                        case "RS":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_rs, android.R.layout.simple_spinner_item));
-                            break;
-                        case "RO":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_ro, android.R.layout.simple_spinner_item));
-                            break;
-                        case "RR":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_rr, android.R.layout.simple_spinner_item));
-                            break;
-                        case "SC":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_sc, android.R.layout.simple_spinner_item));
-                            break;
-                        case "SP":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_sp, android.R.layout.simple_spinner_item));
-                            break;
-                        case "SE":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_se, android.R.layout.simple_spinner_item));
-                            break;
-                        case "TO":
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.cidade_to, android.R.layout.simple_spinner_item));
-                            break;
-                        default:
-                            editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if (position > 0) { // Assuming 0 is "Selecione" or similar
+                    String ufSelecionado = adapterView.getItemAtPosition(position).toString();
+                    if (!ufSelecionado.equals("Selecione um Estado")) { // Check against your placeholder
+                        buscarCidadesPorEstado(ufSelecionado);
+                    } else {
+                        // Reset city spinner if "Selecione um Estado" is chosen
+                        ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
+                                android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
+                        adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        editcidade.setAdapter(adapterCidadePadrao);
                     }
+                } else {
+                    // Reset city spinner if the first item (placeholder) is chosen
+                    ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
+                            android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
+                    adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    editcidade.setAdapter(adapterCidadePadrao);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                editcidade.setAdapter(ArrayAdapter.createFromResource(CriarPetsActivity.this, R.array.selecione_um_item, android.R.layout.simple_spinner_item));
+                ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
+                        android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
+                adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                editcidade.setAdapter(adapterCidadePadrao);
             }
         });
+
 
         formatFields();
 
@@ -256,15 +207,15 @@ public class CriarPetsActivity extends AppCompatActivity {
 
                 String nome = editnome.getText().toString().trim();
                 String nascimentoStr = editnascimento.getText().toString().trim();
-                String especie = editespecie.getSelectedItem() != null ? editespecie.getSelectedItem().toString() : "";
-                String raca = editraca.getSelectedItem() != null ? editraca.getSelectedItem().toString() : "";
-                String sexo = editsexo.getSelectedItem() != null ? editsexo.getSelectedItem().toString() : "";
-                String cidade = editcidade.getSelectedItem() != null ? editcidade.getSelectedItem().toString() : "";
-                String estado = editestado.getSelectedItem() != null ? editestado.getSelectedItem().toString() : "";
-                String cepStr = editcep.getText().toString().trim();
+                String especie = editespecie.getSelectedItem() != null && editespecie.getSelectedItemPosition() > 0 ? editespecie.getSelectedItem().toString() : "";
+                String raca = editraca.getSelectedItem() != null && editraca.getSelectedItemPosition() > 0 ? editraca.getSelectedItem().toString() : "";
+                String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
+                String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
+                String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
+                String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean CEP
                 String bairro = editbairro.getText().toString().trim();
-                String telStr = edittel.getText().toString().trim();
-                String celStr = editcel.getText().toString().trim();
+                String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean phone
+                String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean cell
                 String email = editemail.getText().toString().trim();
                 String pai = editpai.getText().toString().trim();
                 String mae = editmae.getText().toString().trim();
@@ -275,7 +226,7 @@ public class CriarPetsActivity extends AppCompatActivity {
 
                 // Log retrieved values for debugging
                 Log.d("CriarPetsActivity", "Nome: " + nome);
-                Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr);
+                Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr); // Keep original for parsing logic
                 Log.d("CriarPetsActivity", "Especie: " + especie);
                 Log.d("CriarPetsActivity", "Raça: " + raca);
                 Log.d("CriarPetsActivity", "Sexo: " + sexo);
@@ -293,54 +244,54 @@ public class CriarPetsActivity extends AppCompatActivity {
                 Log.d("CriarPetsActivity", "Descrição: " + descricao);
                 Log.d("CriarPetsActivity", "Endereço: " + endereco);
 
-                if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty()) {
+
+                if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
                     Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Estado, Cidade).", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Sexo, Estado, Cidade).", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 Double nascimento = null;
-                if (!nascimentoStr.isEmpty()) {
+
+                String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
+                if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) { // Basic check for DDMMYYYY after stripping
                     try {
-                        nascimento = Double.valueOf(nascimentoStr);
+                        nascimento = Double.valueOf(nascimentoDigitsOnly);
                     } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoStr, e);
-                        Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido. Por favor, insira um número.", Toast.LENGTH_SHORT).show();
+                        Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoDigitsOnly, e);
+                        Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
 
-                Double cep = null;
+
+                Double cepDouble = null;
                 if (!cepStr.isEmpty()) {
                     try {
-                        cep = Double.valueOf(cepStr);
+                        cepDouble = Double.valueOf(cepStr);
                     } catch (NumberFormatException e) {
                         Log.e("CriarPetsActivity", "Erro ao converter CEP para Double: " + cepStr, e);
-                        Toast.makeText(CriarPetsActivity.this, "Formato de CEP inválido. Por favor, insira um número.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
-                Double tel = null;
+                Double telDouble = null;
                 if (!telStr.isEmpty()) {
                     try {
-                        tel = Double.valueOf(telStr);
+                        telDouble = Double.valueOf(telStr);
                     } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Telefone Residencial para Double: " + telStr, e);
-                        Toast.makeText(CriarPetsActivity.this, "Formato de telefone residencial inválido. Por favor, insira um número.", Toast.LENGTH_SHORT).show();
-                        return;
+                        Log.e("CriarPetsActivity", "Erro ao converter Telefone para Double: " + telStr, e);
                     }
                 }
 
-                Double cel = null;
+                Double celDouble = null;
                 if (!celStr.isEmpty()) {
                     try {
-                        cel = Double.valueOf(celStr);
+                        celDouble = Double.valueOf(celStr);
                     } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Telefone Celular para Double: " + celStr, e);
-                        Toast.makeText(CriarPetsActivity.this, "Formato de telefone celular inválido. Por favor, insira um número.", Toast.LENGTH_SHORT).show();
-                        return;
+                        Log.e("CriarPetsActivity", "Erro ao converter Celular para Double: " + celStr, e);
                     }
                 }
+
 
                 registroPetDAO = new RegistroPetDAO(CriarPetsActivity.this);
 
@@ -353,9 +304,9 @@ public class CriarPetsActivity extends AppCompatActivity {
                 pet.setCidade(cidade);
                 pet.setEstado(estado);
                 pet.setBairro(bairro);
-                pet.setCep(cep);
-                pet.setTelefoneresd(tel);
-                pet.setTelefonecel(cel);
+                pet.setCep(cepDouble);
+                pet.setTelefoneresd(telDouble);
+                pet.setTelefonecel(celDouble);
                 pet.setEmail(email);
                 pet.setPai(pai);
                 pet.setMae(mae);
@@ -374,7 +325,6 @@ public class CriarPetsActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(CriarPetsActivity.this, "Erro ao registrar pet.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
@@ -409,12 +359,13 @@ public class CriarPetsActivity extends AppCompatActivity {
         }
     }
 
+    // buscarCep remains largely the same, but we store the city for later selection
     private void buscarCep(String cep) {
         String url = "https://viacep.com.br/ws/" + cep + "/json/";
+        cidadeSelecionadaPorCep = null; // Reset before new lookup
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -424,47 +375,34 @@ public class CriarPetsActivity extends AppCompatActivity {
                                 return;
                             }
 
-                            String logradouro = response.getString("logradouro");
-                            String bairro = response.getString("bairro");
-                            String cidade = response.getString("localidade");
-                            String estado = response.getString("uf");
+                            String logradouro = response.optString("logradouro");
+                            String bairro = response.optString("bairro");
+                            String cidade = response.optString("localidade");
+                            String estadoUF = response.optString("uf");
 
                             editendereco.setText(logradouro);
                             editbairro.setText(bairro);
 
-                            // Selecionar o estado no Spinner
-                            selecionarItemSpinner(editestado, estado);
+                            selecionarItemSpinner(editestado, estadoUF); // This will trigger editestado's listener
 
-                            // Para o Spinner de cidade, a lógica pode ser mais complexa
-                            // se você carrega as cidades dinamicamente baseado no estado.
-                            // A API já retorna a cidade correta. Você pode:
-                            // 1. Tentar selecionar a cidade diretamente se ela já existir no adapter.
-                            // 2. Ou, se você preenche o spinner de cidades baseado no estado,
-                            //    após selecionar o estado, o adapter de cidades será atualizado,
-                            //    e então você pode tentar selecionar a cidade.
-                            // Por simplicidade, este exemplo tentará selecionar a cidade.
-                            // Se o seu spinner de cidades é populado dinamicamente APÓS a seleção do estado,
-                            // você precisará ajustar esta parte.
+                            // Store the city name from CEP. It will be selected
+                            // in buscarCidadesPorEstado's onResponse after cities are loaded.
+                            cidadeSelecionadaPorCep = cidade;
 
-                            // Forçar a atualização do adapter de cidades se necessário
-                            // (Isso depende de como seu editestado.setOnItemSelectedListener está configurado)
-                            if (editestado.getSelectedItemPosition() > 0) {
-                                // Disparar o listener do estado para carregar as cidades corretas se necessário
-                                // Ou carregar o adapter de cidades diretamente aqui
-                                // Exemplo: (Supondo que você tenha um método para carregar cidades por estado)
-                                // carregarCidadesPorEstado(estado);
-                            }
-                            selecionarItemSpinner(editcidade, cidade);
+                            // If editestado's listener automatically loads cities,
+                            // and then we want to select the city from CEP:
+                            // We need to ensure buscarCidadesPorEstado completes and populates editcidade
+                            // BEFORE trying to select `cidade`. This is handled by setting
+                            // `cidadeSelecionadaPorCep` and checking it in `buscarCidadesPorEstado`.
 
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) { // Catch generic Exception for safety
                             e.printStackTrace();
                             Toast.makeText(CriarPetsActivity.this, "Erro ao processar dados do CEP", Toast.LENGTH_SHORT).show();
                             limparCamposEndereco();
                         }
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("CEP_API_ERROR", "Erro: " + error.toString());
@@ -475,45 +413,121 @@ public class CriarPetsActivity extends AppCompatActivity {
                         limparCamposEndereco();
                     }
                 });
-
-        // Adiciona a requisição à fila
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void selecionarItemSpinner(Spinner spinner, String valor) {
-        if (valor == null || valor.isEmpty()) return;
+    // NEW method to fetch cities by State (UF) from IBGE API
+    private void buscarCidadesPorEstado(String uf) {
+        if (uf == null || uf.isEmpty() || uf.equals("Selecione um Estado")) {
+            ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
+                    android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
+            adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            editcidade.setAdapter(adapterCidadePadrao);
+            return;
+        }
 
-        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinner.getAdapter();
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                if (adapter.getItem(i).toString().equalsIgnoreCase(valor)) {
-                    spinner.setSelection(i);
-                    break;
+        String urlCidades = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + uf + "/municipios";
+        Log.d("IBGE_API", "Fetching cities for UF: " + uf + " from URL: " + urlCidades);
+
+
+        // Show a loading message or disable city spinner
+        List<String> cidadesDefault = new ArrayList<>();
+        cidadesDefault.add("Carregando cidades...");
+        ArrayAdapter<String> loadingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidadesDefault);
+        loadingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editcidade.setAdapter(loadingAdapter);
+        editcidade.setEnabled(false);
+
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlCidades, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<String> cidades = new ArrayList<>();
+                        cidades.add("Selecione uma Cidade"); // Add default item
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject municipio = response.getJSONObject(i);
+                                cidades.add(municipio.getString("nome"));
+                            }
+                            ArrayAdapter<String> adapterCidades = new ArrayAdapter<>(CriarPetsActivity.this,
+                                    android.R.layout.simple_spinner_item, cidades);
+                            adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            editcidade.setAdapter(adapterCidades);
+                            editcidade.setEnabled(true);
+
+                            // If a city was previously identified by CEP lookup, try to select it now
+                            if (cidadeSelecionadaPorCep != null) {
+                                selecionarItemSpinner(editcidade, cidadeSelecionadaPorCep);
+                                cidadeSelecionadaPorCep = null; // Reset after attempting selection
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(CriarPetsActivity.this, "Erro ao processar lista de cidades", Toast.LENGTH_SHORT).show();
+                            resetCitySpinnerToDefault();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("IBGE_API_ERROR", "Erro ao buscar cidades: " + error.toString());
+                if (error.networkResponse != null) {
+                    Log.e("IBGE_API_ERROR", "Status Code: " + error.networkResponse.statusCode);
                 }
+                Toast.makeText(CriarPetsActivity.this, "Erro ao buscar cidades. Verifique a conexão ou UF.", Toast.LENGTH_LONG).show();
+                resetCitySpinnerToDefault();
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void resetCitySpinnerToDefault() {
+        List<String> cidadesDefault = new ArrayList<>();
+        cidadesDefault.add("Falha ao carregar cidades");
+        ArrayAdapter<String> errorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidadesDefault);
+        errorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editcidade.setAdapter(errorAdapter);
+        editcidade.setEnabled(false); // Or true, depending on desired behavior
+    }
+
+
+    private void selecionarItemSpinner(Spinner spinner, String valor) {
+        if (valor == null || valor.isEmpty() || spinner.getAdapter() == null) {
+            return;
+        }
+        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter(); // No need to cast to CharSequence here
+        for (int i = 0; i < adapter.getCount(); i++) {
+            // Using equalsIgnoreCase for robust matching
+            if (adapter.getItem(i).toString().equalsIgnoreCase(valor)) {
+                spinner.setSelection(i);
+                break;
             }
         }
     }
 
+
     private void limparCamposEndereco() {
         editendereco.setText("");
         editbairro.setText("");
-        // Você pode resetar os spinners de estado e cidade para o item "Selecione"
         if (editestado.getAdapter() != null && editestado.getAdapter().getCount() > 0) {
-            editestado.setSelection(0); // Supondo que o primeiro item é "Selecione"
+            editestado.setSelection(0); // Resets state, which should trigger city reset via its listener
         }
-        if (editcidade.getAdapter() != null && editcidade.getAdapter().getCount() > 0) {
-            // O spinner de cidade pode precisar ser limpo ou resetado para "Selecione"
-            // Se ele depende do estado, e o estado foi resetado, ele também deveria ser.
-            ArrayAdapter<CharSequence> adapterCidadePadrao = ArrayAdapter.createFromResource(this, R.array.selecione_um_item, android.R.layout.simple_spinner_item);
-            editcidade.setAdapter(adapterCidadePadrao);
-            editcidade.setSelection(0);
-        }
+        // The editestado listener should handle resetting the city spinner.
+        // If not, explicitly reset it:
+        ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
+                android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
+        adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editcidade.setAdapter(adapterCidadePadrao);
     }
 
     private void formatFields() {
+        // Your existing TextWatcher for CEP (editcep)
         editcep.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             private String old = "";
+            private final String MASK_CEP = "#####-###"; // Define mask for CEP
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -527,28 +541,21 @@ public class CriarPetsActivity extends AppCompatActivity {
                     return;
                 }
 
-                String str = s.toString().replaceAll("[^\\d]", "");
-                String mascara = "#####-###";
+                String str = s.toString().replaceAll("[^\\d]", ""); // Remove non-digits
+                String mascara = MASK_CEP;
 
                 String novaString = "";
-                if (str.length() > old.replaceAll("[^\\d]", "").length()) { // Digitado
-                    int i = 0;
-                    for (char m : mascara.toCharArray()) {
-                        if (m != '#' && str.length() > old.replaceAll("[^\\d]", "").length()) {
-                            novaString += m;
-                            continue;
-                        }
-                        try {
-                            novaString += str.charAt(i);
-                        } catch (Exception e) {
-                            break;
-                        }
+                int i = 0; // index for str
+                for (char m : mascara.toCharArray()) {
+                    if (i >= str.length()) break; // No more digits to fill the mask
+
+                    if (m != '#') {
+                        novaString += m;
+                    } else {
+                        novaString += str.charAt(i);
                         i++;
                     }
-                } else { // Apagado
-                    novaString = str;
                 }
-
                 isUpdating = true;
                 editcep.setText(novaString);
                 editcep.setSelection(novaString.length());
@@ -556,16 +563,26 @@ public class CriarPetsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                String cepDigits = s.toString().replaceAll("[^0-9]", "");
+                if (cepDigits.length() == 8) {
+                    buscarCep(cepDigits); // Call buscarCep with cleaned digits
+                } else if (s.length() < MASK_CEP.length() && s.length() < old.length()) { // if deleting and not yet full
+                    limparCamposEndereco();
+                }
             }
         });
 
+
+        // Your existing TextWatcher for Nascimento (editnascimento)
         editnascimento.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
-            private String old = "";
+            //private String old = ""; // old is not used in this version, can be removed
+            private final String MASK_NASCIMENTO = "##/##/####";
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                old = s.toString();
+                //old = s.toString();
             }
 
             @Override
@@ -576,27 +593,20 @@ public class CriarPetsActivity extends AppCompatActivity {
                 }
 
                 String str = s.toString().replaceAll("[^\\d]", "");
-                String mascara = "##/##/####";
-
+                String mascara = MASK_NASCIMENTO;
                 String novaString = "";
-                if (str.length() > old.replaceAll("[^\\d]", "").length()) { // Digitado
-                    int i = 0;
-                    for (char m : mascara.toCharArray()) {
-                        if (m != '#' && str.length() > old.replaceAll("[^\\d]", "").length()) {
-                            novaString += m;
-                            continue;
-                        }
-                        try {
-                            novaString += str.charAt(i);
-                        } catch (Exception e) {
-                            break;
-                        }
+                int i = 0; // index for str
+
+                for (char m : mascara.toCharArray()) {
+                    if (i >= str.length()) break; // No more digits to fill the mask
+
+                    if (m != '#') {
+                        novaString += m;
+                    } else {
+                        novaString += str.charAt(i);
                         i++;
                     }
-                } else { // Apagado
-                    novaString = str;
                 }
-
                 isUpdating = true;
                 editnascimento.setText(novaString);
                 editnascimento.setSelection(novaString.length());
@@ -607,22 +617,21 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-        // Adicionar TextWatchers para os campos de telefone (edittel e editcel)
-        // Exemplo para edittel (telefone fixo)
+
         addPhoneNumberMask(edittel, "(##) ####-####");
-        // Exemplo para editcel (telefone celular)
-        addPhoneNumberMask(editcel, "(##) #####-####");
+        addPhoneNumberMask(editcel, "(##) #####-####"); // Common mask for 9-digit mobile
     }
 
     private void addPhoneNumberMask(final EditText editText, final String mask) {
         editText.addTextChangedListener(new MaskedWatcher(mask, editText));
     }
 
+    // MaskedWatcher class (no changes needed from your original if it works for phones)
     private static class MaskedWatcher implements TextWatcher {
         private final String mask;
         private final EditText editText;
         private boolean isUpdating;
-        private String old = "";
+        private String old = ""; // Keep old to handle deletions correctly
 
         MaskedWatcher(String mask, EditText editText) {
             this.mask = mask;
@@ -641,29 +650,33 @@ public class CriarPetsActivity extends AppCompatActivity {
                 return;
             }
 
-            String str = s.toString().replaceAll("[^\\d]", "");
+            String str = s.toString().replaceAll("[^\\d]", ""); // Remove non-digits
             String formatted = "";
-            int i = 0;
-            for (char m : mask.toCharArray()) {
-                if (m != '#') {
-                    formatted += m;
-                    continue;
-                }
-                try {
-                    formatted += str.charAt(i);
-                } catch (Exception e) {
-                    break;
-                }
-                i++;
+            int i = 0; // index for str (digits)
+            int maskCharIndex = 0; // index for mask characters
+
+            // Logic to handle deletion: if current string is shorter than old, just set it (less processing)
+            if (str.length() < old.replaceAll("[^\\d]", "").length()) {
+                // Rebuild formatted string based on current digits and mask
+                // This part can be tricky to get perfect for deletions without cursor jumping
+                // For simplicity, we can let the adding logic handle it, but it might not be ideal for backspace
+                // A more robust deletion handling would involve checking cursor position and what was deleted.
             }
 
-            isUpdating = true;
-            editText.setText(formatted);
-            editText.setSelection(formatted.length());
+
+            for (maskCharIndex = 0; maskCharIndex < mask.length() && i < str.length(); maskCharIndex++) {
+                char m = mask.charAt(maskCharIndex);
+                if (m != '#') {
+                    formatted += m;
+                } else {
+                    formatted += str.charAt(i);
+                    i++;
+                }
+            }
         }
 
-        @Override
         public void afterTextChanged(Editable s) {
+
         }
     }
 }
