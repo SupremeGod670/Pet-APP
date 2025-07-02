@@ -292,7 +292,6 @@ public class CriarPetsActivity extends AppCompatActivity {
                 registroPetDAO = new RegistroPetDAO(CriarPetsActivity.this);
 
                 RegistroPetModel pet = new RegistroPetModel();
-                pet.setUrl_imagem(imagemPerfilUrl);
                 pet.setNomepet(nome);
                 pet.setNascimento(nascimento);
                 pet.setEspecie(especie);
