@@ -31,6 +31,7 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.CriarActivity"/>
         <activity android:name=".activities.MenuActivity"/>
+        <activity android:name=".activities.SobreActivity"/>
         <activity android:name=".activities.CriarPetsActivity"/>
         <activity android:name=".activities.MostrarPetActivity"/>
     </application>

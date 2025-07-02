@@ -132,8 +132,11 @@ public class MenuActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_config) { // Exemplo de outro item
                 Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.nav_sobre) {
+                Intent intent = new Intent(MenuActivity.this, SobreActivity.class);
+                startActivity(intent);
+                finish();
             }
-            // Adicione outros itens do menu aqui
 
             drawerLayout.close();
             return true; // Indica que o item foi tratado

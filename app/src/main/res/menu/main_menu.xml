@@ -8,6 +8,11 @@
             android:icon="@drawable/settings"
             android:title="@string/configuracoes" />
 
+        <item
+            android:id="@+id/nav_sobre"
+            android:icon="@drawable/info"
+            android:title="@string/sobre" />
+
     </group>
 
 </menu>
