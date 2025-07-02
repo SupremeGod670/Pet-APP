@@ -4,6 +4,7 @@ public class RegistroPetModel {
 
     public static final String TABELA_PET = "tb_pet";
     public static final String COLUNA_ID = "_id";
+    public static final String COLUNA_URL_IMAGEM = "url_imagem";
     public static final String COLUNA_NOMEPET = "nomepet";
     public static final String COLUNA_NASCIMENTO = "nascimento";
     public static final String COLUNA_ESPECIE = "especie";
@@ -28,6 +29,7 @@ public class RegistroPetModel {
 
     public static final String CREATE_TABLE = "create table " + TABELA_PET +
             " (" + COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUNA_URL_IMAGEM + " TEXT, "
             + COLUNA_NOMEPET + " TEXT NOT NULL UNIQUE, "
             + COLUNA_NASCIMENTO + " REAL, "
             + COLUNA_ESPECIE + " TEXT NOT NULL, "
@@ -49,6 +51,7 @@ public class RegistroPetModel {
             + ")";
 
     private Long id;
+    private String url_imagem;
     private String nomepet;
     private Double nascimento;
     private String especie;
@@ -74,6 +77,14 @@ public class RegistroPetModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUrl_imagem() {
+        return url_imagem;
+    }
+
+    public void setUrl_imagem(String url_imagem) {
+        this.url_imagem = url_imagem;
     }
 
     public String getNomepet() {

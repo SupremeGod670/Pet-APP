@@ -14,6 +14,7 @@ public class RegistroPetDAO extends AbstrataDAO {
 
     private String[] colunas = new String[]{
             RegistroPetModel.COLUNA_ID,
+            RegistroPetModel.COLUNA_URL_IMAGEM,
             RegistroPetModel.COLUNA_NOMEPET,
             RegistroPetModel.COLUNA_NASCIMENTO,
             RegistroPetModel.COLUNA_ESPECIE,
@@ -59,7 +60,8 @@ public class RegistroPetDAO extends AbstrataDAO {
         Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
-                RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
+                RegistroPetModel.COLUNA_URL_IMAGEM + " = ? AND " +
+                        RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
                         RegistroPetModel.COLUNA_NASCIMENTO + " = ? AND " +
                         RegistroPetModel.COLUNA_ESPECIE + " = ? AND " +
                         RegistroPetModel.COLUNA_SEXO + " = ? AND " +
@@ -87,6 +89,7 @@ public class RegistroPetDAO extends AbstrataDAO {
 
         Open();
         ContentValues values = new ContentValues();
+        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrl_imagem());
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
         values.put(RegistroPetModel.COLUNA_NASCIMENTO, pet.getNascimento());
         values.put(RegistroPetModel.COLUNA_ESPECIE, pet.getEspecie());
@@ -129,6 +132,7 @@ public class RegistroPetDAO extends AbstrataDAO {
             do {
                 RegistroPetModel pet = new RegistroPetModel();
                 pet.setId(cursor.getLong(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ID)));
+                pet.setUrl_imagem(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_URL_IMAGEM)));
                 pet.setNomepet(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NOMEPET)));
 
                 // Handle possible null values for Double types
@@ -182,6 +186,7 @@ public class RegistroPetDAO extends AbstrataDAO {
     public void update(RegistroPetModel pet) {
         Open();
         ContentValues values = new ContentValues();
+        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrl_imagem());
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
         values.put(RegistroPetModel.COLUNA_NASCIMENTO, pet.getNascimento());
         values.put(RegistroPetModel.COLUNA_ESPECIE, pet.getEspecie());
