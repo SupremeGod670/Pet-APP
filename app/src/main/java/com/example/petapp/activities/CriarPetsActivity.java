@@ -49,7 +49,7 @@ public class CriarPetsActivity extends AppCompatActivity {
     public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
     private RequestQueue requestQueue;
     private RegistroPetDAO registroPetDAO;
-    
+
     private String cidadeSelecionadaPorCep = null;
 
 
@@ -165,23 +165,20 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-        // NEW Listener for editestado to fetch cities
         editestado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (position > 0) { // Assuming 0 is "Selecione" or similar
+                if (position > 0) {
                     String ufSelecionado = adapterView.getItemAtPosition(position).toString();
                     if (!ufSelecionado.equals("Selecione um Estado")) { // Check against your placeholder
                         buscarCidadesPorEstado(ufSelecionado);
                     } else {
-                        // Reset city spinner if "Selecione um Estado" is chosen
                         ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
                                 android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
                         adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         editcidade.setAdapter(adapterCidadePadrao);
                     }
                 } else {
-                    // Reset city spinner if the first item (placeholder) is chosen
                     ArrayAdapter<String> adapterCidadePadrao = new ArrayAdapter<>(CriarPetsActivity.this,
                             android.R.layout.simple_spinner_item, new String[]{"Selecione uma Cidade"});
                     adapterCidadePadrao.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
