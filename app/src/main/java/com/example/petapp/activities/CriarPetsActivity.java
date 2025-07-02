@@ -209,10 +209,10 @@ public class CriarPetsActivity extends AppCompatActivity {
                 String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
                 String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
                 String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
-                String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean CEP
+                String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", "");
                 String bairro = editbairro.getText().toString().trim();
-                String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean phone
-                String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", ""); // Clean cell
+                String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", "");
+                String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", "");
                 String email = editemail.getText().toString().trim();
                 String pai = editpai.getText().toString().trim();
                 String mae = editmae.getText().toString().trim();
@@ -223,7 +223,7 @@ public class CriarPetsActivity extends AppCompatActivity {
 
                 // Log retrieved values for debugging
                 Log.d("CriarPetsActivity", "Nome: " + nome);
-                Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr); // Keep original for parsing logic
+                Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr);
                 Log.d("CriarPetsActivity", "Especie: " + especie);
                 Log.d("CriarPetsActivity", "Raça: " + raca);
                 Log.d("CriarPetsActivity", "Sexo: " + sexo);
