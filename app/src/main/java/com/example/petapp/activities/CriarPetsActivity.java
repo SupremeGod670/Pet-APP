@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class CriarPetsActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private RegistroPetDAO registroPetDAO;
 
+    private String imagemPerfilUrl = null;
     private String cidadeSelecionadaPorCep = null;
 
 
@@ -290,6 +292,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 registroPetDAO = new RegistroPetDAO(CriarPetsActivity.this);
 
                 RegistroPetModel pet = new RegistroPetModel();
+                pet.setUrl_imagem(imagemPerfilUrl);
                 pet.setNomepet(nome);
                 pet.setNascimento(nascimento);
                 pet.setEspecie(especie);
@@ -307,6 +310,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 pet.setNaturalidade(naturalidade);
                 pet.setDescricao(descricao);
                 pet.setEndereco(endereco);
+
 
                 registroPetDAO.insert(pet);
 
@@ -334,7 +338,10 @@ public class CriarPetsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == IMAGE_CODE && data != null && data.getData() != null) {
-            perfilpet.setImageURI(data.getData());
+            Uri imageUri = data.getData();
+            perfilpet.setImageURI(imageUri);
+            imagemPerfilUrl = imageUri.toString();
+
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Seleção de imagem cancelada.", Toast.LENGTH_SHORT).show();
         }
