@@ -29,7 +29,7 @@
         android:id="@+id/indetificapets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/the_seasons_regular"
         android:text="@string/indentifica_o_pet"
         android:textAlignment="center"

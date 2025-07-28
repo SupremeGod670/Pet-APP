@@ -136,6 +136,8 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(MenuActivity.this, SobreActivity.class);
                 startActivity(intent);
                 finish();
+            } else if (itemId == R.id.nav_menu) {
+                Toast.makeText(MenuActivity.this, "Você já está na tela de Menu", Toast.LENGTH_SHORT).show();
             }
 
             drawerLayout.close();
