@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,7 @@ public class MostrarPetActivity extends AppCompatActivity {
     private TextView voltar;
     private static final int NUM_PAGES = 2;
     private ViewPager2 viewPager;
-    private Button editarpet, deletarpet;
+    private Button editarpet, uploadc, deletarpet;
     private FragmentStateAdapter pagerAdapter;
     private RegistroPetModel petAtual;
     RegistroPetDAO dao;
@@ -41,6 +40,7 @@ public class MostrarPetActivity extends AppCompatActivity {
         voltar = findViewById(R.id.voltar);
         viewPager = findViewById(R.id.rolar);
         editarpet = findViewById(R.id.editarpet);
+        uploadc = findViewById(R.id.uploadc);
         deletarpet = findViewById(R.id.deletarpet);
 
         // Buscar dados do pet
@@ -129,10 +129,17 @@ public class MostrarPetActivity extends AppCompatActivity {
         deletarpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    dao = new RegistroPetDAO(MostrarPetActivity.this);
-                    dao.delete(petId);
-                    finish();
-                    Toast.makeText(MostrarPetActivity.this, "Pet deletado com sucesso!", Toast.LENGTH_SHORT).show();
+                dao = new RegistroPetDAO(MostrarPetActivity.this);
+                dao.delete(petId);
+                finish();
+                Toast.makeText(MostrarPetActivity.this, "Pet deletado com sucesso!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        uploadc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
