@@ -67,12 +67,7 @@ Eliminar a burocracia na hora de levar seu pet para eventos, oferecendo uma solu
    Perfil → Adicionar Pet → Preencher dados → Foto → Salvar
    ```
 
-2. **Adicionar Vacinas:**
-   ```
-   Vacinação → Nova Vacina → Dados da vacina → Foto do certificado → Confirmar
-   ```
-
-3. **Usar em Eventos:**
+2. **Usar em Eventos:**
    ```
    Carteira → Mostrar QR Code → Organização escaneia → Acesso liberado
    ```
