@@ -77,6 +77,8 @@ Seja um festival de raças, uma corrida pet ou um evento beneficente, o Identifi
 Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais conectada e cheia de aventuras com seu melhor amigo! 🚀🐶🐱</string>
     <string name="sobre_app3">Pronto para simplificar a vida do seu pet e a sua? Qual evento você e seu companheiro peludo estão ansiosos para visitar primeiro com o Identificação Pet? 🐾</string>
     <string name="menu_pets">Menu Pets</string>
+    <string name="editar_pet">Editar Pet</string>
+    <string name="deletar_pet">Deletar Pet</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />
