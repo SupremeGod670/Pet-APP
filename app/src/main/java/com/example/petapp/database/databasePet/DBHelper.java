@@ -31,6 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (oldVersion < 3) {
             db.execSQL("ALTER TABLE " + RegistroPetModel.TABELA_PET + " ADD COLUMN " + RegistroPetModel.COLUNA_URL_IMAGEM + " TEXT;");
+            db.execSQL("ALTER TABLE " + RegistroPetModel.TABELA_PET + " ADD COLUMN " + RegistroPetModel.COLUNA_COR + " TEXT;");
         }
     }
 }
