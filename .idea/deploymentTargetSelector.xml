@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Indentificação Pet">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-27T23:06:40.709779500Z">
+        <DropdownSelection timestamp="2025-08-27T16:26:07.259582200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Gabriel\.android\avd\Resizable_Experimental_API_36.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=ce67e9d2" />
             </handle>
           </Target>
         </DropdownSelection>

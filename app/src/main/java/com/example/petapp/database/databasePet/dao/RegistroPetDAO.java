@@ -31,7 +31,8 @@ public class RegistroPetDAO extends AbstrataDAO {
             RegistroPetModel.COLUNA_CEP,
             RegistroPetModel.COLUNA_ESTADO,
             RegistroPetModel.COLUNA_TELEFONECEL,
-            RegistroPetModel.COLUNA_DESCRICAO
+            RegistroPetModel.COLUNA_DESCRICAO,
+            RegistroPetModel.COLUNA_URL_IMAGEM  // Nova coluna
     };
 
     public RegistroPetDAO(Context context) {
@@ -84,7 +85,6 @@ public class RegistroPetDAO extends AbstrataDAO {
     }
 
     public void insert(RegistroPetModel pet) {
-
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
@@ -105,6 +105,7 @@ public class RegistroPetDAO extends AbstrataDAO {
         values.put(RegistroPetModel.COLUNA_ESTADO, pet.getEstado());
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
+        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Nova linha
 
         db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
@@ -169,6 +170,7 @@ public class RegistroPetDAO extends AbstrataDAO {
                 }
 
                 pet.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_DESCRICAO)));
+                pet.setUrlImagem(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_URL_IMAGEM)));
 
                 petList.add(pet);
             } while (cursor.moveToNext());
@@ -200,6 +202,7 @@ public class RegistroPetDAO extends AbstrataDAO {
         values.put(RegistroPetModel.COLUNA_ESTADO, pet.getEstado());
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
+        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Nova linha
 
         db.update(RegistroPetModel.TABELA_PET, values, RegistroPetModel.COLUNA_ID + " = ?", new String[]{pet.getId().toString()});
         Close();
@@ -209,6 +212,69 @@ public class RegistroPetDAO extends AbstrataDAO {
         Open();
         db.delete(RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_ID + " = ?", new String[]{id.toString()});
         Close();
+    }
+
+    // Adicionar método para buscar pet por ID
+    public RegistroPetModel getPetById(Long id) {
+        Open();
+        Cursor cursor = db.query(
+                RegistroPetModel.TABELA_PET,
+                colunas,
+                RegistroPetModel.COLUNA_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null
+        );
+
+        RegistroPetModel pet = null;
+        if (cursor.moveToFirst()) {
+            pet = new RegistroPetModel();
+            pet.setId(cursor.getLong(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ID)));
+            pet.setNomepet(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NOMEPET)));
+
+            int nascimentoIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NASCIMENTO);
+            if (!cursor.isNull(nascimentoIndex)) {
+                pet.setNascimento(cursor.getDouble(nascimentoIndex));
+            }
+
+            pet.setEspecie(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ESPECIE)));
+            pet.setSexo(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_SEXO)));
+            pet.setPai(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_PAI)));
+            pet.setMae(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_MAE)));
+            pet.setRaca(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_RACA)));
+            pet.setNaturalidade(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NATURALIDADE)));
+            pet.setCor(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_COR)));
+            pet.setEndereco(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ENDERECO)));
+            pet.setBairro(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_BAIRRO)));
+            pet.setCidade(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_CIDADE)));
+
+            int telResdIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_TELEFONERESD);
+            if (!cursor.isNull(telResdIndex)) {
+                pet.setTelefoneresd(cursor.getDouble(telResdIndex));
+            }
+
+            pet.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_EMAIL)));
+
+            int cepIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_CEP);
+            if (!cursor.isNull(cepIndex)) {
+                pet.setCep(cursor.getDouble(cepIndex));
+            }
+
+            pet.setEstado(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ESTADO)));
+
+            int telCelIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_TELEFONECEL);
+            if (!cursor.isNull(telCelIndex)) {
+                pet.setTelefonecel(cursor.getDouble(telCelIndex));
+            }
+
+            pet.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_DESCRICAO)));
+            pet.setUrlImagem(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_URL_IMAGEM)));
+        }
+
+        cursor.close();
+        Close();
+        return pet;
     }
 
 }

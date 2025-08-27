@@ -22,6 +22,7 @@ public class RegistroPetModel {
     public static final String COLUNA_ESTADO = "estado";
     public static final String COLUNA_TELEFONECEL = "telefonecel";
     public static final String COLUNA_DESCRICAO = "descricao";
+    public static final String COLUNA_URL_IMAGEM = "url_imagem";
 
     public static final String DROP_TABLE =
             "drop table if exists " + TABELA_PET;
@@ -45,7 +46,8 @@ public class RegistroPetModel {
             + COLUNA_TELEFONERESD + " REAL, "
             + COLUNA_EMAIL + " TEXT, "
             + COLUNA_TELEFONECEL + " REAL, "
-            + COLUNA_DESCRICAO + " TEXT"
+            + COLUNA_DESCRICAO + " TEXT, "
+            + COLUNA_URL_IMAGEM + " TEXT"  // Nova coluna
             + ")";
 
     private Long id;
@@ -67,6 +69,8 @@ public class RegistroPetModel {
     private String estado;
     private Double telefonecel;
     private String descricao;
+
+    private String urlImagem;
 
     public Long getId() {
         return id;
@@ -219,4 +223,13 @@ public class RegistroPetModel {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
 }
+

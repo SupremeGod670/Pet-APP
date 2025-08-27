@@ -309,7 +309,7 @@ public class CriarPetsActivity extends AppCompatActivity {
                 pet.setNaturalidade(naturalidade);
                 pet.setDescricao(descricao);
                 pet.setEndereco(endereco);
-
+                pet.setUrlImagem(imagemPerfilUrl);
 
                 registroPetDAO.insert(pet);
 
@@ -339,7 +339,7 @@ public class CriarPetsActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == IMAGE_CODE && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
             perfilpet.setImageURI(imageUri);
-            imagemPerfilUrl = imageUri.toString();
+            imagemPerfilUrl = imageUri.toString(); // Já existe, apenas confirmar
 
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Seleção de imagem cancelada.", Toast.LENGTH_SHORT).show();

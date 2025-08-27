@@ -1,18 +1,560 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/BACKGROUND"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="265dp"
-    android:layout_marginTop="0dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:background="#4CAF50"
+    android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/verso"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/versoindentidade" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <!-- Título com bordinha de patinhas -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾"
+                android:textColor="@android:color/white"
+                android:textSize="8sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VÁLIDO EM TODO TERRITÓRIO NACIONAL"
+                android:textColor="#2E7D32"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Card principal -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#E8F5E8"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Grid de informações -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp">
+
+                    <!-- Coluna esquerda -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="20dp">
+
+                        <!-- NOME -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="NOME"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- NASCIMENTO -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="NASCIMENTO"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_birth"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- ESPÉCIE -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="ESPÉCIE"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_species"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- SEXO -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="SEXO"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_sex"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- ENDEREÇO -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="ENDEREÇO"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_address"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- BAIRRO -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="BAIRRO"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_neighborhood"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- CIDADE -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="CIDADE"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_city"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- TEL. RESD. -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="TEL. RESD."
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_phone"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- E-MAIL -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="E-MAIL"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_email"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- PAI -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="PAI"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_father"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- MÃE -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="15dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="MÃE"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_mother"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Coluna direita -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- RAÇA -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="RAÇA"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_race"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- NATURAL DE -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="NATURAL DE"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_birthplace"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- COR -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="COR"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_color"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- CEP -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="CEP"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_cep"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- ESTADO -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="ESTADO"
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_state"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+
+                        <!-- TEL. CEL. -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text="TEL. CEL."
+                                android:textColor="#2E7D32"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/txt_pet_cell"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text=""
+                                android:textColor="#333"
+                                android:textSize="10sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- DESCRIÇÃO - Área mais larga -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#C8E6C9"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DESCRIÇÃO"
+                        android:textColor="#2E7D32"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_pet_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="10sp"
+                        android:gravity="top"
+                        android:maxLines="3"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Bordinha de patinhas inferior -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾"
+                android:textColor="@android:color/white"
+                android:textSize="8sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
