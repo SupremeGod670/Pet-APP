@@ -3,7 +3,7 @@
 > Sua carteira digital completa para eventos pet-friendly
 
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/version-3.0.0-green.svg)](CHANGELOG.md)
 
 ## 📋 Sobre o Projeto
 
