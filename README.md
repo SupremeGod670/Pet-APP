@@ -89,13 +89,13 @@ Eliminar a burocracia na hora de levar seu pet para eventos, oferecendo uma solu
 
 ## 🗺️ Roadmap
 
-### Versão 2.0 (Q3 2025)
+### Versão 4.0 (Q3 2025)
 - [ ] Integração com clínicas veterinárias
 - [ ] Sistema de recompensas para eventos
 - [ ] Chat com veterinários online
 - [ ] Marketplace de produtos pet
 
-### Versão 3.0 (Q1 2026)
+### Versão 5.0 (Q1 2026)
 - [ ] IA para recomendação de eventos
 - [ ] Rede social para tutores
 - [ ] Geolocalização de pets perdidos
