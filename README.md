@@ -45,7 +45,7 @@ Eliminar a burocracia na hora de levar seu pet para eventos, oferecendo uma solu
 ## 🚀 Como Começar
 
 ### Pré-requisitos
-- Dispositivo Android 7.0+ ou iOS 12.0+
+- Dispositivo Android 7.0+
 - Conexão com internet
 - Câmera para captura de fotos
 
