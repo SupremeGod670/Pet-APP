@@ -182,16 +182,18 @@ public class MenuActivity extends AppCompatActivity {
 
         if (petsFromDB != null && !petsFromDB.isEmpty()) {
             for (RegistroPetModel petDB : petsFromDB) {
-                // Certifique-se que o construtor do seu PetModel corresponde a estes parâmetros.
-                // O primeiro parâmetro era uma string vazia (placeholder para imagem).
-                // O último era o ID.
+                // Pass the image URL instead of empty string
+                String imageUrl = petDB.getUrlImagem(); // Get the saved image URL
+
                 PetModel displayPet = new PetModel(
-                        "", // Placeholder imagem
+                        imageUrl != null ? imageUrl : "", // Use image URL or empty string
                         petDB.getNomepet(),
                         petDB.getRaca(),
                         petDB.getId()
                 );
                 allPetsForGridView.add(displayPet);
+
+                Log.d("MenuActivity", "Pet loaded: " + petDB.getNomepet() + ", Image URL: " + imageUrl);
             }
         } else {
             // Não mostre Toast aqui, deixe applyCurrentFiltersOnly ou applyNameAndCurrentFilters lidar com a lista vazia

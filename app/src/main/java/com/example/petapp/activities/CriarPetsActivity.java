@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.petapp.R;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
@@ -47,13 +50,16 @@ public class CriarPetsActivity extends AppCompatActivity {
     public Spinner editespecie, editsexo, editcidade, editraca, editestado;
     public EditText editnome, editbairro, editcep, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco, editcor;
     private Button salvarpet;
-    public int PERMISION_CODE = 1001, IMAGE_CODE = 1000;
+
+    // Updated permission constants for newer Android versions
+    private static final int PERMISSION_REQUEST_CODE = 1001;
+    private static final int IMAGE_PICK_CODE = 1000;
+
     private RequestQueue requestQueue;
     private RegistroPetDAO registroPetDAO;
 
     private String imagemPerfilUrl = null;
     private String cidadeSelecionadaPorCep = null;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,21 +67,28 @@ public class CriarPetsActivity extends AppCompatActivity {
         setContentView(R.layout.criar_pets);
 
         requestQueue = Volley.newRequestQueue(this);
+        registroPetDAO = new RegistroPetDAO(this);
 
+        // Initialize views
+        initializeViews();
+
+        // Setup spinners
+        setupSpinners();
+
+        // Setup listeners
+        setupListeners();
+
+        // Format fields
+        formatFields();
+    }
+
+    private void initializeViews() {
         perfilpet = findViewById(R.id.perfilpet);
-
         editespecie = findViewById(R.id.editespecie);
         editraca = findViewById(R.id.editraca);
         editsexo = findViewById(R.id.editsexo);
         editestado = findViewById(R.id.editestado);
         editcidade = findViewById(R.id.editcidade);
-
-        ArrayAdapter<CharSequence> estadoAdapter = ArrayAdapter.createFromResource(this,
-                R.array.estado, android.R.layout.simple_spinner_item);
-        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editestado.setAdapter(estadoAdapter);
-
-
         editnome = findViewById(R.id.editnome);
         editbairro = findViewById(R.id.editbairro);
         editnascimento = findViewById(R.id.editnascimento);
@@ -89,10 +102,18 @@ public class CriarPetsActivity extends AppCompatActivity {
         editdescricao = findViewById(R.id.editdescricao);
         editendereco = findViewById(R.id.editendereco);
         editcor = findViewById(R.id.editcor);
-
         salvarpet = findViewById(R.id.salvarpet);
-
         voltar = findViewById(R.id.voltar);
+    }
+
+    private void setupSpinners() {
+        ArrayAdapter<CharSequence> estadoAdapter = ArrayAdapter.createFromResource(this,
+                R.array.estado, android.R.layout.simple_spinner_item);
+        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editestado.setAdapter(estadoAdapter);
+    }
+
+    private void setupListeners() {
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,12 +126,7 @@ public class CriarPetsActivity extends AppCompatActivity {
         perfilpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                    requestPermissions(permissions, PERMISION_CODE);
-                } else {
-                    escolherImagem();
-                }
+                checkPermissionAndPickImage();
             }
         });
 
@@ -145,26 +161,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-        editcep.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String cep = s.toString().replaceAll("[^0-9]", "");
-                if (cep.length() == 8) {
-                    buscarCep(cep);
-                } else {
-                    limparCamposEndereco();
-                }
-            }
-        });
-
         editestado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -195,154 +191,191 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-
-        formatFields();
-
         salvarpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String nome = editnome.getText().toString().trim();
-                String nascimentoStr = editnascimento.getText().toString().trim();
-                String especie = editespecie.getSelectedItem() != null && editespecie.getSelectedItemPosition() > 0 ? editespecie.getSelectedItem().toString() : "";
-                String raca = editraca.getSelectedItem() != null && editraca.getSelectedItemPosition() > 0 ? editraca.getSelectedItem().toString() : "";
-                String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
-                String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
-                String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
-                String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", "");
-                String bairro = editbairro.getText().toString().trim();
-                String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", "");
-                String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", "");
-                String email = editemail.getText().toString().trim();
-                String pai = editpai.getText().toString().trim();
-                String mae = editmae.getText().toString().trim();
-                String naturalidade = editnaturalidade.getText().toString().trim();
-                String cor = editcor.getText().toString().trim();
-                String descricao = editdescricao.getText().toString().trim();
-                String endereco = editendereco.getText().toString().trim();
-
-                Log.d("CriarPetsActivity", "Nome: " + nome);
-                Log.d("CriarPetsActivity", "Nascimento String: " + nascimentoStr);
-                Log.d("CriarPetsActivity", "Especie: " + especie);
-                Log.d("CriarPetsActivity", "Raça: " + raca);
-                Log.d("CriarPetsActivity", "Sexo: " + sexo);
-                Log.d("CriarPetsActivity", "Cidade: " + cidade);
-                Log.d("CriarPetsActivity", "Estado: " + estado);
-                Log.d("CriarPetsActivity", "Bairro: " + bairro);
-                Log.d("CriarPetsActivity", "CEP: " + cepStr);
-                Log.d("CriarPetsActivity", "Tel String: " + telStr);
-                Log.d("CriarPetsActivity", "Cel String: " + celStr);
-                Log.d("CriarPetsActivity", "Email: " + email);
-                Log.d("CriarPetsActivity", "Pai: " + pai);
-                Log.d("CriarPetsActivity", "Mae: " + mae);
-                Log.d("CriarPetsActivity", "Naturalidade: " + naturalidade);
-                Log.d("CriarPetsActivity", "Cor: " + cor);
-                Log.d("CriarPetsActivity", "Descrição: " + descricao);
-                Log.d("CriarPetsActivity", "Endereço: " + endereco);
-
-
-                if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
-                    Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Sexo, Estado, Cidade).", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                Double nascimento = null;
-
-                String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
-                if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) {
-                    try {
-                        nascimento = Double.valueOf(nascimentoDigitsOnly);
-                    } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoDigitsOnly, e);
-                        Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-
-
-                Double cepDouble = null;
-                if (!cepStr.isEmpty()) {
-                    try {
-                        cepDouble = Double.valueOf(cepStr);
-                    } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter CEP para Double: " + cepStr, e);
-                    }
-                }
-
-                Double telDouble = null;
-                if (!telStr.isEmpty()) {
-                    try {
-                        telDouble = Double.valueOf(telStr);
-                    } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Telefone para Double: " + telStr, e);
-                    }
-                }
-
-                Double celDouble = null;
-                if (!celStr.isEmpty()) {
-                    try {
-                        celDouble = Double.valueOf(celStr);
-                    } catch (NumberFormatException e) {
-                        Log.e("CriarPetsActivity", "Erro ao converter Celular para Double: " + celStr, e);
-                    }
-                }
-
-
-                registroPetDAO = new RegistroPetDAO(CriarPetsActivity.this);
-
-                RegistroPetModel pet = new RegistroPetModel();
-                pet.setNomepet(nome);
-                pet.setNascimento(nascimento);
-                pet.setEspecie(especie);
-                pet.setRaca(raca);
-                pet.setSexo(sexo);
-                pet.setCidade(cidade);
-                pet.setEstado(estado);
-                pet.setBairro(bairro);
-                pet.setCep(cepDouble);
-                pet.setTelefoneresd(telDouble);
-                pet.setTelefonecel(celDouble);
-                pet.setEmail(email);
-                pet.setPai(pai);
-                pet.setMae(mae);
-                pet.setNaturalidade(naturalidade);
-                pet.setDescricao(descricao);
-                pet.setEndereco(endereco);
-                pet.setUrlImagem(imagemPerfilUrl);
-
-                registroPetDAO.insert(pet);
-
-                if (registroPetDAO.selectNotNull(nome, especie, raca, estado, cidade)) {
-                    Toast.makeText(CriarPetsActivity.this, "Pet registrado!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else if (registroPetDAO.select(nome, nascimentoStr, especie, sexo, pai, mae, raca, naturalidade, cor, endereco, bairro, cidade, telStr, email, cepStr, estado, celStr, descricao)) {
-                    Toast.makeText(CriarPetsActivity.this, "Pet registrado, e com todos os campos preenchidos!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(CriarPetsActivity.this, "Erro ao registrar pet.", Toast.LENGTH_SHORT).show();
-                }
+                salvarPet();
             }
         });
     }
 
+    private void salvarPet() {
+        String nome = editnome.getText().toString().trim();
+        String nascimentoStr = editnascimento.getText().toString().trim();
+        String especie = editespecie.getSelectedItem() != null && editespecie.getSelectedItemPosition() > 0 ? editespecie.getSelectedItem().toString() : "";
+        String raca = editraca.getSelectedItem() != null && editraca.getSelectedItemPosition() > 0 ? editraca.getSelectedItem().toString() : "";
+        String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
+        String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
+        String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
+        String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", "");
+        String bairro = editbairro.getText().toString().trim();
+        String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", "");
+        String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", "");
+        String email = editemail.getText().toString().trim();
+        String pai = editpai.getText().toString().trim();
+        String mae = editmae.getText().toString().trim();
+        String naturalidade = editnaturalidade.getText().toString().trim();
+        String cor = editcor.getText().toString().trim();
+        String descricao = editdescricao.getText().toString().trim();
+        String endereco = editendereco.getText().toString().trim();
+
+        // Validação dos campos obrigatórios
+        if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
+            Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
+            Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Sexo, Estado, Cidade).", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Conversão dos campos numéricos
+        Double nascimento = null;
+        String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
+        if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) {
+            try {
+                nascimento = Double.valueOf(nascimentoDigitsOnly);
+            } catch (NumberFormatException e) {
+                Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoDigitsOnly, e);
+                Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        Double cepDouble = null;
+        if (!cepStr.isEmpty()) {
+            try {
+                cepDouble = Double.valueOf(cepStr);
+            } catch (NumberFormatException e) {
+                Log.e("CriarPetsActivity", "Erro ao converter CEP para Double: " + cepStr, e);
+            }
+        }
+
+        Double telDouble = null;
+        if (!telStr.isEmpty()) {
+            try {
+                telDouble = Double.valueOf(telStr);
+            } catch (NumberFormatException e) {
+                Log.e("CriarPetsActivity", "Erro ao converter Telefone para Double: " + telStr, e);
+            }
+        }
+
+        Double celDouble = null;
+        if (!celStr.isEmpty()) {
+            try {
+                celDouble = Double.valueOf(celStr);
+            } catch (NumberFormatException e) {
+                Log.e("CriarPetsActivity", "Erro ao converter Celular para Double: " + celStr, e);
+            }
+        }
+
+        // Criar e salvar o pet
+        RegistroPetModel pet = new RegistroPetModel();
+        pet.setNomepet(nome);
+        pet.setNascimento(nascimento);
+        pet.setEspecie(especie);
+        pet.setRaca(raca);
+        pet.setSexo(sexo);
+        pet.setCidade(cidade);
+        pet.setEstado(estado);
+        pet.setBairro(bairro);
+        pet.setCep(cepDouble);
+        pet.setTelefoneresd(telDouble);
+        pet.setTelefonecel(celDouble);
+        pet.setEmail(email);
+        pet.setPai(pai);
+        pet.setMae(mae);
+        pet.setNaturalidade(naturalidade);
+        pet.setDescricao(descricao);
+        pet.setEndereco(endereco);
+        pet.setCor(cor);
+        pet.setUrlImagem(imagemPerfilUrl);
+
+        registroPetDAO.insert(pet);
+
+        if (registroPetDAO.selectNotNull(nome, especie, raca, estado, cidade)) {
+            Toast.makeText(CriarPetsActivity.this, "Pet registrado!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (registroPetDAO.select(nome, nascimentoStr, especie, sexo, pai, mae, raca, naturalidade, cor, endereco, bairro, cidade, telStr, email, cepStr, estado, celStr, descricao)) {
+            Toast.makeText(CriarPetsActivity.this, "Pet registrado, e com todos os campos preenchidos!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(CriarPetsActivity.this, "Erro ao registrar pet.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Updated permission handling method
+    private void checkPermissionAndPickImage() {
+        String[] permissions;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
+        } else {
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        }
+
+        boolean allPermissionsGranted = true;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
+            escolherImagem();
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+        }
+    }
+
     private void escolherImagem() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_CODE);
+        try {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), IMAGE_PICK_CODE);
+        } catch (Exception e) {
+            Log.e("CriarPetsActivity", "Erro ao abrir seletor de imagens", e);
+            Toast.makeText(this, "Erro ao abrir seletor de imagens", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == IMAGE_CODE && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            perfilpet.setImageURI(imageUri);
-            imagemPerfilUrl = imageUri.toString(); // Já existe, apenas confirmar
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE && data != null && data.getData() != null) {
+            try {
+                Uri imageUri = data.getData();
 
+                // Take persistent permission
+                try {
+                    getContentResolver().takePersistableUriPermission(imageUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (SecurityException e) {
+                    Log.w("CriarPetsActivity", "Não foi possível obter permissão persistente para a URI", e);
+                }
+
+                // Load image using Glide
+                Glide.with(this)
+                        .load(imageUri)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(perfilpet);
+
+                // Store the URI as string
+                imagemPerfilUrl = imageUri.toString();
+
+                Log.d("CriarPetsActivity", "Image selected: " + imagemPerfilUrl);
+
+            } catch (Exception e) {
+                Log.e("CriarPetsActivity", "Erro ao processar imagem selecionada", e);
+                Toast.makeText(this, "Erro ao carregar imagem selecionada", Toast.LENGTH_SHORT).show();
+            }
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Seleção de imagem cancelada.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Erro ao selecionar imagem.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -350,11 +383,19 @@ public class CriarPetsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PERMISION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allPermissionsGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (allPermissionsGranted) {
                 escolherImagem();
             } else {
-                Toast.makeText(this, "Permissão para acessar o armazenamento negada.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permissão necessária para acessar imagens.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -418,14 +459,12 @@ public class CriarPetsActivity extends AppCompatActivity {
         String urlCidades = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + uf + "/municipios";
         Log.d("IBGE_API", "Fetching cities for UF: " + uf + " from URL: " + urlCidades);
 
-
         List<String> cidadesDefault = new ArrayList<>();
         cidadesDefault.add("Carregando cidades...");
         ArrayAdapter<String> loadingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidadesDefault);
         loadingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editcidade.setAdapter(loadingAdapter);
         editcidade.setEnabled(false);
-
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, urlCidades, null,
                 new Response.Listener<JSONArray>() {
@@ -478,7 +517,6 @@ public class CriarPetsActivity extends AppCompatActivity {
         editcidade.setEnabled(false);
     }
 
-
     private void selecionarItemSpinner(Spinner spinner, String valor) {
         if (valor == null || valor.isEmpty() || spinner.getAdapter() == null) {
             return;
@@ -491,7 +529,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private void limparCamposEndereco() {
         editendereco.setText("");
@@ -510,7 +547,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             private boolean isUpdating = false;
             private String old = "";
             private final String MASK_CEP = "#####-###";
-
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -560,7 +596,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             private String old = "";
             private final String MASK_NASCIMENTO = "##/##/####";
 
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 old = s.toString();
@@ -598,7 +633,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             }
         });
 
-
         addPhoneNumberMask(edittel, "(##) ####-####");
         addPhoneNumberMask(editcel, "(##) #####-####");
     }
@@ -606,7 +640,6 @@ public class CriarPetsActivity extends AppCompatActivity {
     private void addPhoneNumberMask(final EditText editText, final String mask) {
         editText.addTextChangedListener(new MaskedWatcher(mask, editText));
     }
-
 
     private static class MaskedWatcher implements TextWatcher {
         private final String mask;
@@ -635,7 +668,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             String formatted = "";
             int i = 0;
             int maskCharIndex = 0;
-
 
             for (maskCharIndex = 0; maskCharIndex < mask.length() && i < str.length(); maskCharIndex++) {
                 char m = mask.charAt(maskCharIndex);
