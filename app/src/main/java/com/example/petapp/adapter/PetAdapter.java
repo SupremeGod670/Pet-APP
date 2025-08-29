@@ -43,7 +43,7 @@ public class PetAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        if (view == null ){
+        if (view == null) {
             view = activity.getLayoutInflater().inflate(R.layout.pet, viewGroup, false);
         }
 
@@ -56,13 +56,15 @@ public class PetAdapter extends BaseAdapter {
         TextView raca = view.findViewById(R.id.raca);
         raca.setText(pets.getRaca());
 
-        // Load image using Glide
-        String imageUrl = pets.getPerfil();
-
+        // Configurações do Glide para imagens redondas
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-                .centerCrop();
+                .placeholder(R.drawable.petpaw) // Imagem padrão específica para pets
+                .error(R.drawable.petpaw) // Imagem de erro específica para pets
+                .centerCrop()
+                .circleCrop(); // Esta opção torna a imagem redonda
+
+        // Carrega a imagem usando Glide
+        String imageUrl = pets.getPerfil();
 
         if (imageUrl != null && !imageUrl.isEmpty()) {
             try {
@@ -73,20 +75,21 @@ public class PetAdapter extends BaseAdapter {
                         .apply(requestOptions)
                         .into(perfil);
 
-                Log.d("PetAdapter", "Loading image for pet: " + pets.getNome() + ", URI: " + imageUrl);
+                Log.d("PetAdapter", "Carregando imagem para pet: " + pets.getNome() + ", URI: " + imageUrl);
 
             } catch (Exception e) {
-                Log.e("PetAdapter", "Error parsing image URI for pet: " + pets.getNome(), e);
-                // Load default image on error
+                Log.e("PetAdapter", "Erro ao analisar URI da imagem para pet: " + pets.getNome(), e);
+                // Carrega imagem padrão em caso de erro
                 Glide.with(activity)
-                        .load(R.drawable.ic_launcher_background)
+                        .load(R.drawable.petpaw)
                         .apply(requestOptions)
                         .into(perfil);
             }
         } else {
-            // Load default image if no URL
+            // Carrega imagem padrão se não houver URL
+            Log.d("PetAdapter", "Nenhuma imagem fornecida para pet: " + pets.getNome() + ", usando imagem padrão");
             Glide.with(activity)
-                    .load(R.drawable.ic_launcher_background)
+                    .load(R.drawable.petpaw)
                     .apply(requestOptions)
                     .into(perfil);
         }
