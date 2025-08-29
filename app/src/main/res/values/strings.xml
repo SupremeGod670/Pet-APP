@@ -21,7 +21,7 @@
     <string name="nascimento">Nascimento</string>
     <string name="nacsimento_dd_mm_aaaa">Nacsimento: dd/mm/aaaa</string>
     <string name="especie">Espécie*</string>
-    <string name="sexo">Sexo</string>
+    <string name="sexo">Sexo*</string>
     <string name="endereco">Endereço</string>
     <string name="endereco_rua_tal">Endereço: Rua Tal</string>
     <string name="bairro">Bairro</string>
