@@ -3,7 +3,7 @@
 > Sua carteira digital completa para eventos pet-friendly
 
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Versão](https://img.shields.io/badge/version-3.0.0-green.svg)](CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
 
 ## 📋 Sobre o Projeto
 
@@ -89,13 +89,13 @@ Eliminar a burocracia na hora de levar seu pet para eventos, oferecendo uma solu
 
 ## 🗺️ Roadmap
 
-### Versão 4.0 (Q3 2025)
+### Versão 2.0 (Q3 2025)
 - [ ] Integração com clínicas veterinárias
 - [ ] Sistema de recompensas para eventos
 - [ ] Chat com veterinários online
 - [ ] Marketplace de produtos pet
 
-### Versão 5.0 (Q1 2026)
+### Versão 3.0 (Q1 2026)
 - [ ] IA para recomendação de eventos
 - [ ] Rede social para tutores
 - [ ] Geolocalização de pets perdidos
