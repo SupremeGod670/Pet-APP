@@ -80,6 +80,7 @@ Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais cone
     <string name="editar_pet">Editar Pet</string>
     <string name="deletar_pet">Deletar Pet</string>
     <string name="upload_da_carteirinha">Upload da Carteirinha</string>
+    <string name="download_da_carteirinha">Download da Carteirinha</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />
