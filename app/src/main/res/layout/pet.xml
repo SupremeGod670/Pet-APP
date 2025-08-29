@@ -23,6 +23,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
+        <LinearLayout
+            android:id="@+id/linha"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/bg_edit_text"
+            android:backgroundTint="@color/my_light_primary"/>
+
         <ImageView
             android:id="@+id/perfil"
             android:layout_width="50dp"

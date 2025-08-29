@@ -26,24 +26,14 @@ public class SobreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sobre_menu);
+        setContentView(R.layout.sobre_app);
 
         textView = findViewById(R.id.textView);
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
         textView3 = findViewById(R.id.textView3);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        open = findViewById(R.id.open);
-        sair = findViewById(R.id.sair);
-
-        setupNavigationDrawer();
-        setupButtonClickListeners();
-    }
-
-    private void setupNavigationDrawer() {
-        open.setOnClickListener(view -> drawerLayout.open());
+        navigationView = findViewById(R.id.navigationb);
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -57,19 +47,7 @@ public class SobreActivity extends AppCompatActivity {
                 finish();
             }
 
-            drawerLayout.close();
             return true; // Indica que o item foi tratado
-        });
-    }
-
-    private void setupButtonClickListeners() {
-        sair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SobreActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
         });
     }
 }

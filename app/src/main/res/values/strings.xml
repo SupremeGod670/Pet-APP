@@ -81,6 +81,15 @@ Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais cone
     <string name="deletar_pet">Deletar Pet</string>
     <string name="upload_da_carteirinha">Upload da Carteirinha</string>
     <string name="download_da_carteirinha">Download da Carteirinha</string>
+    <string name="texto_meus_pets">Informações de seus pets, na palma da sua mão!</string>
+    <string name="meus_pets">Meus Pets</string>
+    <string name="sobre_o_app">Sobre o App</string>
+    <string name="texto_sobre_app">Informações sobre o app</string>
+    <string name="texto_crie_conta">Não tem conta?</string>
+    <string name="cadastre_se">Cadastre-se</string>
+    <string name="perfil_do_pet">Perfil do Pet</string>
+    <string name="crie_o_seu_pet_aqui">Crie o seu pet aqui!</string>
+    <string name="criar_pet">Criar Pet</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />

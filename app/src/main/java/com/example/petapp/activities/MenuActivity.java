@@ -1,52 +1,42 @@
 package com.example.petapp.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity; // Import necessário
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.Spinner; // Import necessário
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog; // Import necessário
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.petapp.R;
 import com.example.petapp.adapter.PetAdapter;
 import com.example.petapp.adapter.PetModel;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
 import com.google.android.material.navigation.NavigationView;
-// Remova imports não usados de Firebase Auth se não estiver usando nesta Activity
-// import com.google.firebase.auth.FirebaseAuth;
-// import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.Collections; // Import necessário
-import java.util.Comparator; // Import necessário
-import java.util.HashSet;   // Import necessário
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;       // Import necessário
+import java.util.Set;
 
 public class MenuActivity extends AppCompatActivity {
 
     private GridView gridView;
-    DrawerLayout drawerLayout;
     NavigationView navigationView;
-    Button sair;
-    ImageButton open;
     private ImageButton criar;
     // LinearLayout pet; // Parece não estar sendo usado, pode ser removido se for o caso
     private RegistroPetDAO registroPetDAO;
@@ -68,23 +58,19 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.menu_pets);
 
         // Inicialização do DAO uma vez
         registroPetDAO = new RegistroPetDAO(this);
 
         criar = findViewById(R.id.criar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        sair = findViewById(R.id.sair);
-        open = findViewById(R.id.open);
+        navigationView = findViewById(R.id.navigationb);
         pesquisar = findViewById(R.id.pesquisar);
         filtro = findViewById(R.id.filtro); // Seu botão/ícone de filtro
         gridView = findViewById(R.id.gridview);
         // pet = findViewById(R.id.pet);
 
         setupSearchView();
-        setupNavigationDrawer();
         setupButtonClickListeners();
 
         // Listener para o botão/ícone de filtro
@@ -123,12 +109,10 @@ public class MenuActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
 
-    private void setupNavigationDrawer() {
-        open.setOnClickListener(view -> drawerLayout.open());
+        navigationView.setNavigationItemSelectedListener(item ->
 
-        navigationView.setNavigationItemSelectedListener(item -> {
+        {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_config) { // Exemplo de outro item
                 Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
@@ -140,19 +124,11 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(MenuActivity.this, "Você já está na tela de Menu", Toast.LENGTH_SHORT).show();
             }
 
-            drawerLayout.close();
             return true; // Indica que o item foi tratado
         });
     }
 
     private void setupButtonClickListeners() {
-        sair.setOnClickListener(view -> {
-            // Decida se "Sair" é um logout ou apenas volta para LoginActivity
-            Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // Finaliza MenuActivity
-        });
-
         gridView.setOnItemClickListener((adapterView, view, position, id) -> {
             PetModel clickedPet = (PetModel) adapterView.getItemAtPosition(position); // Use currentlyDisplayedPets
             if (clickedPet == null) return;
@@ -215,7 +191,7 @@ public class MenuActivity extends AppCompatActivity {
             Toast.makeText(this, "Nenhum pet cadastrado.", Toast.LENGTH_SHORT).show();
         } else if (petsToDisplay.isEmpty() && !pesquisar.getQuery().toString().isEmpty()) {
             Toast.makeText(this, "Nenhum pet encontrado para a pesquisa.", Toast.LENGTH_SHORT).show();
-        } else if (petsToDisplay.isEmpty() && (!currentActiveRaceFilter.equals(RACE_FILTER_ALL_RACES) || isAlphabeticalSortActive) ){
+        } else if (petsToDisplay.isEmpty() && (!currentActiveRaceFilter.equals(RACE_FILTER_ALL_RACES) || isAlphabeticalSortActive)) {
             Toast.makeText(this, "Nenhum pet encontrado com os filtros aplicados.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -236,7 +212,7 @@ public class MenuActivity extends AppCompatActivity {
 
         TextView tvFilterType = new TextView(this);
         tvFilterType.setText("Escolha o tipo de filtro/ordenação:");
-        tvFilterType.setPadding(0,0,0,10);
+        tvFilterType.setPadding(0, 0, 0, 10);
         dialogLayout.addView(tvFilterType);
 
         Spinner spinnerFilterType = new Spinner(this);

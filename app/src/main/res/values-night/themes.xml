@@ -6,7 +6,11 @@
     </style>
 
     <style name="BACKGROUND">
-        <item name="android:background">@color/my_dark_primary</item>
+        <item name="android:background">@color/white_grey</item>
+    </style>
+
+    <style name="BACKGROUNDGRADIENT">
+        <item name="android:background">@drawable/gradient_toolbar_dark</item>
     </style>
 
     <style name="TEXTCOLOR">
