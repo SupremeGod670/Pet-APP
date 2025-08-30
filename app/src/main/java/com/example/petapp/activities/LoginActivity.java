@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 String senhaHash = HashUtils.sha256(senhaDigitada);
 
                 if (registroUserDAO.select(emailDigitado, senhaHash)) {
-                    Intent it = new Intent(LoginActivity.this, MenuActivity.class);
+                    Intent it = new Intent(LoginActivity.this, InicioActivity.class);
                     startActivity(it);
                     finish();
                 } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaHash)) {

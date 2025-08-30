@@ -57,7 +57,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="carregar_imagem">Carregar Imagem</string>
     <string name="configuracoes">Configurações</string>
-    <string name="sobre">Sobre o Indentificação Pet</string>
+    <string name="sobre">Sobre o App</string>
     <string name="sobre_app">🎉🐾 Apresentando o Identificação Pet: Seu Ingresso para Eventos Pet-Friendly! 🐾🎉
 
 Chega de burocracia na hora de levar seu amigo de quatro patas para os melhores eventos! Com o Identificação Pet, seu pet tem uma carteira de identificação virtual completa na palma da sua mão. 📱✨
@@ -76,10 +76,9 @@ Seja um festival de raças, uma corrida pet ou um evento beneficente, o Identifi
 
 Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais conectada e cheia de aventuras com seu melhor amigo! 🚀🐶🐱</string>
     <string name="sobre_app3">Pronto para simplificar a vida do seu pet e a sua? Qual evento você e seu companheiro peludo estão ansiosos para visitar primeiro com o Identificação Pet? 🐾</string>
-    <string name="menu_pets">Menu Pets</string>
+    <string name="menu_pets">Meus Pets</string>
     <string name="editar_pet">Editar Pet</string>
     <string name="deletar_pet">Deletar Pet</string>
-    <string name="upload_da_carteirinha">Upload da Carteirinha</string>
     <string name="download_da_carteirinha">Download da Carteirinha</string>
     <string name="texto_meus_pets">Informações de seus pets, na palma da sua mão!</string>
     <string name="meus_pets">Meus Pets</string>
@@ -90,6 +89,9 @@ Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais cone
     <string name="perfil_do_pet">Perfil do Pet</string>
     <string name="crie_o_seu_pet_aqui">Crie o seu pet aqui!</string>
     <string name="criar_pet">Criar Pet</string>
+    <string name="inicio">Início</string>
+    <string name="texto_inicio">Olá, nome! Como está seu pet hoje?</string>
+    <string name="texto_inicio_meus_pets">Gerencie facilmente todos os seus companheiros</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />

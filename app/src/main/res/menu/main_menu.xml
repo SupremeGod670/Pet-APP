@@ -4,23 +4,24 @@
     <group android:id="@+id/grupo1">
 
         <item
-            android:id="@+id/nav_config"
-            android:icon="@drawable/settings"
-            android:title="@string/configuracoes" />
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/home"
+            android:title="@string/inicio" />
+
+        <item
+            android:id="@+id/nav_menu"
+            android:icon="@drawable/menu_pet"
+            android:title="@string/menu_pets" />
 
         <item
             android:id="@+id/nav_sobre"
             android:icon="@drawable/info"
             android:title="@string/sobre" />
 
-    </group>
-
-    <group android:id="@+id/grupo2">
-
         <item
-            android:id="@+id/nav_menu"
-            android:icon="@drawable/menu_pet"
-            android:title="@string/menu_pets" />
+            android:id="@+id/nav_config"
+            android:icon="@drawable/settings"
+            android:title="@string/configuracoes" />
 
     </group>
 

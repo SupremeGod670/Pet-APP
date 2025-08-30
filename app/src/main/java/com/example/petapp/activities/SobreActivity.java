@@ -44,16 +44,19 @@ public class SobreActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.nav_config) {
-                    Toast.makeText(SobreActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (itemId == R.id.nav_sobre) {
-                    Toast.makeText(SobreActivity.this, "Você já está na tela de Sobre", Toast.LENGTH_SHORT).show();
+                if (itemId == R.id.nav_inicio) {
+                    Intent intent = new Intent(SobreActivity.this, InicioActivity.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_menu) {
                     Intent intent = new Intent(SobreActivity.this, MenuActivity.class);
                     startActivity(intent);
-                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_sobre) {
+                    Toast.makeText(SobreActivity.this, "Você já está na tela de Sobre", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (itemId == R.id.nav_config) {
+                    Toast.makeText(SobreActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;

@@ -88,16 +88,19 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.nav_config) {
-                    Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
+                if (itemId == R.id.nav_inicio) {
+                    Intent intent = new Intent(MenuActivity.this, InicioActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_menu) {
+                    Toast.makeText(MenuActivity.this, "Você já está na tela de Menu", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemId == R.id.nav_sobre) {
                     Intent intent = new Intent(MenuActivity.this, SobreActivity.class);
                     startActivity(intent);
-                    finish();
                     return true;
-                } else if (itemId == R.id.nav_menu) {
-                    Toast.makeText(MenuActivity.this, "Você já está na tela de Menu", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.nav_config) {
+                    Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
