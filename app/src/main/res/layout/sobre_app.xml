@@ -68,6 +68,7 @@
                 tools:ignore="MissingConstraints">
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -86,6 +87,7 @@
                     android:orientation="vertical" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -97,6 +99,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1.1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -108,6 +111,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1.2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -119,6 +123,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1.3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -130,6 +135,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1.4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -141,6 +147,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView1.5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -159,6 +166,7 @@
                     android:orientation="vertical" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -177,6 +185,7 @@
                     android:orientation="vertical" />
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -192,7 +201,7 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigationb"
-                style="@style/BACKGROUND"
+                style="@style/BACKGROUNDGRADIENT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:itemIconSize="35dp"

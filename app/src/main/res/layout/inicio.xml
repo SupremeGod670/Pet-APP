@@ -193,7 +193,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigationb"
-            style="@style/BACKGROUND"
+            style="@style/BACKGROUNDGRADIENT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:itemIconSize="35dp"
