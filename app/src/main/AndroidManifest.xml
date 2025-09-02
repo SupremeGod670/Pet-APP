@@ -37,6 +37,7 @@
         <activity android:name=".activities.InicioActivity" />
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.SobreActivity" />
+        <activity android:name=".activities.ConfigActivity" />
         <activity android:name=".activities.CriarPetsActivity" />
         <activity android:name=".activities.MostrarPetActivity" />
         <provider

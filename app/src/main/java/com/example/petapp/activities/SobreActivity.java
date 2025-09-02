@@ -56,7 +56,8 @@ public class SobreActivity extends AppCompatActivity {
                     Toast.makeText(SobreActivity.this, "Você já está na tela de Sobre", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemId == R.id.nav_config) {
-                    Toast.makeText(SobreActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SobreActivity.this, ConfigActivity.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;

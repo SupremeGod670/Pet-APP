@@ -8,7 +8,7 @@ import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "registro.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2; // Incrementado para adicionar coluna nome
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,7 +21,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(RegistroUserModel.DROP_TABLE);
-        db.execSQL(RegistroUserModel.CREATE_TABLE);
+        if (oldVersion < 2) {
+            // Adicionar coluna nome para usuários existentes
+            db.execSQL("ALTER TABLE " + RegistroUserModel.TABELA_USUARIO + " ADD COLUMN " + RegistroUserModel.COLUNA_NOME + " TEXT;");
+        }
     }
 }

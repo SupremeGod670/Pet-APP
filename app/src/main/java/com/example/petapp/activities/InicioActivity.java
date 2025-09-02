@@ -58,7 +58,8 @@ public class InicioActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_config) {
-                Toast.makeText(InicioActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(InicioActivity.this, ConfigActivity.class);
+                startActivity(intent);
                 return true;
             }
             return false;

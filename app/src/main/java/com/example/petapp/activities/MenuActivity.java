@@ -100,7 +100,8 @@ public class MenuActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_config) {
-                    Toast.makeText(MenuActivity.this, "Configurações Clicado", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MenuActivity.this, ConfigActivity.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;
