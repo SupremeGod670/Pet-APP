@@ -14,9 +14,9 @@
             android:title="@string/menu_pets" />
 
         <item
-            android:id="@+id/nav_sobre"
-            android:icon="@drawable/info"
-            android:title="@string/sobre" />
+            android:id="@+id/nav_vacinas"
+            android:icon="@drawable/syringe"
+            android:title="@string/vacinacoes" />
 
         <item
             android:id="@+id/nav_config"

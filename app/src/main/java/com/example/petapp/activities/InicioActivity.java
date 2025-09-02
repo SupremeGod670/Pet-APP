@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class InicioActivity extends AppCompatActivity {
 
-    private LinearLayout meuspets, pets_item, qr_code_item;
+    private LinearLayout meuspets, pets_item, qr_code_item, vacinas_item, sobre_item;
     private BottomNavigationView navigationb;
 
     @Override
@@ -23,6 +23,8 @@ public class InicioActivity extends AppCompatActivity {
         meuspets = findViewById(R.id.meuspets);
         pets_item = findViewById(R.id.pets_item);
         qr_code_item = findViewById(R.id.qr_code_item);
+        vacinas_item = findViewById(R.id.vacinas_item);
+        sobre_item = findViewById(R.id.sobre_item);
 
         navigationb = findViewById(R.id.navigationb);
 
@@ -39,7 +41,16 @@ public class InicioActivity extends AppCompatActivity {
         });
 
         qr_code_item.setOnClickListener(v -> {
+            Toast.makeText(InicioActivity.this, "QR Code Clicado", Toast.LENGTH_SHORT).show();
+        });
 
+        vacinas_item.setOnClickListener(v -> {
+            Toast.makeText(InicioActivity.this, "Vacinas Clicado", Toast.LENGTH_SHORT).show();
+        });
+
+        sobre_item.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioActivity.this, SobreActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -53,9 +64,8 @@ public class InicioActivity extends AppCompatActivity {
                 Intent intent = new Intent(InicioActivity.this, MenuActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (itemId == R.id.nav_sobre) {
-                Intent intent = new Intent(InicioActivity.this, SobreActivity.class);
-                startActivity(intent);
+            } else if (itemId == R.id.nav_vacinas) {
+                Toast.makeText(InicioActivity.this, "Vacinas Clicado", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (itemId == R.id.nav_config) {
                 Intent intent = new Intent(InicioActivity.this, ConfigActivity.class);

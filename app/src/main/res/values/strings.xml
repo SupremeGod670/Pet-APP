@@ -92,6 +92,7 @@ Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais cone
     <string name="inicio">Início</string>
     <string name="texto_inicio">Olá, nome! Como está seu pet hoje?</string>
     <string name="texto_inicio_meus_pets">Gerencie facilmente todos os seus companheiros</string>
+    <string name="vacinacoes">Vacinações</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />
