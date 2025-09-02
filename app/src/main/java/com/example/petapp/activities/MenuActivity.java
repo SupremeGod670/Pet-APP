@@ -96,7 +96,8 @@ public class MenuActivity extends AppCompatActivity {
                     Toast.makeText(MenuActivity.this, "Você já está na tela de Menu", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemId == R.id.nav_vacinas) {
-                    Toast.makeText(MenuActivity.this, "Vacinas Clicado", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MenuActivity.this, VacinacoesActivity.class);
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_config) {
                     Intent intent = new Intent(MenuActivity.this, ConfigActivity.class);

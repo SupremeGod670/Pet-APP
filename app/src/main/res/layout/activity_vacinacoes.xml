@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BACKGROUND"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.VacinacoesActivity">
+
+    <!-- Header/Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar"
+        style="@style/BACKGROUNDGRADIENT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titulo_vacinacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/the_seasons_regular"
+            android:text="Vacinações"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/subtitulo_vacinacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/the_seasons_regular"
+            android:text="Encontre clínicas e veterinários em Criciúma"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Campo de pesquisa -->
+    <LinearLayout
+        android:id="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_edit_text"
+        android:backgroundTint="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/petpaw"
+            app:tint="@color/grey" />
+
+        <EditText
+            android:id="@+id/edit_text_pesquisa"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Pesquisar clínicas, pet shops..."
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Info sobre emergência -->
+    <LinearLayout
+        android:id="@+id/info_emergencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_edit_text"
+        android:backgroundTint="@color/my_light_primary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_container">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/syringe"
+            app:tint="@color/red" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="🚨 Ícone vermelho indica atendimento 24h/emergência"
+            android:textColor="@color/my_dark_primary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- ListView de veterinários -->
+    <ListView
+        android:id="@+id/listview_veterinarios"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigationb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_emergencia" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigationb"
+        style="@style/BACKGROUNDGRADIENT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemIconSize="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/main_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
