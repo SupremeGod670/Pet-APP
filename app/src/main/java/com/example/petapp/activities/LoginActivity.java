@@ -2,6 +2,7 @@ package com.example.petapp.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -66,14 +67,21 @@ public class LoginActivity extends AppCompatActivity {
                 String senhaHash = HashUtils.sha256(senhaDigitada);
 
                 if (registroUserDAO.select(emailDigitado, senhaHash)) {
-                    Intent it = new Intent(LoginActivity.this, InicioActivity.class);
-                    startActivity(it);
+                    // Após validar o login com sucesso, adicione este código:
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email_logado", emailDigitado); // onde emailDigitado é o email que o usuário digitou
+                    editor.apply();
+
+                    // Depois redireciona para a próxima tela
+                    Intent intent = new Intent(LoginActivity.this, InicioActivity.class);
+                    startActivity(intent);
                     finish();
                 } else if (!registroUserDAO.selectEmail(emailDigitado) && !registroUserDAO.selectSenha(senhaHash)) {
                     mensagemErrorApresentar("Email e senha incorretos");
-                } else if (!registroUserDAO.selectEmail(emailDigitado)){
+                } else if (!registroUserDAO.selectEmail(emailDigitado)) {
                     mensagemErrorApresentar("Email incorreto");
-                } else if (!registroUserDAO.selectSenha(senhaHash)){
+                } else if (!registroUserDAO.selectSenha(senhaHash)) {
                     mensagemErrorApresentar("Senha incorreta");
                 }
             }

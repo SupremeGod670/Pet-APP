@@ -49,7 +49,6 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void inicializarComponentes() {
-
         registroUserDAO = new RegistroUserDAO(this);
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         emailLogado = sharedPreferences.getString("email_logado", "");
@@ -100,36 +99,105 @@ public class ConfigActivity extends AppCompatActivity {
             return;
         }
 
-        if (!emailLogado.isEmpty()) {
-            try {
-                RegistroUserModel usuarioLogado = new RegistroUserModel();
-                usuarioLogado = registroUserDAO.getUsuarioByEmail(emailLogado);
-                if (usuarioLogado != null) {
-                    String nome = usuarioLogado.getNome();
-                    if (nome == null || nome.trim().isEmpty()) {
-                        nome = emailLogado.split("@")[0];
-                    }
+        // Debug: Verificar todas as chaves do SharedPreferences
+        android.util.Log.d("ConfigActivity", "=== DEBUG SHARED PREFERENCES ===");
+        java.util.Map<String, ?> allPrefs = sharedPreferences.getAll();
+        for (java.util.Map.Entry<String, ?> entry : allPrefs.entrySet()) {
+            android.util.Log.d("ConfigActivity", "Chave: " + entry.getKey() + ", Valor: " + entry.getValue());
+        }
+        android.util.Log.d("ConfigActivity", "Email logado obtido: '" + emailLogado + "'");
 
-                    txtNome.setText(nome);
-                    txtEmail.setText(usuarioLogado.getEmail());
-                    txtSenha.setText("••••••••");
-                } else {
-                    // Se o usuário não for encontrado no banco, pode ser um erro ou o usuário foi removido
-                    if (!isFinishing() && !isDestroyed()) {
-                        // Adiciona um log para depuração
-                        android.util.Log.e("ConfigActivity", "Usuário não encontrado no banco de dados com email: " + emailLogado);
-                        mostrarErro("Usuário não encontrado. Por favor, faça o login novamente.", true);
-                    }
+        // Verificar se existe email logado
+        if (emailLogado == null || emailLogado.trim().isEmpty()) {
+            android.util.Log.e("ConfigActivity", "Email logado está vazio ou nulo");
+            if (!isFinishing() && !isDestroyed()) {
+                mostrarErro("Email não encontrado no sistema. Faça login novamente.", true);
+            }
+            return;
+        }
+
+        try {
+            android.util.Log.d("ConfigActivity", "Buscando usuário com email: '" + emailLogado + "'");
+
+            // Debug: Verificar se o email existe no banco
+            boolean emailExiste = registroUserDAO.selectEmail(emailLogado);
+            android.util.Log.d("ConfigActivity", "Email existe no banco: " + emailExiste);
+
+            // Buscar usuário no banco de dados
+            RegistroUserModel usuarioLogado = registroUserDAO.getUsuarioByEmail(emailLogado);
+
+            if (usuarioLogado != null) {
+                android.util.Log.d("ConfigActivity", "Usuário encontrado!");
+                android.util.Log.d("ConfigActivity", "ID: " + usuarioLogado.getId());
+                android.util.Log.d("ConfigActivity", "Nome: '" + usuarioLogado.getNome() + "'");
+                android.util.Log.d("ConfigActivity", "Email: '" + usuarioLogado.getEmail() + "'");
+
+                String nome = usuarioLogado.getNome();
+                if (nome == null || nome.trim().isEmpty()) {
+                    nome = emailLogado.split("@")[0];
+                    android.util.Log.d("ConfigActivity", "Nome estava vazio, usando: " + nome);
                 }
-            } catch (Exception e) {
-                android.util.Log.e("ConfigActivity", "Erro ao carregar dados do usuário: " + e.getMessage(), e);
+
+                txtNome.setText(nome);
+                txtEmail.setText(usuarioLogado.getEmail());
+                txtSenha.setText("••••••••");
+
+                android.util.Log.d("ConfigActivity", "Dados carregados com sucesso na interface");
+
+            } else {
+                android.util.Log.e("ConfigActivity", "Usuário retornado é NULL para o email: '" + emailLogado + "'");
+
+                // Debug: Tentar buscar todos os usuários para ver o que tem no banco
+                android.util.Log.d("ConfigActivity", "=== LISTANDO TODOS OS USUÁRIOS NO BANCO ===");
+                // Vou criar um método para isso
+                debugListarTodosUsuarios();
+
                 if (!isFinishing() && !isDestroyed()) {
-                    mostrarErro("Erro ao acessar os dados: " + e.getMessage(), true); // Redirecionar em caso de exceção também
+                    mostrarErro("Dados do usuário não encontrados no banco. Faça login novamente.", true);
                 }
             }
-        } else { // emailLogado está vazio
-            if (!isFinishing() && !isDestroyed()) { // Verifica novamente se a activity está ativa
-                mostrarErro("Usuário não encontrado. Faça login novamente.", true);
+        } catch (Exception e) {
+            android.util.Log.e("ConfigActivity", "Erro ao carregar dados do usuário: " + e.getMessage(), e);
+            e.printStackTrace();
+            if (!isFinishing() && !isDestroyed()) {
+                mostrarErro("Erro ao acessar os dados: " + e.getMessage(), true);
+            }
+        }
+    }
+
+    // Método para debug - listar todos os usuários
+    private void debugListarTodosUsuarios() {
+        try {
+            registroUserDAO.Open();
+            android.database.Cursor cursor = registroUserDAO.db.query(
+                    "tb_user",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            android.util.Log.d("ConfigActivity", "Total de usuários no banco: " + cursor.getCount());
+
+            if (cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                    String nome = cursor.getString(cursor.getColumnIndexOrThrow("nome"));
+                    String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                    android.util.Log.d("ConfigActivity", "Usuário encontrado - ID: " + id + ", Nome: '" + nome + "', Email: '" + email + "'");
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            registroUserDAO.Close();
+        } catch (Exception e) {
+            android.util.Log.e("ConfigActivity", "Erro ao listar usuários: " + e.getMessage(), e);
+            try {
+                registroUserDAO.Close();
+            } catch (Exception ex) {
+                // Ignore
             }
         }
     }
