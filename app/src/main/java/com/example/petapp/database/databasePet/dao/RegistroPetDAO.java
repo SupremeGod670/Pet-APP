@@ -188,44 +188,44 @@ public class RegistroPetDAO extends AbstrataDAO {
             db = this.db;
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put("nomepet", pet.getNomepet());
-            contentValues.put("raca", pet.getRaca());
-            contentValues.put("especie", pet.getEspecie());
-            contentValues.put("sexo", pet.getSexo());
-            contentValues.put("cor", pet.getCor());
-            contentValues.put("cidade", pet.getCidade());
-            contentValues.put("estado", pet.getEstado());
-            contentValues.put("bairro", pet.getBairro());
-            contentValues.put("endereco", pet.getEndereco());
-            contentValues.put("email", pet.getEmail());
-            contentValues.put("pai", pet.getPai());
-            contentValues.put("mae", pet.getMae());
-            contentValues.put("naturalidade", pet.getNaturalidade());
-            contentValues.put("descricao", pet.getDescricao());
-            contentValues.put("urlImagem", pet.getUrlImagem());
+            contentValues.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
+            contentValues.put(RegistroPetModel.COLUNA_RACA, pet.getRaca());
+            contentValues.put(RegistroPetModel.COLUNA_ESPECIE, pet.getEspecie());
+            contentValues.put(RegistroPetModel.COLUNA_SEXO, pet.getSexo());
+            contentValues.put(RegistroPetModel.COLUNA_COR, pet.getCor());
+            contentValues.put(RegistroPetModel.COLUNA_CIDADE, pet.getCidade());
+            contentValues.put(RegistroPetModel.COLUNA_ESTADO, pet.getEstado());
+            contentValues.put(RegistroPetModel.COLUNA_BAIRRO, pet.getBairro());
+            contentValues.put(RegistroPetModel.COLUNA_ENDERECO, pet.getEndereco());
+            contentValues.put(RegistroPetModel.COLUNA_EMAIL, pet.getEmail());
+            contentValues.put(RegistroPetModel.COLUNA_PAI, pet.getPai());
+            contentValues.put(RegistroPetModel.COLUNA_MAE, pet.getMae());
+            contentValues.put(RegistroPetModel.COLUNA_NATURALIDADE, pet.getNaturalidade());
+            contentValues.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
+            contentValues.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Usar a constante correta
 
             if (pet.getCep() != null) {
-                contentValues.put("cep", pet.getCep());
+                contentValues.put(RegistroPetModel.COLUNA_CEP, pet.getCep());
             } else {
-                contentValues.putNull("cep");
+                contentValues.putNull(RegistroPetModel.COLUNA_CEP);
             }
 
             if (pet.getTelefoneresd() != null) {
-                contentValues.put("telefoneresd", pet.getTelefoneresd());
+                contentValues.put(RegistroPetModel.COLUNA_TELEFONERESD, pet.getTelefoneresd());
             } else {
-                contentValues.putNull("telefoneresd");
+                contentValues.putNull(RegistroPetModel.COLUNA_TELEFONERESD);
             }
 
             if (pet.getTelefonecel() != null) {
-                contentValues.put("telefonecel", pet.getTelefonecel());
+                contentValues.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
             } else {
-                contentValues.putNull("telefonecel");
+                contentValues.putNull(RegistroPetModel.COLUNA_TELEFONECEL);
             }
 
             if (pet.getNascimento() != null) {
-                contentValues.put("nascimento", pet.getNascimento());
+                contentValues.put(RegistroPetModel.COLUNA_NASCIMENTO, pet.getNascimento());
             } else {
-                contentValues.putNull("nascimento");
+                contentValues.putNull(RegistroPetModel.COLUNA_NASCIMENTO);
             }
 
             int rowsAffected = db.update(
