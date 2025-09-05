@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.petapp.R;
 import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
 import com.example.petapp.database.databaseUser.model.RegistroUserModel;
+import com.example.petapp.utils.HashUtils;
 
 public class AlterarSenhaActivity extends AppCompatActivity {
 
@@ -61,67 +62,45 @@ public class AlterarSenhaActivity extends AppCompatActivity {
     }
 
     private void configurarListeners() {
-        voltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        voltar.setOnClickListener(v -> finish());
+
+        toggleSenhaAtual.setOnClickListener(v -> {
+            senhaAtualVisivel = !senhaAtualVisivel;
+            if (senhaAtualVisivel) {
+                editSenhaAtual.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                toggleSenhaAtual.setImageResource(R.drawable.ic_visibility_off);
+            } else {
+                editSenhaAtual.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                toggleSenhaAtual.setImageResource(R.drawable.ic_visibility);
             }
+            editSenhaAtual.setSelection(editSenhaAtual.getText().length());
         });
 
-        // Toggle para senha atual
-        toggleSenhaAtual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                senhaAtualVisivel = !senhaAtualVisivel;
-                if (senhaAtualVisivel) {
-                    editSenhaAtual.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    toggleSenhaAtual.setImageResource(R.drawable.ic_visibility_off);
-                } else {
-                    editSenhaAtual.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    toggleSenhaAtual.setImageResource(R.drawable.ic_visibility);
-                }
-                editSenhaAtual.setSelection(editSenhaAtual.getText().length());
+        toggleNovaSenha.setOnClickListener(v -> {
+            novaSenhaVisivel = !novaSenhaVisivel;
+            if (novaSenhaVisivel) {
+                editNovaSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                toggleNovaSenha.setImageResource(R.drawable.ic_visibility_off);
+            } else {
+                editNovaSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                toggleNovaSenha.setImageResource(R.drawable.ic_visibility);
             }
+            editNovaSenha.setSelection(editNovaSenha.getText().length());
         });
 
-        // Toggle para nova senha
-        toggleNovaSenha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                novaSenhaVisivel = !novaSenhaVisivel;
-                if (novaSenhaVisivel) {
-                    editNovaSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    toggleNovaSenha.setImageResource(R.drawable.ic_visibility_off);
-                } else {
-                    editNovaSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    toggleNovaSenha.setImageResource(R.drawable.ic_visibility);
-                }
-                editNovaSenha.setSelection(editNovaSenha.getText().length());
+        toggleConfirmarSenha.setOnClickListener(v -> {
+            confirmarSenhaVisivel = !confirmarSenhaVisivel;
+            if (confirmarSenhaVisivel) {
+                editConfirmarSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                toggleConfirmarSenha.setImageResource(R.drawable.ic_visibility_off);
+            } else {
+                editConfirmarSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                toggleConfirmarSenha.setImageResource(R.drawable.ic_visibility);
             }
+            editConfirmarSenha.setSelection(editConfirmarSenha.getText().length());
         });
 
-        // Toggle para confirmar senha
-        toggleConfirmarSenha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmarSenhaVisivel = !confirmarSenhaVisivel;
-                if (confirmarSenhaVisivel) {
-                    editConfirmarSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    toggleConfirmarSenha.setImageResource(R.drawable.ic_visibility_off);
-                } else {
-                    editConfirmarSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    toggleConfirmarSenha.setImageResource(R.drawable.ic_visibility);
-                }
-                editConfirmarSenha.setSelection(editConfirmarSenha.getText().length());
-            }
-        });
-
-        btnSalvarSenha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alterarSenha();
-            }
-        });
+        btnSalvarSenha.setOnClickListener(v -> alterarSenha());
     }
 
     private void carregarEmailUsuario() {
@@ -136,7 +115,6 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         String novaSenha = editNovaSenha.getText().toString().trim();
         String confirmarSenha = editConfirmarSenha.getText().toString().trim();
 
-        // Validações
         if (TextUtils.isEmpty(senhaAtual)) {
             editSenhaAtual.setError("Senha atual é obrigatória");
             editSenhaAtual.requestFocus();
@@ -174,30 +152,30 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         }
 
         try {
-            // Verificar se a senha atual está correta
             RegistroUserModel usuario = registroUserDAO.getUsuarioByEmail(emailLogado);
             if (usuario == null) {
                 Toast.makeText(this, "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (!senhaAtual.equals(usuario.getSenha())) {
+            String senhaDb = usuario.getSenha();
+            String senhaAtualHash = HashUtils.sha256(senhaAtual);
+
+            if (!senhaAtualHash.equals(senhaDb)) {
                 editSenhaAtual.setError("Senha atual incorreta");
                 editSenhaAtual.requestFocus();
                 return;
             }
 
-            // Atualizar senha no banco
-            registroUserDAO.updateSenha(emailLogado, novaSenha);
+            String novaSenhaHash = HashUtils.sha256(novaSenha);
+            registroUserDAO.updateSenha(emailLogado, novaSenhaHash);
 
             Toast.makeText(this, "Senha alterada com sucesso!", Toast.LENGTH_SHORT).show();
 
-            // Limpar campos
             editSenhaAtual.setText("");
             editNovaSenha.setText("");
             editConfirmarSenha.setText("");
 
-            // Voltar para a tela anterior
             setResult(RESULT_OK);
             finish();
 
@@ -210,8 +188,6 @@ public class AlterarSenhaActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // Fechar conexão com o banco se necessário
         if (registroUserDAO != null) {
             registroUserDAO.Close();
         }
