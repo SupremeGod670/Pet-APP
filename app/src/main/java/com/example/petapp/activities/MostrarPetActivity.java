@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
 import com.example.petapp.fragments.Fragment1;
 import com.example.petapp.fragments.Fragment2;
+import com.example.petapp.views.SignatureView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +50,7 @@ public class MostrarPetActivity extends AppCompatActivity {
     private FragmentStateAdapter pagerAdapter;
     private RegistroPetModel petAtual;
     private RegistroPetDAO dao;
+    private SignatureView assinaturaView;
 
     private static final int REQUEST_WRITE_PERMISSION = 786;
     public static final String EXTRA_PET_ID = "EXTRA_PET_ID";
@@ -62,12 +65,16 @@ public class MostrarPetActivity extends AppCompatActivity {
         editarpet = findViewById(R.id.editarpet);
         downloadc = findViewById(R.id.downloadc);
         deletarpet = findViewById(R.id.deletarpet);
+        assinaturaView = findViewById(R.id.assinatura_display);
 
         // Buscar dados do pet
         Long petId = getIntent().getLongExtra("PET_ID", -1L);
         if (petId != -1L) {
             RegistroPetDAO dao = new RegistroPetDAO(this);
             petAtual = dao.getPetById(petId);
+
+            // Exibir assinatura se existir
+            exibirAssinatura();
         }
 
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +172,7 @@ public class MostrarPetActivity extends AppCompatActivity {
                     intent.putExtra("PET_NATURALIDADE", petAtual.getNaturalidade());
                     intent.putExtra("PET_DESCRICAO", petAtual.getDescricao());
                     intent.putExtra("PET_URL_IMAGEM", petAtual.getUrlImagem());
+                    intent.putExtra("PET_ASSINATURA", petAtual.getAssinaturaDigital()); // Nova linha
 
                     // Dados numéricos (verificar se não são nulos)
                     if (petAtual.getCep() != null) {
@@ -208,6 +216,17 @@ public class MostrarPetActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void exibirAssinatura() {
+        if (petAtual != null && assinaturaView != null && petAtual.getAssinaturaDigital() != null && !petAtual.getAssinaturaDigital().isEmpty()) {
+            assinaturaView.setSignatureFromString(petAtual.getAssinaturaDigital());
+            assinaturaView.setVisibility(View.VISIBLE);
+        } else {
+            if (assinaturaView != null) {
+                assinaturaView.setVisibility(View.GONE);
+            }
+        }
     }
 
     private boolean checkPermission() {
@@ -308,7 +327,7 @@ public class MostrarPetActivity extends AppCompatActivity {
                 }
                 ImageDecoder.Source source = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    source = ImageDecoder.createSource(getContentResolver(), imageUri); // Adiciona a flag aqui
+                    source = ImageDecoder.createSource(getContentResolver(), imageUri);
                 }
                 Bitmap hardwareBitmap = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -319,20 +338,19 @@ public class MostrarPetActivity extends AppCompatActivity {
 
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(softwareBitmap, 180, 180, true);
                 canvas.drawBitmap(scaledBitmap, 90, 210, paint);
-                // After drawing, recycle the bitmap if it's no longer needed and it's mutable
+
                 if (hardwareBitmap != null && !hardwareBitmap.isRecycled()) {
                     hardwareBitmap.recycle();
                 }
             } catch (FileNotFoundException e) {
-                // Handle the case where the image file is not found
-                drawPlaceholderFoto(canvas, paint); // Desenha "FOTO" se a imagem não for encontrada
+                drawPlaceholderFoto(canvas, paint);
                 e.printStackTrace();
             } catch (IOException e) {
-                drawPlaceholderFoto(canvas, paint); // Desenha "FOTO" em caso de outros erros de IO
+                drawPlaceholderFoto(canvas, paint);
                 e.printStackTrace();
             }
         } else {
-            drawPlaceholderFoto(canvas, paint); // Desenha "FOTO" se não houver URL da imagem
+            drawPlaceholderFoto(canvas, paint);
         }
 
         // Área das patinhas
@@ -356,12 +374,39 @@ public class MostrarPetActivity extends AppCompatActivity {
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText("Assinatura do titular", 297, 520, paint);
 
+        // Desenhar assinatura digital se existir
+        if (petAtual.getAssinaturaDigital() != null && !petAtual.getAssinaturaDigital().isEmpty()) {
+            drawDigitalSignature(canvas, petAtual.getAssinaturaDigital(), 80, 450, 435, 80);
+        }
+
         // Patinhas na parte inferior
         paint.setColor(Color.WHITE);
         paint.setTextSize(10);
         canvas.drawText("🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾🐾", 297, 780, paint);
 
         pdfDocument.finishPage(page1);
+    }
+
+    private void drawDigitalSignature(Canvas canvas, String signatureString, int x, int y, int width, int height) {
+        try {
+            byte[] decodedString = android.util.Base64.decode(signatureString, android.util.Base64.DEFAULT);
+            Bitmap signatureBitmap = android.graphics.BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            if (signatureBitmap != null) {
+                // Redimensionar a assinatura para caber na área
+                Bitmap scaledSignature = Bitmap.createScaledBitmap(signatureBitmap, width, height, true);
+                canvas.drawBitmap(scaledSignature, x, y, new Paint());
+
+                if (!signatureBitmap.isRecycled()) {
+                    signatureBitmap.recycle();
+                }
+                if (!scaledSignature.isRecycled()) {
+                    scaledSignature.recycle();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void drawPlaceholderFoto(Canvas canvas, Paint paint) {
@@ -563,7 +608,6 @@ public class MostrarPetActivity extends AppCompatActivity {
 
             // Primeiro, salve no cache interno
             file = new File(cachePath, fileName);
-
 
             FileOutputStream fos = new FileOutputStream(file);
             pdfDocument.writeTo(fos);

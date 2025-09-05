@@ -456,6 +456,38 @@
                 android:hint="@string/tel_cel_48_99999_9999"
                 android:inputType="number" />
 
+            <!-- Adicionar após os outros campos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Assinatura Digital"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <com.example.petapp.views.SignatureView
+                    android:id="@+id/assinatura_canvas"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/white"
+                    android:elevation="2dp" />
+
+                <Button
+                    android:id="@+id/limpar_assinatura"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpar Assinatura"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/descricao"
                 style="@style/TEXTLINEAR"

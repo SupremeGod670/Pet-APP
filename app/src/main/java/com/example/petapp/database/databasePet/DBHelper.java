@@ -9,7 +9,7 @@ import com.example.petapp.database.databasePet.model.RegistroPetModel;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "pet.db";
-    public static final int DATABASE_VERSION = 4; // Incrementar versão para forçar nova migração
+    public static final int DATABASE_VERSION = 5; // Incrementar versão para nova coluna
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,6 +42,11 @@ public class DBHelper extends SQLiteOpenHelper {
             addColumnIfNotExists(db, RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_TELEFONERESD, "REAL");
             addColumnIfNotExists(db, RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_TELEFONECEL, "REAL");
             addColumnIfNotExists(db, RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_URL_IMAGEM, "TEXT");
+        }
+
+        if (oldVersion < 5) {
+            // Adicionar coluna de assinatura digital
+            addColumnIfNotExists(db, RegistroPetModel.TABELA_PET, RegistroPetModel.COLUNA_ASSINATURA, "TEXT");
         }
     }
 

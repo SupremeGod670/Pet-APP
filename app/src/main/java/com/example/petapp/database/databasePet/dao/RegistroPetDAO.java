@@ -34,7 +34,8 @@ public class RegistroPetDAO extends AbstrataDAO {
             RegistroPetModel.COLUNA_ESTADO,
             RegistroPetModel.COLUNA_TELEFONECEL,
             RegistroPetModel.COLUNA_DESCRICAO,
-            RegistroPetModel.COLUNA_URL_IMAGEM
+            RegistroPetModel.COLUNA_URL_IMAGEM,
+            RegistroPetModel.COLUNA_ASSINATURA // Nova coluna
     };
 
     public RegistroPetDAO(Context context) {
@@ -108,6 +109,7 @@ public class RegistroPetDAO extends AbstrataDAO {
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
         values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem());
+        values.put(RegistroPetModel.COLUNA_ASSINATURA, pet.getAssinaturaDigital()); // Nova linha
 
         db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
@@ -172,6 +174,15 @@ public class RegistroPetDAO extends AbstrataDAO {
                 pet.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_DESCRICAO)));
                 pet.setUrlImagem(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_URL_IMAGEM)));
 
+                // Verificar se a coluna de assinatura existe antes de tentar acessá-la
+                try {
+                    int assinaturaIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ASSINATURA);
+                    pet.setAssinaturaDigital(cursor.getString(assinaturaIndex));
+                } catch (IllegalArgumentException e) {
+                    // Coluna não existe ainda, definir como null
+                    pet.setAssinaturaDigital(null);
+                }
+
                 petList.add(pet);
             } while (cursor.moveToNext());
         }
@@ -202,7 +213,8 @@ public class RegistroPetDAO extends AbstrataDAO {
             contentValues.put(RegistroPetModel.COLUNA_MAE, pet.getMae());
             contentValues.put(RegistroPetModel.COLUNA_NATURALIDADE, pet.getNaturalidade());
             contentValues.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
-            contentValues.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Usar a constante correta
+            contentValues.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem());
+            contentValues.put(RegistroPetModel.COLUNA_ASSINATURA, pet.getAssinaturaDigital()); // Nova linha
 
             if (pet.getCep() != null) {
                 contentValues.put(RegistroPetModel.COLUNA_CEP, pet.getCep());
@@ -306,6 +318,15 @@ public class RegistroPetDAO extends AbstrataDAO {
 
             pet.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_DESCRICAO)));
             pet.setUrlImagem(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_URL_IMAGEM)));
+
+            // Verificar se a coluna de assinatura existe antes de tentar acessá-la
+            try {
+                int assinaturaIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ASSINATURA);
+                pet.setAssinaturaDigital(cursor.getString(assinaturaIndex));
+            } catch (IllegalArgumentException e) {
+                // Coluna não existe ainda, definir como null
+                pet.setAssinaturaDigital(null);
+            }
         }
 
         cursor.close();

@@ -23,6 +23,7 @@ public class RegistroPetModel {
     public static final String COLUNA_TELEFONECEL = "telefonecel";
     public static final String COLUNA_DESCRICAO = "descricao";
     public static final String COLUNA_URL_IMAGEM = "url_imagem";
+    public static final String COLUNA_ASSINATURA = "assinatura_digital"; // Nova coluna
 
     public static final String DROP_TABLE =
             "drop table if exists " + TABELA_PET;
@@ -47,7 +48,8 @@ public class RegistroPetModel {
             + COLUNA_EMAIL + " TEXT, "
             + COLUNA_TELEFONECEL + " REAL, "
             + COLUNA_DESCRICAO + " TEXT, "
-            + COLUNA_URL_IMAGEM + " TEXT"  // Nova coluna
+            + COLUNA_URL_IMAGEM + " TEXT, "
+            + COLUNA_ASSINATURA + " TEXT"  // Nova coluna para assinatura
             + ")";
 
     private Long id;
@@ -69,8 +71,10 @@ public class RegistroPetModel {
     private String estado;
     private Double telefonecel;
     private String descricao;
-
     private String urlImagem;
+    private String assinaturaDigital; // Novo campo
+
+    // Getters e Setters existentes...
 
     public Long getId() {
         return id;
@@ -231,5 +235,13 @@ public class RegistroPetModel {
     public void setUrlImagem(String urlImagem) {
         this.urlImagem = urlImagem;
     }
-}
 
+    // Novo getter e setter para assinatura digital
+    public String getAssinaturaDigital() {
+        return assinaturaDigital;
+    }
+
+    public void setAssinaturaDigital(String assinaturaDigital) {
+        this.assinaturaDigital = assinaturaDigital;
+    }
+}

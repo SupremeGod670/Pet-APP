@@ -35,6 +35,7 @@ import com.bumptech.glide.Glide;
 import com.example.petapp.R;
 import com.example.petapp.database.databasePet.dao.RegistroPetDAO;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
+import com.example.petapp.views.SignatureView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +50,8 @@ public class CriarPetsActivity extends AppCompatActivity {
     public ImageView perfilpet;
     public Spinner editespecie, editsexo, editcidade, editraca, editestado;
     public EditText editnome, editbairro, editcep, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco, editcor;
-    private Button salvarpet;
+    private Button salvarpet, limparAssinatura;
+    private SignatureView assinaturaCanvas;
 
     // Updated permission constants for newer Android versions
     private static final int PERMISSION_REQUEST_CODE = 1001;
@@ -109,6 +111,17 @@ public class CriarPetsActivity extends AppCompatActivity {
         editcor = findViewById(R.id.editcor);
         salvarpet = findViewById(R.id.salvarpet);
         voltar = findViewById(R.id.voltar);
+
+        // Inicializar views da assinatura
+        assinaturaCanvas = findViewById(R.id.assinatura_canvas);
+        limparAssinatura = findViewById(R.id.limpar_assinatura);
+
+        if (limparAssinatura == null) {
+            // Se o botão não existe no layout, criar programaticamente
+            limparAssinatura = new Button(this);
+            limparAssinatura.setText("Limpar Assinatura");
+            limparAssinatura.setId(R.id.limpar_assinatura);
+        }
     }
 
     private void verificarModoEdicao() {
@@ -235,6 +248,12 @@ public class CriarPetsActivity extends AppCompatActivity {
                 }
             }
         }
+
+        // Assinatura digital
+        String assinaturaDigital = intent.getStringExtra("PET_ASSINATURA");
+        if (assinaturaCanvas != null && assinaturaDigital != null && !assinaturaDigital.isEmpty()) {
+            assinaturaCanvas.setSignatureFromString(assinaturaDigital);
+        }
     }
 
     private int getSpinnerIndex(Spinner spinner, String myString) {
@@ -280,6 +299,19 @@ public class CriarPetsActivity extends AppCompatActivity {
                 checkPermissionAndPickImage();
             }
         });
+
+        // Listener para limpar assinatura
+        if (limparAssinatura != null) {
+            limparAssinatura.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (assinaturaCanvas != null) {
+                        assinaturaCanvas.clearSignature();
+                        Toast.makeText(CriarPetsActivity.this, "Assinatura limpa!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
 
         editespecie.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -371,6 +403,12 @@ public class CriarPetsActivity extends AppCompatActivity {
             String descricao = editdescricao.getText().toString().trim();
             String endereco = editendereco.getText().toString().trim();
 
+            // Capturar assinatura digital
+            String assinaturaDigital = null;
+            if (assinaturaCanvas != null && !assinaturaCanvas.isEmpty()) {
+                assinaturaDigital = assinaturaCanvas.getSignatureAsString();
+            }
+
             // Validação dos campos obrigatórios
             if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
                 Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
@@ -438,6 +476,7 @@ public class CriarPetsActivity extends AppCompatActivity {
             pet.setEndereco(endereco);
             pet.setCor(cor);
             pet.setUrlImagem(imagemPerfilUrl);
+            pet.setAssinaturaDigital(assinaturaDigital); // Nova linha para assinatura
 
             // Verificar se é modo de edição ou criação
             if (isEditMode && petIdToEdit != null && petIdToEdit != -1L) {
