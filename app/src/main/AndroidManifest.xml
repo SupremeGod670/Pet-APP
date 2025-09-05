@@ -38,6 +38,8 @@
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.VacinacoesActivity" />
         <activity android:name=".activities.ConfigActivity" />
+        <activity android:name=".activities.EditarPerfilActivity" />
+        <activity android:name=".activities.AlterarSenhaActivity" />
         <activity android:name=".activities.SobreActivity" />
         <activity android:name=".activities.CriarPetsActivity" />
         <activity android:name=".activities.MostrarPetActivity" />

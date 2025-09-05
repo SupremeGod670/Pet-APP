@@ -3,8 +3,8 @@ package com.example.petapp.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -61,6 +61,9 @@ public class CriarPetsActivity extends AppCompatActivity {
     private String imagemPerfilUrl = null;
     private String cidadeSelecionadaPorCep = null;
 
+    private boolean isEditMode = false;
+    private Long petIdToEdit = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,8 @@ public class CriarPetsActivity extends AppCompatActivity {
 
         // Format fields
         formatFields();
+
+        verificarModoEdicao();
     }
 
     private void initializeViews() {
@@ -104,6 +109,152 @@ public class CriarPetsActivity extends AppCompatActivity {
         editcor = findViewById(R.id.editcor);
         salvarpet = findViewById(R.id.salvarpet);
         voltar = findViewById(R.id.voltar);
+    }
+
+    private void verificarModoEdicao() {
+        Intent intent = getIntent();
+        isEditMode = intent.getBooleanExtra("EDIT_MODE", false);
+
+        if (isEditMode) {
+            petIdToEdit = intent.getLongExtra("PET_ID", -1L);
+
+            // Alterar texto do botão para "EDITAR PET"
+            if (salvarpet != null) {
+                salvarpet.setText("EDITAR PET");
+            }
+
+            // Preencher campos com dados existentes
+            preencherCamposExistentes(intent);
+        }
+    }
+
+    private void preencherCamposExistentes(Intent intent) {
+        // Campos de texto
+        if (editnome != null) {
+            String nome = intent.getStringExtra("PET_NOME");
+            if (nome != null) editnome.setText(nome);
+        }
+
+        if (editcor != null) {
+            String cor_pet = intent.getStringExtra("PET_COR");
+            if (cor_pet != null) editcor.setText(cor_pet);
+        }
+
+        if (editbairro != null) {
+            String bairro_pet = intent.getStringExtra("PET_BAIRRO");
+            if (bairro_pet != null) editbairro.setText(bairro_pet);
+        }
+
+        if (editendereco != null) {
+            String endereco_pet = intent.getStringExtra("PET_ENDERECO");
+            if (endereco_pet != null) editendereco.setText(endereco_pet);
+        }
+
+        if (editemail != null) {
+            String email_pet = intent.getStringExtra("PET_EMAIL");
+            if (email_pet != null) editemail.setText(email_pet);
+        }
+
+        if (editpai != null) {
+            String pai_pet = intent.getStringExtra("PET_PAI");
+            if (pai_pet != null) editpai.setText(pai_pet);
+        }
+
+        if (editmae != null) {
+            String mae_pet = intent.getStringExtra("PET_MAE");
+            if (mae_pet != null) editmae.setText(mae_pet);
+        }
+
+        if (editnaturalidade != null) {
+            String naturalidade_pet = intent.getStringExtra("PET_NATURALIDADE");
+            if (naturalidade_pet != null) editnaturalidade.setText(naturalidade_pet);
+        }
+
+        if (editdescricao != null) {
+            String descricao_pet = intent.getStringExtra("PET_DESCRICAO");
+            if (descricao_pet != null) editdescricao.setText(descricao_pet);
+        }
+
+        // Campos numéricos
+        long cep_value = intent.getLongExtra("PET_CEP", 0);
+        if (editcep != null && cep_value != 0) {
+            editcep.setText(String.valueOf(cep_value));
+        }
+
+        long telefone_resd_value = intent.getLongExtra("PET_TELEFONE_RESD", 0);
+        if (edittel != null && telefone_resd_value != 0) {
+            edittel.setText(String.valueOf(telefone_resd_value));
+        }
+
+        long telefone_cel_value = intent.getLongExtra("PET_TELEFONE_CEL", 0);
+        if (editcel != null && telefone_cel_value != 0) {
+            editcel.setText(String.valueOf(telefone_cel_value));
+        }
+
+        long nascimento_value = intent.getLongExtra("PET_NASCIMENTO", 0);
+        if (editnascimento != null && nascimento_value != 0) {
+            editnascimento.setText(String.valueOf(nascimento_value));
+        }
+
+        // Spinners (espécie e sexo)
+        String especie_pet = intent.getStringExtra("PET_ESPECIE");
+        if (editespecie != null && especie_pet != null) {
+            setSpinnerSelection(editespecie, especie_pet);
+        }
+
+        String sexo_pet = intent.getStringExtra("PET_SEXO");
+        if (editsexo != null && sexo_pet != null) {
+            setSpinnerSelection(editsexo, sexo_pet);
+        }
+
+        String raca_pet = intent.getStringExtra("PET_RACA");
+        if (editraca != null && raca_pet != null) {
+            setSpinnerSelection(editraca, raca_pet);
+        }
+
+        String cidade_pet = intent.getStringExtra("PET_CIDADE");
+        if (editcidade != null && cidade_pet != null) {
+            setSpinnerSelection(editcidade, cidade_pet);
+        }
+
+        String estado_pet = intent.getStringExtra("PET_ESTADO");
+        if (editestado != null && estado_pet != null) {
+            setSpinnerSelection(editestado, estado_pet);
+        }
+
+        // URL da imagem
+        String urlImagem = intent.getStringExtra("PET_URL_IMAGEM");
+        if (urlImagem != null && !urlImagem.isEmpty()) {
+            imagemPerfilUrl = urlImagem;
+
+            if (perfilpet != null) {
+                try {
+                    perfilpet.setImageURI(Uri.parse(imagemPerfilUrl));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private int getSpinnerIndex(Spinner spinner, String myString) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private void setSpinnerSelection(Spinner spinner, String value) {
+        if (spinner.getAdapter() != null) {
+            for (int i = 0; i < spinner.getAdapter().getCount(); i++) {
+                if (spinner.getAdapter().getItem(i).toString().equals(value)) {
+                    spinner.setSelection(i);
+                    break;
+                }
+            }
+        }
     }
 
     private void setupSpinners() {
@@ -200,104 +351,124 @@ public class CriarPetsActivity extends AppCompatActivity {
     }
 
     private void salvarPet() {
-        String nome = editnome.getText().toString().trim();
-        String nascimentoStr = editnascimento.getText().toString().trim();
-        String especie = editespecie.getSelectedItem() != null && editespecie.getSelectedItemPosition() > 0 ? editespecie.getSelectedItem().toString() : "";
-        String raca = editraca.getSelectedItem() != null && editraca.getSelectedItemPosition() > 0 ? editraca.getSelectedItem().toString() : "";
-        String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
-        String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
-        String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
-        String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", "");
-        String bairro = editbairro.getText().toString().trim();
-        String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", "");
-        String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", "");
-        String email = editemail.getText().toString().trim();
-        String pai = editpai.getText().toString().trim();
-        String mae = editmae.getText().toString().trim();
-        String naturalidade = editnaturalidade.getText().toString().trim();
-        String cor = editcor.getText().toString().trim();
-        String descricao = editdescricao.getText().toString().trim();
-        String endereco = editendereco.getText().toString().trim();
+        try {
+            String nome = editnome.getText().toString().trim();
+            String nascimentoStr = editnascimento.getText().toString().trim();
+            String especie = editespecie.getSelectedItem() != null && editespecie.getSelectedItemPosition() > 0 ? editespecie.getSelectedItem().toString() : "";
+            String raca = editraca.getSelectedItem() != null && editraca.getSelectedItemPosition() > 0 ? editraca.getSelectedItem().toString() : "";
+            String sexo = editsexo.getSelectedItem() != null && editsexo.getSelectedItemPosition() > 0 ? editsexo.getSelectedItem().toString() : "";
+            String cidade = editcidade.getSelectedItem() != null && editcidade.getSelectedItemPosition() > 0 ? editcidade.getSelectedItem().toString() : "";
+            String estado = editestado.getSelectedItem() != null && editestado.getSelectedItemPosition() > 0 ? editestado.getSelectedItem().toString() : "";
+            String cepStr = editcep.getText().toString().trim().replaceAll("[^0-9]", "");
+            String bairro = editbairro.getText().toString().trim();
+            String telStr = edittel.getText().toString().trim().replaceAll("[^0-9]", "");
+            String celStr = editcel.getText().toString().trim().replaceAll("[^0-9]", "");
+            String email = editemail.getText().toString().trim();
+            String pai = editpai.getText().toString().trim();
+            String mae = editmae.getText().toString().trim();
+            String naturalidade = editnaturalidade.getText().toString().trim();
+            String cor = editcor.getText().toString().trim();
+            String descricao = editdescricao.getText().toString().trim();
+            String endereco = editendereco.getText().toString().trim();
 
-        // Validação dos campos obrigatórios
-        if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
-            Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
-            Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Sexo, Estado, Cidade).", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Conversão dos campos numéricos
-        Double nascimento = null;
-        String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
-        if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) {
-            try {
-                nascimento = Double.valueOf(nascimentoDigitsOnly);
-            } catch (NumberFormatException e) {
-                Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoDigitsOnly, e);
-                Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido.", Toast.LENGTH_SHORT).show();
+            // Validação dos campos obrigatórios
+            if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
+                Toast.makeText(CriarPetsActivity.this, "Por favor, preencha todos os campos obrigatórios.", Toast.LENGTH_LONG).show();
+                Toast.makeText(CriarPetsActivity.this, "(Nome, Espécie, Raça, Sexo, Estado, Cidade).", Toast.LENGTH_LONG).show();
                 return;
             }
-        }
 
-        Double cepDouble = null;
-        if (!cepStr.isEmpty()) {
-            try {
-                cepDouble = Double.valueOf(cepStr);
-            } catch (NumberFormatException e) {
-                Log.e("CriarPetsActivity", "Erro ao converter CEP para Double: " + cepStr, e);
+            // Conversão dos campos numéricos
+            Double nascimento = null;
+            String nascimentoDigitsOnly = nascimentoStr.replaceAll("[^\\d]", "");
+            if (!nascimentoDigitsOnly.isEmpty() && nascimentoDigitsOnly.length() == 8) {
+                try {
+                    nascimento = Double.valueOf(nascimentoDigitsOnly);
+                } catch (NumberFormatException e) {
+                    Log.e("CriarPetsActivity", "Erro ao converter Nascimento para Double: " + nascimentoDigitsOnly, e);
+                    Toast.makeText(CriarPetsActivity.this, "Formato de nascimento inválido.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
-        }
 
-        Double telDouble = null;
-        if (!telStr.isEmpty()) {
-            try {
-                telDouble = Double.valueOf(telStr);
-            } catch (NumberFormatException e) {
-                Log.e("CriarPetsActivity", "Erro ao converter Telefone para Double: " + telStr, e);
+            Double cepDouble = null;
+            if (!cepStr.isEmpty()) {
+                try {
+                    cepDouble = Double.valueOf(cepStr);
+                } catch (NumberFormatException e) {
+                    Log.e("CriarPetsActivity", "Erro ao converter CEP para Double: " + cepStr, e);
+                }
             }
-        }
 
-        Double celDouble = null;
-        if (!celStr.isEmpty()) {
-            try {
-                celDouble = Double.valueOf(celStr);
-            } catch (NumberFormatException e) {
-                Log.e("CriarPetsActivity", "Erro ao converter Celular para Double: " + celStr, e);
+            Double telDouble = null;
+            if (!telStr.isEmpty()) {
+                try {
+                    telDouble = Double.valueOf(telStr);
+                } catch (NumberFormatException e) {
+                    Log.e("CriarPetsActivity", "Erro ao converter Telefone para Double: " + telStr, e);
+                }
             }
-        }
 
-        // Criar e salvar o pet
-        RegistroPetModel pet = new RegistroPetModel();
-        pet.setNomepet(nome);
-        pet.setNascimento(nascimento);
-        pet.setEspecie(especie);
-        pet.setRaca(raca);
-        pet.setSexo(sexo);
-        pet.setCidade(cidade);
-        pet.setEstado(estado);
-        pet.setBairro(bairro);
-        pet.setCep(cepDouble);
-        pet.setTelefoneresd(telDouble);
-        pet.setTelefonecel(celDouble);
-        pet.setEmail(email);
-        pet.setPai(pai);
-        pet.setMae(mae);
-        pet.setNaturalidade(naturalidade);
-        pet.setDescricao(descricao);
-        pet.setEndereco(endereco);
-        pet.setCor(cor);
-        pet.setUrlImagem(imagemPerfilUrl);
+            Double celDouble = null;
+            if (!celStr.isEmpty()) {
+                try {
+                    celDouble = Double.valueOf(celStr);
+                } catch (NumberFormatException e) {
+                    Log.e("CriarPetsActivity", "Erro ao converter Celular para Double: " + celStr, e);
+                }
+            }
 
-        registroPetDAO.insert(pet);
+            RegistroPetModel pet = new RegistroPetModel();
+            pet.setNomepet(nome);
+            pet.setNascimento(nascimento);
+            pet.setEspecie(especie);
+            pet.setRaca(raca);
+            pet.setSexo(sexo);
+            pet.setCidade(cidade);
+            pet.setEstado(estado);
+            pet.setBairro(bairro);
+            pet.setCep(cepDouble);
+            pet.setTelefoneresd(telDouble);
+            pet.setTelefonecel(celDouble);
+            pet.setEmail(email);
+            pet.setPai(pai);
+            pet.setMae(mae);
+            pet.setNaturalidade(naturalidade);
+            pet.setDescricao(descricao);
+            pet.setEndereco(endereco);
+            pet.setCor(cor);
+            pet.setUrlImagem(imagemPerfilUrl);
 
-        if (registroPetDAO.selectNotNull(nome, especie, raca, estado, cidade)) {
-            Toast.makeText(CriarPetsActivity.this, "Pet registrado!", Toast.LENGTH_SHORT).show();
+            // Verificar se é modo de edição ou criação
+            if (isEditMode && petIdToEdit != null && petIdToEdit != -1L) {
+                // Modo edição - definir o ID e fazer update
+                pet.setId(petIdToEdit);
+                registroPetDAO.update(pet);
+
+                Toast.makeText(this, "Pet editado com sucesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Modo criação - fazer insert
+                registroPetDAO.insert(pet);
+
+                if (registroPetDAO.selectNotNull(nome, especie, raca, estado, cidade)) {
+                    Toast.makeText(CriarPetsActivity.this, "Pet registrado!", Toast.LENGTH_SHORT).show();
+                } else if (registroPetDAO.select(nome, nascimentoStr, especie, sexo, pai, mae, raca, naturalidade, cor, endereco, bairro, cidade, telStr, email, cepStr, estado, celStr, descricao)) {
+                    Toast.makeText(CriarPetsActivity.this, "Pet registrado, e com todos os campos preenchidos!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CriarPetsActivity.this, "Erro ao registrar pet.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            // Voltar para o menu principal
+            Intent intent = new Intent(CriarPetsActivity.this, MenuActivity.class);
+            startActivity(intent);
             finish();
-        } else if (registroPetDAO.select(nome, nascimentoStr, especie, sexo, pai, mae, raca, naturalidade, cor, endereco, bairro, cidade, telStr, email, cepStr, estado, celStr, descricao)) {
-            Toast.makeText(CriarPetsActivity.this, "Pet registrado, e com todos os campos preenchidos!", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(CriarPetsActivity.this, "Erro ao registrar pet.", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String mensagemErro = isEditMode ? "Erro ao editar pet. Tente novamente." : "Erro ao cadastrar pet. Tente novamente.";
+            Toast.makeText(this, mensagemErro, Toast.LENGTH_SHORT).show();
         }
     }
 

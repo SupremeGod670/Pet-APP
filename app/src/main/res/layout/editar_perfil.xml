@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BACKGROUNDGRADIENT"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Header com título e botão voltar -->
+        <LinearLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/voltar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="70sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Editar Perfil"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+        </LinearLayout>
+
+        <!-- Card principal -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/main_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/header_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Seção da foto de perfil -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginBottom="32dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Foto de Perfil"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Container da foto com overlay para indicar que é clicável -->
+                    <FrameLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:id="@+id/img_foto_perfil"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/ic_person"
+                            android:background="@drawable/circle_background"
+                            android:padding="8dp"
+                            android:scaleType="centerCrop" />
+
+                        <!-- Overlay de câmera -->
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="bottom|end"
+                            android:src="@drawable/ic_camera"
+                            android:background="@drawable/circle_background_accent"
+                            android:padding="8dp"
+                            android:layout_margin="4dp" />
+
+                    </FrameLayout>
+
+                    <Button
+                        android:id="@+id/btn_selecionar_foto"
+                        style="@style/BUTTON"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="📷 Alterar Foto"
+                        android:textSize="14sp"
+                        android:backgroundTint="#2196FF"
+                        android:paddingHorizontal="20dp" />
+
+                </LinearLayout>
+
+                <!-- Divisor -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Campo Nome -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome Completo *"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <EditText
+                        android:id="@+id/edit_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="Digite seu nome completo"
+                        android:inputType="textPersonName"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:padding="16dp"
+                        android:background="@drawable/bg_edittext"
+                        android:drawableStart="@drawable/ic_person_outline"
+                        android:drawablePadding="12dp"
+                        android:maxLines="1"
+                        android:maxLength="50" />
+
+                </LinearLayout>
+
+                <!-- Informação sobre email (somente leitura) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="32dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email (não pode ser alterado)"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/txt_email_readonly"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        android:textColor="#888888"
+                        android:padding="16dp"
+                        android:background="@drawable/bg_field_readonly"
+                        android:drawableStart="@drawable/ic_email"
+                        android:drawablePadding="12dp" />
+
+                </LinearLayout>
+
+                <!-- Botão Salvar -->
+                <Button
+                    android:id="@+id/btn_salvar_perfil"
+                    style="@style/BUTTON"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="💾 Salvar Alterações"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#4CAF50"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Nota informativa -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="💡 Dica: Toque na foto para alterá-la"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:alpha="0.8"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/main_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

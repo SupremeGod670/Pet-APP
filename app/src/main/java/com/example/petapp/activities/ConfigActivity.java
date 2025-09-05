@@ -3,15 +3,18 @@ package com.example.petapp.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.petapp.R;
 import com.example.petapp.database.databaseUser.dao.RegistroUserDAO;
 import com.example.petapp.database.databaseUser.model.RegistroUserModel;
@@ -19,6 +22,7 @@ import com.example.petapp.database.databaseUser.model.RegistroUserModel;
 public class ConfigActivity extends AppCompatActivity {
 
     private TextView voltar;
+    private ImageView imgFotoPerfil; // Nova ImageView para foto de perfil
     private TextView txtNome, txtEmail, txtSenha;
     private Button btnEditarPerfil, btnAlterarSenha, btnSobre, btnLogout;
     private TextView txtVersao;
@@ -28,12 +32,16 @@ public class ConfigActivity extends AppCompatActivity {
     private String emailLogado;
     private AlertDialog currentDialog;
 
+    private static final int REQUEST_EDITAR_PERFIL = 1001;
+    private static final int REQUEST_ALTERAR_SENHA = 1002;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.config);
 
         voltar = findViewById(R.id.voltar);
+        imgFotoPerfil = findViewById(R.id.img_foto_perfil); // Inicializar nova ImageView
         txtNome = findViewById(R.id.txt_nome);
         txtEmail = findViewById(R.id.txt_email);
         txtSenha = findViewById(R.id.txt_senha);
@@ -65,16 +73,16 @@ public class ConfigActivity extends AppCompatActivity {
         btnEditarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Implementar edição de perfil
-                mostrarMensagem("Funcionalidade em desenvolvimento", "Esta funcionalidade será implementada em breve.");
+                Intent intent = new Intent(ConfigActivity.this, EditarPerfilActivity.class);
+                startActivityForResult(intent, REQUEST_EDITAR_PERFIL);
             }
         });
 
         btnAlterarSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Implementar alteração de senha
-                mostrarMensagem("Funcionalidade em desenvolvimento", "Esta funcionalidade será implementada em breve.");
+                Intent intent = new Intent(ConfigActivity.this, AlterarSenhaActivity.class);
+                startActivityForResult(intent, REQUEST_ALTERAR_SENHA);
             }
         });
 
@@ -142,6 +150,9 @@ public class ConfigActivity extends AppCompatActivity {
                 txtEmail.setText(usuarioLogado.getEmail());
                 txtSenha.setText("••••••••");
 
+                // Carregar foto de perfil se existir
+                carregarFotoPerfil(usuarioLogado.getFotoPerfil());
+
                 android.util.Log.d("ConfigActivity", "Dados carregados com sucesso na interface");
 
             } else {
@@ -149,7 +160,6 @@ public class ConfigActivity extends AppCompatActivity {
 
                 // Debug: Tentar buscar todos os usuários para ver o que tem no banco
                 android.util.Log.d("ConfigActivity", "=== LISTANDO TODOS OS USUÁRIOS NO BANCO ===");
-                // Vou criar um método para isso
                 debugListarTodosUsuarios();
 
                 if (!isFinishing() && !isDestroyed()) {
@@ -161,6 +171,26 @@ public class ConfigActivity extends AppCompatActivity {
             e.printStackTrace();
             if (!isFinishing() && !isDestroyed()) {
                 mostrarErro("Erro ao acessar os dados: " + e.getMessage(), true);
+            }
+        }
+    }
+
+    private void carregarFotoPerfil(String urlFotoPerfil) {
+        if (imgFotoPerfil != null) {
+            if (urlFotoPerfil != null && !urlFotoPerfil.isEmpty()) {
+                try {
+                    Glide.with(this)
+                            .load(Uri.parse(urlFotoPerfil))
+                            .placeholder(R.drawable.ic_person)
+                            .error(R.drawable.ic_person)
+                            .circleCrop()
+                            .into(imgFotoPerfil);
+                } catch (Exception e) {
+                    android.util.Log.e("ConfigActivity", "Erro ao carregar foto de perfil: " + e.getMessage(), e);
+                    imgFotoPerfil.setImageResource(R.drawable.ic_person);
+                }
+            } else {
+                imgFotoPerfil.setImageResource(R.drawable.ic_person);
             }
         }
     }
@@ -198,6 +228,18 @@ public class ConfigActivity extends AppCompatActivity {
                 registroUserDAO.Close();
             } catch (Exception ex) {
                 // Ignore
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_EDITAR_PERFIL || requestCode == REQUEST_ALTERAR_SENHA) {
+                // Recarregar dados do usuário após edição
+                carregarDadosUsuario();
             }
         }
     }
@@ -359,7 +401,7 @@ public class ConfigActivity extends AppCompatActivity {
 
         // Feche a conexão com o banco de dados se necessário
         if (registroUserDAO != null) {
-            registroUserDAO.Close(); // Se o DAO tiver um método close()
+            registroUserDAO.Close();
         }
     }
 }

@@ -142,7 +142,48 @@ public class MostrarPetActivity extends AppCompatActivity {
         editarpet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Implementar funcionalidade de editar
+                if (petAtual != null) {
+                    Intent intent = new Intent(MostrarPetActivity.this, CriarPetsActivity.class);
+
+                    // Indicar que é uma edição
+                    intent.putExtra("EDIT_MODE", true);
+                    intent.putExtra("PET_ID", petAtual.getId());
+
+                    // Passar todos os dados do pet
+                    intent.putExtra("PET_NOME", petAtual.getNomepet());
+                    intent.putExtra("PET_RACA", petAtual.getRaca());
+                    intent.putExtra("PET_ESPECIE", petAtual.getEspecie());
+                    intent.putExtra("PET_SEXO", petAtual.getSexo());
+                    intent.putExtra("PET_COR", petAtual.getCor());
+                    intent.putExtra("PET_CIDADE", petAtual.getCidade());
+                    intent.putExtra("PET_ESTADO", petAtual.getEstado());
+                    intent.putExtra("PET_BAIRRO", petAtual.getBairro());
+                    intent.putExtra("PET_ENDERECO", petAtual.getEndereco());
+                    intent.putExtra("PET_EMAIL", petAtual.getEmail());
+                    intent.putExtra("PET_PAI", petAtual.getPai());
+                    intent.putExtra("PET_MAE", petAtual.getMae());
+                    intent.putExtra("PET_NATURALIDADE", petAtual.getNaturalidade());
+                    intent.putExtra("PET_DESCRICAO", petAtual.getDescricao());
+                    intent.putExtra("PET_URL_IMAGEM", petAtual.getUrlImagem());
+
+                    // Dados numéricos (verificar se não são nulos)
+                    if (petAtual.getCep() != null) {
+                        intent.putExtra("PET_CEP", petAtual.getCep().longValue());
+                    }
+                    if (petAtual.getTelefoneresd() != null) {
+                        intent.putExtra("PET_TELEFONE_RESD", petAtual.getTelefoneresd().longValue());
+                    }
+                    if (petAtual.getTelefonecel() != null) {
+                        intent.putExtra("PET_TELEFONE_CEL", petAtual.getTelefonecel().longValue());
+                    }
+                    if (petAtual.getNascimento() != null) {
+                        intent.putExtra("PET_NASCIMENTO", petAtual.getNascimento().longValue());
+                    }
+
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MostrarPetActivity.this, "Erro: dados do pet não encontrados", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

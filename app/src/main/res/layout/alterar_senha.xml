@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BACKGROUNDGRADIENT"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Header com título e botão voltar -->
+        <LinearLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/voltar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="70sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Alterar Senha"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+        </LinearLayout>
+
+        <!-- Card principal -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/main_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/header_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Ícone de segurança -->
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:src="@drawable/ic_lock"
+                    android:background="@drawable/circle_background"
+                    android:padding="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Alterar Senha"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Para sua segurança, confirme sua senha atual"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="center" />
+
+                <!-- Campo Senha Atual -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Senha Atual *"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+
+                        <EditText
+                            android:id="@+id/edit_senha_atual"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Digite sua senha atual"
+                            android:inputType="textPassword"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:padding="16dp"
+                            android:paddingEnd="56dp"
+                            android:background="@drawable/bg_edittext"
+                            android:drawableStart="@drawable/ic_lock"
+                            android:drawablePadding="12dp"
+                            android:maxLines="1" />
+
+                        <ImageView
+                            android:id="@+id/toggle_senha_atual"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <!-- Campo Nova Senha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nova Senha *"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+
+                        <EditText
+                            android:id="@+id/edit_nova_senha"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Digite sua nova senha"
+                            android:inputType="textPassword"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:padding="16dp"
+                            android:paddingEnd="56dp"
+                            android:background="@drawable/bg_edittext"
+                            android:drawableStart="@drawable/ic_key"
+                            android:drawablePadding="12dp"
+                            android:maxLines="1" />
+
+                        <ImageView
+                            android:id="@+id/toggle_nova_senha"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mínimo de 6 caracteres"
+                        android:textSize="12sp"
+                        android:textColor="#888888"
+                        android:layout_marginTop="4dp" />
+
+                </LinearLayout>
+
+                <!-- Campo Confirmar Nova Senha -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="32dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Confirmar Nova Senha *"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="8dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+
+                        <EditText
+                            android:id="@+id/edit_confirmar_senha"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Digite novamente a nova senha"
+                            android:inputType="textPassword"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:padding="16dp"
+                            android:paddingEnd="56dp"
+                            android:background="@drawable/bg_edittext"
+                            android:drawableStart="@drawable/ic_key"
+                            android:drawablePadding="12dp"
+                            android:maxLines="1" />
+
+                        <ImageView
+                            android:id="@+id/toggle_confirmar_senha"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_visibility"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <!-- Botão Salvar -->
+                <Button
+                    android:id="@+id/btn_salvar_senha"
+                    style="@style/BUTTON"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="🔒 Alterar Senha"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#FF9800" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Dicas de segurança -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/main_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🛡️ Dicas de Segurança"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Use pelo menos 6 caracteres\n• Combine letras, números e símbolos\n• Não use informações pessoais\n• Mantenha sua senha em segredo"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:lineSpacingExtra="2dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

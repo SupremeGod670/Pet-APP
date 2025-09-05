@@ -13,7 +13,8 @@ public class RegistroUserDAO extends AbstrataDAO {
             RegistroUserModel.COLUNA_ID,
             RegistroUserModel.COLUNA_NOME,
             RegistroUserModel.COLUNA_EMAIL,
-            RegistroUserModel.COLUNA_SENHA
+            RegistroUserModel.COLUNA_SENHA,
+            RegistroUserModel.COLUNA_FOTO_PERFIL // Nova coluna
     };
 
     public RegistroUserDAO(Context context) {
@@ -69,6 +70,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         values.put(RegistroUserModel.COLUNA_NOME, usuario.getNome());
         values.put(RegistroUserModel.COLUNA_EMAIL, usuario.getEmail());
         values.put(RegistroUserModel.COLUNA_SENHA, usuario.getSenha());
+        values.put(RegistroUserModel.COLUNA_FOTO_PERFIL, usuario.getFotoPerfil());
 
         db.insert(RegistroUserModel.TABELA_USUARIO, null, values);
         Close();
@@ -80,6 +82,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         values.put(RegistroUserModel.COLUNA_NOME, usuario.getNome());
         values.put(RegistroUserModel.COLUNA_EMAIL, usuario.getEmail());
         values.put(RegistroUserModel.COLUNA_SENHA, usuario.getSenha());
+        values.put(RegistroUserModel.COLUNA_FOTO_PERFIL, usuario.getFotoPerfil());
 
         db.update(RegistroUserModel.TABELA_USUARIO, values,
                 RegistroUserModel.COLUNA_ID + " = ? ",
@@ -95,7 +98,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         Close();
     }
 
-    // Novo método para buscar usuário por email
+    // Método para buscar usuário por email
     public RegistroUserModel getUsuarioByEmail(String email) {
         Open();
         Cursor cursor = db.query(
@@ -115,6 +118,7 @@ public class RegistroUserDAO extends AbstrataDAO {
             usuario.setNome(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_NOME)));
             usuario.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_EMAIL)));
             usuario.setSenha(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_SENHA)));
+            usuario.setFotoPerfil(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_FOTO_PERFIL)));
         }
 
         cursor.close();
@@ -122,7 +126,7 @@ public class RegistroUserDAO extends AbstrataDAO {
         return usuario;
     }
 
-    // Novo método para buscar usuário por ID
+    // Método para buscar usuário por ID
     public RegistroUserModel getUsuarioById(Long id) {
         Open();
         Cursor cursor = db.query(
@@ -142,6 +146,7 @@ public class RegistroUserDAO extends AbstrataDAO {
             usuario.setNome(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_NOME)));
             usuario.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_EMAIL)));
             usuario.setSenha(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_SENHA)));
+            usuario.setFotoPerfil(cursor.getString(cursor.getColumnIndexOrThrow(RegistroUserModel.COLUNA_FOTO_PERFIL)));
         }
 
         cursor.close();
@@ -149,11 +154,12 @@ public class RegistroUserDAO extends AbstrataDAO {
         return usuario;
     }
 
-    // Método para atualizar apenas o nome
-    public void updateNome(String email, String novoNome) {
+    // Método para atualizar apenas o nome e foto
+    public void updatePerfil(String email, String novoNome, String novaFotoPerfil) {
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroUserModel.COLUNA_NOME, novoNome);
+        values.put(RegistroUserModel.COLUNA_FOTO_PERFIL, novaFotoPerfil);
 
         db.update(RegistroUserModel.TABELA_USUARIO, values,
                 RegistroUserModel.COLUNA_EMAIL + " = ?",
@@ -166,6 +172,18 @@ public class RegistroUserDAO extends AbstrataDAO {
         Open();
         ContentValues values = new ContentValues();
         values.put(RegistroUserModel.COLUNA_SENHA, novaSenha);
+
+        db.update(RegistroUserModel.TABELA_USUARIO, values,
+                RegistroUserModel.COLUNA_EMAIL + " = ?",
+                new String[]{email});
+        Close();
+    }
+
+    // Método para atualizar apenas a foto de perfil
+    public void updateFotoPerfil(String email, String novaFotoPerfil) {
+        Open();
+        ContentValues values = new ContentValues();
+        values.put(RegistroUserModel.COLUNA_FOTO_PERFIL, novaFotoPerfil);
 
         db.update(RegistroUserModel.TABELA_USUARIO, values,
                 RegistroUserModel.COLUNA_EMAIL + " = ?",

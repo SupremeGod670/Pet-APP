@@ -96,10 +96,10 @@ public class VeterinarioAdapter extends BaseAdapter {
 
         // Click para abrir no Maps
         holder.ivMaps.setOnClickListener(v -> {
-            String uri = String.format("geo:%f,%f?q=%f,%f(%s)",
+            String uri = String.format("geo:%f.%f?q=%f.%f(%s)",
+                    veterinario.getLatitude(),
                     veterinario.getLatitude(),
                     veterinario.getLongitude(),
-                    veterinario.getLatitude(),
                     veterinario.getLongitude(),
                     veterinario.getNome());
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));

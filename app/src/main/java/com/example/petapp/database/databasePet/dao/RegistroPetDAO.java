@@ -3,6 +3,8 @@ package com.example.petapp.database.databasePet.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.petapp.database.databasePet.DBHelper;
 import com.example.petapp.database.databasePet.model.RegistroPetModel;
@@ -32,7 +34,7 @@ public class RegistroPetDAO extends AbstrataDAO {
             RegistroPetModel.COLUNA_ESTADO,
             RegistroPetModel.COLUNA_TELEFONECEL,
             RegistroPetModel.COLUNA_DESCRICAO,
-            RegistroPetModel.COLUNA_URL_IMAGEM  // Nova coluna
+            RegistroPetModel.COLUNA_URL_IMAGEM
     };
 
     public RegistroPetDAO(Context context) {
@@ -60,7 +62,7 @@ public class RegistroPetDAO extends AbstrataDAO {
         Cursor cursor = db.query(
                 RegistroPetModel.TABELA_PET,
                 colunas,
-                        RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
+                RegistroPetModel.COLUNA_NOMEPET + " = ? AND " +
                         RegistroPetModel.COLUNA_NASCIMENTO + " = ? AND " +
                         RegistroPetModel.COLUNA_ESPECIE + " = ? AND " +
                         RegistroPetModel.COLUNA_SEXO + " = ? AND " +
@@ -105,7 +107,7 @@ public class RegistroPetDAO extends AbstrataDAO {
         values.put(RegistroPetModel.COLUNA_ESTADO, pet.getEstado());
         values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
         values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
-        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Nova linha
+        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem());
 
         db.insert(RegistroPetModel.TABELA_PET, null, values);
         Close();
@@ -113,31 +115,29 @@ public class RegistroPetDAO extends AbstrataDAO {
 
     public List<RegistroPetModel> getAllPets() {
         List<RegistroPetModel> petList = new ArrayList<>();
-        Open(); // Open the database connection
+        Open();
 
         Cursor cursor = db.query(
-                RegistroPetModel.TABELA_PET, // The table name
-                colunas,                     // The columns to return
-                null,                        // The columns for the WHERE clause (null means all rows)
-                null,                        // The values for the WHERE clause
-                null,                        // don't group the rows
-                null,                        // don't filter by row groups
-                RegistroPetModel.COLUNA_NOMEPET + " ASC" // The sort order (order by name ascending)
+                RegistroPetModel.TABELA_PET,
+                colunas,
+                null,
+                null,
+                null,
+                null,
+                RegistroPetModel.COLUNA_NOMEPET + " ASC"
         );
 
-        // Loop through all rows and add to list
         if (cursor.moveToFirst()) {
             do {
                 RegistroPetModel pet = new RegistroPetModel();
                 pet.setId(cursor.getLong(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ID)));
                 pet.setNomepet(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NOMEPET)));
 
-                // Handle possible null values for Double types
                 int nascimentoIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_NASCIMENTO);
                 if (!cursor.isNull(nascimentoIndex)) {
                     pet.setNascimento(cursor.getDouble(nascimentoIndex));
                 } else {
-                    pet.setNascimento(null); // Or 0.0, or handle as needed
+                    pet.setNascimento(null);
                 }
 
                 pet.setEspecie(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ESPECIE)));
@@ -159,7 +159,7 @@ public class RegistroPetDAO extends AbstrataDAO {
                 }
 
                 pet.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_EMAIL)));
-                pet.setCep(cursor.getDouble(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_CEP))); // Assuming CEP is String
+                pet.setCep(cursor.getDouble(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_CEP)));
                 pet.setEstado(cursor.getString(cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_ESTADO)));
 
                 int telCelIndex = cursor.getColumnIndexOrThrow(RegistroPetModel.COLUNA_TELEFONECEL);
@@ -176,36 +176,73 @@ public class RegistroPetDAO extends AbstrataDAO {
             } while (cursor.moveToNext());
         }
 
-        cursor.close(); // Always close the cursor
-        Close();      // Close the database connection
+        cursor.close();
+        Close();
         return petList;
     }
 
-    public void update(RegistroPetModel pet) {
-        Open();
-        ContentValues values = new ContentValues();
-        values.put(RegistroPetModel.COLUNA_NOMEPET, pet.getNomepet());
-        values.put(RegistroPetModel.COLUNA_NASCIMENTO, pet.getNascimento());
-        values.put(RegistroPetModel.COLUNA_ESPECIE, pet.getEspecie());
-        values.put(RegistroPetModel.COLUNA_SEXO, pet.getSexo());
-        values.put(RegistroPetModel.COLUNA_PAI, pet.getPai());
-        values.put(RegistroPetModel.COLUNA_MAE, pet.getMae());
-        values.put(RegistroPetModel.COLUNA_RACA, pet.getRaca());
-        values.put(RegistroPetModel.COLUNA_NATURALIDADE, pet.getNaturalidade());
-        values.put(RegistroPetModel.COLUNA_COR, pet.getCor());
-        values.put(RegistroPetModel.COLUNA_ENDERECO, pet.getEndereco());
-        values.put(RegistroPetModel.COLUNA_BAIRRO, pet.getBairro());
-        values.put(RegistroPetModel.COLUNA_CIDADE, pet.getCidade());
-        values.put(RegistroPetModel.COLUNA_TELEFONERESD, pet.getTelefoneresd());
-        values.put(RegistroPetModel.COLUNA_EMAIL, pet.getEmail());
-        values.put(RegistroPetModel.COLUNA_CEP, pet.getCep());
-        values.put(RegistroPetModel.COLUNA_ESTADO, pet.getEstado());
-        values.put(RegistroPetModel.COLUNA_TELEFONECEL, pet.getTelefonecel());
-        values.put(RegistroPetModel.COLUNA_DESCRICAO, pet.getDescricao());
-        values.put(RegistroPetModel.COLUNA_URL_IMAGEM, pet.getUrlImagem()); // Nova linha
+    public boolean update(RegistroPetModel pet) {
+        SQLiteDatabase db = null;
+        try {
+            Open();
+            db = this.db;
 
-        db.update(RegistroPetModel.TABELA_PET, values, RegistroPetModel.COLUNA_ID + " = ?", new String[]{pet.getId().toString()});
-        Close();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("nomepet", pet.getNomepet());
+            contentValues.put("raca", pet.getRaca());
+            contentValues.put("especie", pet.getEspecie());
+            contentValues.put("sexo", pet.getSexo());
+            contentValues.put("cor", pet.getCor());
+            contentValues.put("cidade", pet.getCidade());
+            contentValues.put("estado", pet.getEstado());
+            contentValues.put("bairro", pet.getBairro());
+            contentValues.put("endereco", pet.getEndereco());
+            contentValues.put("email", pet.getEmail());
+            contentValues.put("pai", pet.getPai());
+            contentValues.put("mae", pet.getMae());
+            contentValues.put("naturalidade", pet.getNaturalidade());
+            contentValues.put("descricao", pet.getDescricao());
+            contentValues.put("urlImagem", pet.getUrlImagem());
+
+            if (pet.getCep() != null) {
+                contentValues.put("cep", pet.getCep());
+            } else {
+                contentValues.putNull("cep");
+            }
+
+            if (pet.getTelefoneresd() != null) {
+                contentValues.put("telefoneresd", pet.getTelefoneresd());
+            } else {
+                contentValues.putNull("telefoneresd");
+            }
+
+            if (pet.getTelefonecel() != null) {
+                contentValues.put("telefonecel", pet.getTelefonecel());
+            } else {
+                contentValues.putNull("telefonecel");
+            }
+
+            if (pet.getNascimento() != null) {
+                contentValues.put("nascimento", pet.getNascimento());
+            } else {
+                contentValues.putNull("nascimento");
+            }
+
+            int rowsAffected = db.update(
+                    RegistroPetModel.TABELA_PET,
+                    contentValues,
+                    RegistroPetModel.COLUNA_ID + " = ?",
+                    new String[]{String.valueOf(pet.getId())}
+            );
+
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            Log.e("RegistroPetDAO", "Erro ao fazer update do pet: " + e.getMessage(), e);
+            return false;
+        } finally {
+            Close();
+        }
     }
 
     public void delete(Long id) {
@@ -214,7 +251,6 @@ public class RegistroPetDAO extends AbstrataDAO {
         Close();
     }
 
-    // Adicionar método para buscar pet por ID
     public RegistroPetModel getPetById(Long id) {
         Open();
         Cursor cursor = db.query(
@@ -276,5 +312,4 @@ public class RegistroPetDAO extends AbstrataDAO {
         Close();
         return pet;
     }
-
 }
