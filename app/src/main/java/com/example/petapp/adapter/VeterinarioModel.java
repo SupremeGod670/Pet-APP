@@ -6,8 +6,7 @@ public class VeterinarioModel {
     private String telefone;
     private String horarioFuncionamento;
     private String especialidades;
-    private double latitude;
-    private double longitude;
+    private String linkMaps; // Link direto do Google Maps
     private String tipo; // "Clínica Veterinária", "Pet Shop", "Hospital Veterinário"
     private double avaliacao;
     private boolean atendeEmergencia;
@@ -18,15 +17,14 @@ public class VeterinarioModel {
     // Construtor completo
     public VeterinarioModel(String nome, String endereco, String telefone,
                             String horarioFuncionamento, String especialidades,
-                            double latitude, double longitude, String tipo,
+                            String linkMaps, String tipo,
                             double avaliacao, boolean atendeEmergencia) {
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.horarioFuncionamento = horarioFuncionamento;
         this.especialidades = especialidades;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.linkMaps = linkMaps;
         this.tipo = tipo;
         this.avaliacao = avaliacao;
         this.atendeEmergencia = atendeEmergencia;
@@ -73,20 +71,12 @@ public class VeterinarioModel {
         this.especialidades = especialidades;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public String getLinkMaps() {
+        return linkMaps;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLinkMaps(String linkMaps) {
+        this.linkMaps = linkMaps;
     }
 
     public String getTipo() {

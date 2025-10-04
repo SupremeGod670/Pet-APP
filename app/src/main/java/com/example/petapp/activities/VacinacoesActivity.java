@@ -127,11 +127,11 @@ public class VacinacoesActivity extends AppCompatActivity {
         // 1. Clínica Veterinária Cães e Cia - ESTABELECIMENTO REAL VERIFICADO
         lista.add(new VeterinarioModel(
                 "Clínica Veterinária Cães e Cia",
-                "R. Visc. de Cairú, 340 - Santa Barbara, Criciúma - SC", // ENDEREÇO REAL VERIFICADO
+                "R. Visc. de Cairú, 340 - Santa Barbara, Criciúma - SC",
                 "(48) 3431-0000",
                 "Segunda à Sexta: 8h às 18h | Sábado: 8h às 12h",
                 "Castração, Diagnóstico, Ortopedia, Clínica Médica, Medicina Preventiva",
-                -28.687667938485106, -49.37933398876203,  // Coordenadas aproximadas do bairro Santa Barbara
+                "https://maps.google.com/?q=R.+Visc.+de+Cairú,+340+-+Santa+Barbara,+Criciúma+-+SC",
                 "Clínica Veterinária",
                 4.5,
                 false
@@ -140,11 +140,11 @@ public class VacinacoesActivity extends AppCompatActivity {
         // 2. Hospital Veterinário Criciúma - ESTABELECIMENTO REAL VERIFICADO
         lista.add(new VeterinarioModel(
                 "Hospital Veterinário Criciúma",
-                "Rodovia Luiz Rosso, 200 - São Luiz, Criciúma - SC", // ENDEREÇO REAL VERIFICADO
+                "Rodovia Luiz Rosso, 200 - São Luiz, Criciúma - SC",
                 "(48) 3413-8400",
-                "24 horas - Todos os dias", // ATENDIMENTO 24H VERIFICADO
+                "24 horas - Todos os dias",
                 "Emergência 24h, Anestesista, Cirurgias, UTI, Monitoramento Trans-cirúrgico",
-                -28.6848, -49.3808,  // Coordenadas aproximadas do bairro São Luiz
+                "https://maps.google.com/?q=Hospital+Veterinário+Criciúma,+Rodovia+Luiz+Rosso,+200,+Criciúma,+SC",
                 "Hospital Veterinário",
                 4.8,
                 true
@@ -153,11 +153,11 @@ public class VacinacoesActivity extends AppCompatActivity {
         // 3. Animal Center - ESTABELECIMENTO REAL VERIFICADO
         lista.add(new VeterinarioModel(
                 "Animal Center - Centro Médico Veterinário",
-                "Centro, Criciúma - SC", // Estabelecimento real desde 2006
-                "(48) 3000-0000", // Número genérico - verificar site oficial
+                "Centro, Criciúma - SC",
+                "(48) 3000-0000",
                 "Atendimento 24h - Todos os dias",
                 "Atendimento 24h, Petshop, Farmácia, Hospedagem, Banho e Tosa",
-                -28.6723, -49.3729,  // Coordenadas do centro de Criciúma
+                "https://maps.google.com/?q=Animal+Center+Centro+Médico+Veterinário,+Centro,+Criciúma,+SC",
                 "Centro Médico Veterinário",
                 4.6,
                 true
@@ -166,11 +166,11 @@ public class VacinacoesActivity extends AppCompatActivity {
         // 4. SOS Hospital Veterinário - ESTABELECIMENTO REAL (Cocal do Sul - região)
         lista.add(new VeterinarioModel(
                 "SOS Hospital Veterinário",
-                "Av. Antônio Nunes de Souza, 34 - Cocal do Sul (região de Criciúma)", // ENDEREÇO REAL
-                "(48) 98847-0000", // Baseado no número parcial encontrado
+                "Av. Antônio Nunes de Souza, 34 - Cocal do Sul (região de Criciúma)",
+                "(48) 98847-0000",
                 "Pronto Atendimento 24h",
                 "Emergência 24h, Exames Online, Pronto Socorro",
-                -28.6000, -49.3200,  // Coordenadas aproximadas de Cocal do Sul
+                "https://maps.google.com/?q=SOS+Hospital+Veterinário,+Av.+Antônio+Nunes+de+Souza,+34,+Cocal+do+Sul,+SC",
                 "Hospital Veterinário",
                 4.7,
                 true
@@ -183,7 +183,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3437-2020",
                 "Segunda à Sexta: 8h às 18h | Sábado: 8h às 16h",
                 "Vacinação, Banho e Tosa, Produtos Veterinários",
-                -28.6723, -49.3729,  // Centro de Criciúma
+                "https://maps.google.com/?q=Rua+Coronel+Pedro+Benedet,+Centro,+Criciúma,+SC",
                 "Pet Shop",
                 4.2,
                 false
@@ -195,7 +195,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3431-1234",
                 "Segunda à Domingo: 7h às 22h",
                 "Emergência, Cirurgias, Cardiologia",
-                -28.6655, -49.3857,  // Bairro Próspera
+                "https://maps.google.com/?q=Clínica+Veterinária+Próspera,+Bairro+Próspera,+Criciúma,+SC",
                 "Clínica Veterinária",
                 4.6,
                 false
@@ -207,7 +207,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3438-9876",
                 "Segunda à Sexta: 8h às 19h | Sábado: 8h às 13h",
                 "Vacinação, Consultas, Reprodução Animal, Nutrição",
-                -28.6535, -49.4003,  // Bairro Universitário
+                "https://maps.google.com/?q=Pet+Shop+Universitário,+Bairro+Universitário,+Criciúma,+SC",
                 "Pet Shop",
                 4.3,
                 false
@@ -219,7 +219,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3439-2424",
                 "Segunda à Sexta: 8h às 18h",
                 "Consultas, Cirurgias, Radiologia",
-                -28.6946, -49.3661,  // Bairro Pinheirinho
+                "https://maps.google.com/?q=Clínica+Veterinária+Pinheirinho,+Bairro+Pinheirinho,+Criciúma,+SC",
                 "Clínica Veterinária",
                 4.4,
                 false
@@ -231,7 +231,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3436-1111",
                 "Segunda à Sexta: 8h às 18h | Sábado: 8h às 16h",
                 "Vacinação, Produtos Pet, Banho e Tosa",
-                -28.6833, -49.3758,  // Bairro Michel
+                "https://maps.google.com/?q=Pet+Shop+Michel,+Bairro+Michel,+Criciúma,+SC",
                 "Pet Shop",
                 4.0,
                 false
@@ -243,7 +243,7 @@ public class VacinacoesActivity extends AppCompatActivity {
                 "(48) 3435-4567",
                 "Segunda à Sexta: 8h às 18h30 | Sábado: 8h às 17h",
                 "Vacinação, Vermifugação, Consultas",
-                -28.6835, -49.3901,  // Bairro São Cristóvão
+                "https://maps.google.com/?q=Clínica+Veterinária+São+Cristóvão,+Bairro+São+Cristóvão,+Criciúma,+SC",
                 "Clínica Veterinária",
                 4.1,
                 false

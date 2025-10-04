@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petapp.R;
-import com.example.petapp.adapter.VeterinarioModel;
 
 import java.util.List;
 
@@ -94,25 +93,25 @@ public class VeterinarioAdapter extends BaseAdapter {
             }
         });
 
-        // Click para abrir no Maps
+        // Click para abrir no Maps usando o link direto
         holder.ivMaps.setOnClickListener(v -> {
-            String uri = String.format("geo:%f.%f?q=%f.%f(%s)",
-                    veterinario.getLatitude(),
-                    veterinario.getLatitude(),
-                    veterinario.getLongitude(),
-                    veterinario.getLongitude(),
-                    veterinario.getNome());
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-            intent.setPackage("com.google.android.apps.maps");
+            if (veterinario.getLinkMaps() != null && !veterinario.getLinkMaps().isEmpty()) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(veterinario.getLinkMaps()));
+                    intent.setPackage("com.google.android.apps.maps");
 
-            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                context.startActivity(intent);
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    } else {
+                        // Fallback para navegador se o Google Maps não estiver instalado
+                        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(veterinario.getLinkMaps()));
+                        context.startActivity(webIntent);
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(context, "Erro ao abrir localização", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                // Fallback para navegador
-                String webUri = String.format("https://maps.google.com/?q=%f,%f",
-                        veterinario.getLatitude(), veterinario.getLongitude());
-                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUri));
-                context.startActivity(webIntent);
+                Toast.makeText(context, "Localização não disponível", Toast.LENGTH_SHORT).show();
             }
         });
 
