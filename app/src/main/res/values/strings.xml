@@ -94,6 +94,7 @@ Baixe agora o Identificação Pet e dê o próximo passo para uma vida mais cone
     <string name="texto_inicio_meus_pets">Gerencie facilmente todos os seus companheiros</string>
     <string name="vacinacoes">Vacinações</string>
     <string name="assinatura_digital">Assinatura Digital</string>
+    <string name="realizar_assinatura_digital">Realizar Assinatura Digital</string>
 
     <item name="selecione_um_item" type="id" />
     <item name="cachorro" type="id" />

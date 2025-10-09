@@ -1,6 +1,7 @@
 package com.example.petapp.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -55,6 +56,7 @@ public class MostrarPetActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 786;
     public static final String EXTRA_PET_ID = "EXTRA_PET_ID";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,19 @@ public class MostrarPetActivity extends AppCompatActivity {
 
             // Exibir assinatura se existir
             exibirAssinatura();
+        }
+
+        if (assinaturaView != null) {
+            assinaturaView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (petAtual != null && petAtual.getAssinaturaDigital() != null && !petAtual.getAssinaturaDigital().isEmpty()) {
+                        abrirAssinaturaTelaCheia();
+                    } else {
+                        Toast.makeText(MostrarPetActivity.this, "Este pet não possui assinatura", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -216,6 +231,17 @@ public class MostrarPetActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void abrirAssinaturaTelaCheia() {
+        Intent intent = new Intent(MostrarPetActivity.this, FullScreenSignatureActivity.class);
+
+        if (petAtual != null && petAtual.getAssinaturaDigital() != null) {
+            intent.putExtra(FullScreenSignatureActivity.EXTRA_SIGNATURE_DATA, petAtual.getAssinaturaDigital());
+            intent.putExtra("VIEW_ONLY", true); // Modo somente visualização
+        }
+
+        startActivity(intent);
     }
 
     private void exibirAssinatura() {

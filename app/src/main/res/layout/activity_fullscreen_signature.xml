@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Área de assinatura -->
+    <com.example.petapp.views.SignatureView
+        android:id="@+id/signature_view_fullscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttons_container"
+        android:background="#FFFFFF" />
+
+    <!-- Container dos botões -->
+    <LinearLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#F5F5F5"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btn_cancelar_assinatura"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancelar"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#9E9E9E"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_limpar_assinatura"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Limpar"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#FF9800"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_salvar_assinatura"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Salvar"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</RelativeLayout>

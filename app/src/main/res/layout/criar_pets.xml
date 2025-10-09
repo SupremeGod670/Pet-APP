@@ -66,8 +66,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_marginTop="83dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -460,31 +460,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/TEXTLINEAR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Assinatura Digital"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
-
-                <com.example.petapp.views.SignatureView
-                    android:id="@+id/assinatura_canvas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@android:color/white"
-                    android:elevation="2dp" />
+                    android:text="@string/assinatura_digital"
+                    android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/limpar_assinatura"
+                    android:id="@+id/assinatura_display"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Limpar Assinatura"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/realizar_assinatura_digital" />
 
             </LinearLayout>
 

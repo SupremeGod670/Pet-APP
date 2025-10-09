@@ -2,25 +2,33 @@ package com.example.petapp.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SignatureView extends View {
 
+    private static final String TAG = "SignatureView";
     private Paint paint;
     private Path path;
     private List<Path> paths;
     private List<Paint> paints;
     private float touchX, touchY;
     private static final float TOUCH_TOLERANCE = 4;
+
+    // Bitmap para armazenar assinatura carregada de string
+    private Bitmap loadedSignatureBitmap;
 
     public SignatureView(Context context) {
         super(context);
@@ -58,6 +66,11 @@ public class SignatureView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // Se há um bitmap carregado, desenhar primeiro
+        if (loadedSignatureBitmap != null && !loadedSignatureBitmap.isRecycled()) {
+            canvas.drawBitmap(loadedSignatureBitmap, 0, 0, null);
+        }
+
         // Desenhar todos os caminhos salvos
         for (int i = 0; i < paths.size(); i++) {
             canvas.drawPath(paths.get(i), paints.get(i));
@@ -69,6 +82,10 @@ public class SignatureView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!isEnabled()) {
+            return false;
+        }
+
         float x = event.getX();
         float y = event.getY();
 
@@ -123,11 +140,17 @@ public class SignatureView extends View {
         paths.clear();
         paints.clear();
         path.reset();
+
+        if (loadedSignatureBitmap != null && !loadedSignatureBitmap.isRecycled()) {
+            loadedSignatureBitmap.recycle();
+            loadedSignatureBitmap = null;
+        }
+
         invalidate();
     }
 
     public boolean isEmpty() {
-        return paths.isEmpty();
+        return paths.isEmpty() && loadedSignatureBitmap == null;
     }
 
     public Bitmap getSignatureBitmap() {
@@ -135,11 +158,20 @@ public class SignatureView extends View {
             return null;
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(
+                getWidth() > 0 ? getWidth() : 500,
+                getHeight() > 0 ? getHeight() : 300,
+                Bitmap.Config.ARGB_8888
+        );
         Canvas canvas = new Canvas(bitmap);
 
         // Fundo branco
         canvas.drawColor(Color.WHITE);
+
+        // Desenhar bitmap carregado se existir
+        if (loadedSignatureBitmap != null && !loadedSignatureBitmap.isRecycled()) {
+            canvas.drawBitmap(loadedSignatureBitmap, 0, 0, null);
+        }
 
         // Desenhar todas as assinaturas
         for (int i = 0; i < paths.size(); i++) {
@@ -152,48 +184,85 @@ public class SignatureView extends View {
     public String getSignatureAsString() {
         Bitmap bitmap = getSignatureBitmap();
         if (bitmap == null) {
+            Log.w(TAG, "getSignatureAsString: bitmap é null");
             return null;
         }
 
-        // Converter bitmap para string base64
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] byteArray = baos.toByteArray();
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] byteArray = baos.toByteArray();
 
-        return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+            String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.d(TAG, "getSignatureAsString: sucesso, length = " + result.length());
+
+            // Não reciclar o bitmap aqui pois ainda pode ser usado
+            return result;
+        } catch (Exception e) {
+            Log.e(TAG, "Erro ao converter assinatura para string", e);
+            return null;
+        }
     }
 
     public void setSignatureFromString(String signatureString) {
         if (signatureString == null || signatureString.isEmpty()) {
+            Log.w(TAG, "setSignatureFromString: string vazia ou null");
             clearSignature();
             return;
         }
 
         try {
-            byte[] decodedString = android.util.Base64.decode(signatureString, android.util.Base64.DEFAULT);
-            Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Log.d(TAG, "setSignatureFromString: recebido string com length = " + signatureString.length());
+
+            byte[] decodedString = Base64.decode(signatureString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             if (bitmap != null) {
-                clearSignature();
+                Log.d(TAG, "setSignatureFromString: bitmap decodificado com sucesso");
 
-                // Desenhar o bitmap no canvas
-                Canvas canvas = new Canvas();
-                Paint bitmapPaint = new Paint();
-                bitmapPaint.setAntiAlias(true);
+                // Limpar assinatura anterior
+                if (loadedSignatureBitmap != null && !loadedSignatureBitmap.isRecycled()) {
+                    loadedSignatureBitmap.recycle();
+                }
 
-                // Criar um path que represente a assinatura
-                Path signaturePath = new Path();
-                Paint signaturePaint = new Paint(paint);
+                // Limpar paths desenhados
+                paths.clear();
+                paints.clear();
+                path.reset();
 
-                // Adicionar o path e paint às listas
-                paths.add(signaturePath);
-                paints.add(signaturePaint);
+                // Escalar bitmap para o tamanho da view se necessário
+                if (getWidth() > 0 && getHeight() > 0) {
+                    loadedSignatureBitmap = Bitmap.createScaledBitmap(
+                            bitmap,
+                            getWidth(),
+                            getHeight(),
+                            true
+                    );
+                    if (loadedSignatureBitmap != bitmap) {
+                        bitmap.recycle();
+                    }
+                } else {
+                    loadedSignatureBitmap = bitmap;
+                }
 
                 invalidate();
+                Log.d(TAG, "setSignatureFromString: sucesso!");
+            } else {
+                Log.e(TAG, "setSignatureFromString: falha ao decodificar bitmap");
+                clearSignature();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Erro ao carregar assinatura de string", e);
             clearSignature();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (loadedSignatureBitmap != null && !loadedSignatureBitmap.isRecycled()) {
+            loadedSignatureBitmap.recycle();
+            loadedSignatureBitmap = null;
         }
     }
 }

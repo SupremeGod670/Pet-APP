@@ -50,8 +50,7 @@ public class CriarPetsActivity extends AppCompatActivity {
     public ImageView perfilpet;
     public Spinner editespecie, editsexo, editcidade, editraca, editestado;
     public EditText editnome, editbairro, editcep, editcel, editnascimento, edittel, editemail, editpai, editmae, editnaturalidade, editdescricao, editendereco, editcor;
-    private Button salvarpet, limparAssinatura;
-    private SignatureView assinaturaCanvas;
+    private Button salvarpet, assinatura_display;
 
     // Updated permission constants for newer Android versions
     private static final int PERMISSION_REQUEST_CODE = 1001;
@@ -62,6 +61,7 @@ public class CriarPetsActivity extends AppCompatActivity {
 
     private String imagemPerfilUrl = null;
     private String cidadeSelecionadaPorCep = null;
+    private String assinaturaDigital = null;
 
     private boolean isEditMode = false;
     private Long petIdToEdit = null;
@@ -111,17 +111,16 @@ public class CriarPetsActivity extends AppCompatActivity {
         editcor = findViewById(R.id.editcor);
         salvarpet = findViewById(R.id.salvarpet);
         voltar = findViewById(R.id.voltar);
+        assinatura_display = findViewById(R.id.assinatura_display);
 
-        // Inicializar views da assinatura
-        assinaturaCanvas = findViewById(R.id.assinatura_canvas);
-        limparAssinatura = findViewById(R.id.limpar_assinatura);
+        assinatura_display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CriarPetsActivity.this, FullScreenSignatureActivity.class);
+                abrirAssinaturaTelaCheia();
+            }
+        });
 
-        if (limparAssinatura == null) {
-            // Se o botão não existe no layout, criar programaticamente
-            limparAssinatura = new Button(this);
-            limparAssinatura.setText("Limpar Assinatura");
-            limparAssinatura.setId(R.id.limpar_assinatura);
-        }
     }
 
     private void verificarModoEdicao() {
@@ -250,9 +249,9 @@ public class CriarPetsActivity extends AppCompatActivity {
         }
 
         // Assinatura digital
-        String assinaturaDigital = intent.getStringExtra("PET_ASSINATURA");
-        if (assinaturaCanvas != null && assinaturaDigital != null && !assinaturaDigital.isEmpty()) {
-            assinaturaCanvas.setSignatureFromString(assinaturaDigital);
+        this.assinaturaDigital = intent.getStringExtra("PET_ASSINATURA");
+        if (this.assinaturaDigital != null && !this.assinaturaDigital.isEmpty()) {
+            Toast.makeText(this, "Assinatura carregada.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -299,19 +298,6 @@ public class CriarPetsActivity extends AppCompatActivity {
                 checkPermissionAndPickImage();
             }
         });
-
-        // Listener para limpar assinatura
-        if (limparAssinatura != null) {
-            limparAssinatura.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (assinaturaCanvas != null) {
-                        assinaturaCanvas.clearSignature();
-                        Toast.makeText(CriarPetsActivity.this, "Assinatura limpa!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
 
         editespecie.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -382,6 +368,20 @@ public class CriarPetsActivity extends AppCompatActivity {
         });
     }
 
+    private void abrirAssinaturaTelaCheia() {
+        Intent intent = new Intent(CriarPetsActivity.this, FullScreenSignatureActivity.class);
+
+        // Passar assinatura existente se houver
+        if (this.assinaturaDigital != null && !this.assinaturaDigital.isEmpty()) {
+            Log.d("CriarPetsActivity", "Enviando assinatura: SIM");
+            if (this.assinaturaDigital != null) {
+                intent.putExtra(FullScreenSignatureActivity.EXTRA_SIGNATURE_DATA, this.assinaturaDigital);
+            }
+        }
+
+        startActivityForResult(intent, FullScreenSignatureActivity.REQUEST_CODE_SIGNATURE);
+    }
+
     private void salvarPet() {
         try {
             String nome = editnome.getText().toString().trim();
@@ -402,12 +402,6 @@ public class CriarPetsActivity extends AppCompatActivity {
             String cor = editcor.getText().toString().trim();
             String descricao = editdescricao.getText().toString().trim();
             String endereco = editendereco.getText().toString().trim();
-
-            // Capturar assinatura digital
-            String assinaturaDigital = null;
-            if (assinaturaCanvas != null && !assinaturaCanvas.isEmpty()) {
-                assinaturaDigital = assinaturaCanvas.getSignatureAsString();
-            }
 
             // Validação dos campos obrigatórios
             if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty() || cidade.isEmpty() || estado.isEmpty() || cidade.equals("Selecione uma Cidade") || estado.equals("Selecione um Estado")) {
@@ -554,11 +548,24 @@ public class CriarPetsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE && data != null && data.getData() != null) {
+        Log.d("CriarPetsActivity", "onActivityResult - requestCode: " + requestCode + ", resultCode: " + resultCode);
+
+        if (requestCode == FullScreenSignatureActivity.REQUEST_CODE_SIGNATURE) {
+            if (resultCode == RESULT_OK && data != null) {
+                String signatureData = data.getStringExtra(FullScreenSignatureActivity.RESULT_SIGNATURE_DATA);
+                Log.d("CriarPetsActivity", "Assinatura recebida: " + (signatureData != null ? "SIM (length: " + signatureData.length() + ")" : "NÃO"));
+
+                if (signatureData != null && !signatureData.isEmpty()) {
+                    this.assinaturaDigital = signatureData; Toast.makeText(this, "Assinatura salva!", Toast.LENGTH_SHORT).show();
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Log.d("CriarPetsActivity", "Assinatura cancelada");
+            }
+        } else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE && data != null && data.getData() != null) {
+            // Código existente para imagem
             try {
                 Uri imageUri = data.getData();
 
-                // Take persistent permission
                 try {
                     getContentResolver().takePersistableUriPermission(imageUri,
                             Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -566,14 +573,12 @@ public class CriarPetsActivity extends AppCompatActivity {
                     Log.w("CriarPetsActivity", "Não foi possível obter permissão persistente para a URI", e);
                 }
 
-                // Load image using Glide
                 Glide.with(this)
                         .load(imageUri)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_background)
                         .into(perfilpet);
 
-                // Store the URI as string
                 imagemPerfilUrl = imageUri.toString();
 
                 Log.d("CriarPetsActivity", "Image selected: " + imagemPerfilUrl);
@@ -583,9 +588,8 @@ public class CriarPetsActivity extends AppCompatActivity {
                 Toast.makeText(this, "Erro ao carregar imagem selecionada", Toast.LENGTH_SHORT).show();
             }
         } else if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(this, "Seleção de imagem cancelada.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Erro ao selecionar imagem.", Toast.LENGTH_SHORT).show();
+            // Apenas log, não mostrar toast para cancelamento
+            Log.d("CriarPetsActivity", "Ação cancelada pelo usuário");
         }
     }
 
